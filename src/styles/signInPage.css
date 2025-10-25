@@ -1,0 +1,90 @@
+.signIn-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  align-items: center;
+
+  height: 100vh;
+  width: 100%;
+
+  background: transparent;
+
+  margin: 0.5rem 0rem;
+  padding: 0rem 0.3rem;
+}
+
+.signIn-page > .bottom-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-container {
+  background: transparent;
+}
+
+.signIn-span {
+  color: var(--light-secondary-400);
+}
+
+.sign-in-options {
+  display: flex;
+  flex-direction: column;
+
+  width: 95%;
+
+  gap: 1.3rem;
+
+  padding-top: 20px;
+
+  background: transparent;
+}
+
+.sign-in-options > .sign-in-option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 8px 10px;
+
+  border-radius: 20px;
+}
+
+.sign-in-option > .icon {
+  width: 25px;
+  height: 25px;
+
+  margin-right: 10px;
+}
+
+.sign-in-options > .divider-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+}
+
+.divider-text::before,
+.divider-text::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--light-secondary-400);
+}
+
+.divider-text::before {
+  margin-right: 10px;
+}
+
+.divider-text::after {
+  margin-left: 10px;
+}
+
+.sign-in-option.email {
+  background: var(--light-secondary-400);
+}
+
+.sign-in-option.email:hover {
+  background: var(--light-secondary-200);
+}

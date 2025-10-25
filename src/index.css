@@ -3,6 +3,7 @@
   --light-background-200: #f7f9fa;
 
   --light-secondary-400: #77f067;
+
   --light-secondary-200: #e5fce3;
 
   --light-ternary-400: #e1e2e8;
@@ -12,6 +13,7 @@
 
   --delete-background-color-400: #c98999;
   --delete-background-color-200: #fadce0;
+  --gutter-grid: 10px;
 }
 
 /* 1. Use a more-intuitive box-sizing model */
@@ -88,4 +90,125 @@ h6 {
 #root,
 #__next {
   isolation: isolate;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+}
+
+.fa {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form > .form-control {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: var(--gutter-grid);
+  margin-bottom: var(--gutter-grid);
+}
+
+form > .form-control > label {
+  margin-top: var(--gutter-grid);
+  margin-bottom: 8px;
+}
+
+form > .form-control > .input-wrapper {
+  display: flex;
+  align-items: center;
+
+  padding: 9px;
+
+  border: none;
+  border-radius: 20px;
+
+  width: 100%;
+
+  background-color: rgb(255, 255, 255);
+}
+
+.form > .form-control > .input-wrapper > img {
+  margin-left: 5px;
+}
+
+form > .form-control > .input-wrapper > input {
+  margin-left: 10px;
+
+  width: 80%;
+}
+
+form > .form-control > .input-wrapper > input:focus {
+  outline: none;
+}
+
+form > .form-control > input,
+button {
+  padding: 13px 30px;
+
+  border: none;
+  border-radius: 20px;
+}
+
+.input-wrapper > button {
+  background-color: transparent;
+}
+form > .form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 3px;
+
+  width: 95%;
+  padding: 5px;
+
+  text-align: center;
+}
+
+form > .form-actions > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form > .form-actions > div > label {
+  margin-left: 10px;
+
+  color: var(--clr-primary-text);
+}
+
+form > button {
+  margin-top: 30px;
+
+  width: 95%;
+
+  padding: 10px;
+}
+
+input {
+  border: none;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--clr-primary-text);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+
+  height: 100vh;
+  width: 100%;
+  background-color: var(--light-background-400);
+}
+
+body.dark-mode {
+  background-color: var(--dark-background-400);
 }

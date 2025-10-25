@@ -1,9 +1,12 @@
 import "./App.css";
+import EmailSignIn from "./pages/EmailSignIn";
+import RegisterPage from "./pages/RegisterPage";
+import SignInPage from "./pages/SignInPage";
 
 function App() {
   return (
     <>
-      <h2>Hi</h2>
+      <RegisterPage />
     </>
   );
 }

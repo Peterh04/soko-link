@@ -1,0 +1,62 @@
+.emailSignIn-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  align-items: center;
+
+  height: 100vh;
+  width: 100%;
+
+  background: transparent;
+
+  margin: 0.5rem 0rem;
+  padding: 0rem 1rem;
+}
+
+.emailSignIn-page > .sign-in-section {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  gap: 20px;
+}
+
+.divider-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+}
+.divider-text::before,
+.divider-text::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--light-secondary-400);
+}
+
+.divider-text::before {
+  margin-right: 10px;
+}
+
+.divider-text::after {
+  margin-left: 10px;
+}
+
+.login-form > button {
+  background-color: var(--light-secondary-400);
+}
+
+span {
+  color: var(--light-secondary-400);
+
+  margin-left: 5px;
+}
+
+.sign-in-section > p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
