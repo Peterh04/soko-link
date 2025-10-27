@@ -60,3 +60,33 @@ span {
   justify-content: center;
   align-items: center;
 }
+
+@media only screen and (min-width: 600px) {
+  .emailSignIn-page {
+    padding: 0rem 5rem;
+  }
+}
+
+@media only screen and (min-width: 700px) {
+  .emailSignIn-page {
+    padding: 0rem 7rem;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .emailSignIn-page {
+    padding: 0rem 10rem;
+  }
+}
+
+@media only screen and (min-width: 1100px) {
+  .emailSignIn-page {
+    padding: 0rem 15rem;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .emailSignIn-page {
+    padding: 0rem 25rem;
+  }
+}

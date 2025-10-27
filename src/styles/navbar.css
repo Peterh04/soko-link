@@ -1,0 +1,41 @@
+.navbar {
+  width: 100%;
+}
+
+.nav-links {
+  display: flex;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+
+  gap: 5px;
+
+  background-color: white;
+}
+
+.nav-links > .nav-link {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 80px;
+  height: 80px;
+}
+
+.nav-link.selected > p,
+.nav-link.selected > .fa {
+  color: var(--light-secondary-400);
+}
+
+.nav-link > p {
+  color: gray;
+}
+
+.nav-link > .fa {
+  color: gray;
+}

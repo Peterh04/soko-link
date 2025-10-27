@@ -88,3 +88,33 @@
 .sign-in-option.email:hover {
   background: var(--light-secondary-200);
 }
+
+@media only screen and (min-width: 600px) {
+  .signIn-page {
+    padding: 0rem 5rem;
+  }
+}
+
+@media only screen and (min-width: 700px) {
+  .signIn-page {
+    padding: 0rem 7rem;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .signIn-page {
+    padding: 0rem 10rem;
+  }
+}
+
+@media only screen and (min-width: 1100px) {
+  .signIn-page {
+    padding: 0rem 15rem;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .signIn-page {
+    padding: 0rem 25rem;
+  }
+}

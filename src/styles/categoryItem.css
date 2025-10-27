@@ -1,0 +1,34 @@
+.category-item {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.category-item > p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.category-item-icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 70px;
+  height: 70px;
+
+  border-radius: 50%;
+  background-color: var(--light-secondary-200);
+  overflow: hidden;
+}
+
+.category-item-icon-container > .category-image {
+  width: 70%;
+  height: 70%;
+  object-fit: cover;
+}
