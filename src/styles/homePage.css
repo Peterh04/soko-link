@@ -5,6 +5,8 @@
   gap: 2rem;
   height: 100vh;
   width: 100%;
+
+  z-index: 1000;
 }
 
 .home-page > .homepage-header {
@@ -92,9 +94,6 @@
   gap: 5px;
 }
 
-.search-bar > .searchIcon {
-  color: red;
-}
 .search-bar > .fa {
   color: var(--light-secondary-400);
 }
@@ -205,4 +204,32 @@
   content: "•";
   display: inline-block;
   margin: 0 0.5rem;
+}
+
+@media only screen and (min-width: 600px) {
+  .category-section > .category-list {
+    gap: 20px;
+  }
+}
+
+@media only screen and (min-width: 700px) {
+  .home-page > .homepage-header {
+    padding: 7rem 1.5rem 3rem 1.5rem;
+    height: 80vh;
+  }
+  .category-section > .category-list {
+    gap: 40px;
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .category-section > .category-list {
+    gap: 50px;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  .category-section > .category-list {
+    gap: 60px;
+  }
 }

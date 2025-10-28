@@ -8,10 +8,10 @@ import "../styles/navbar.css";
 
 export default function NavBar() {
   return (
-    <nav>
+    <nav className="navbar">
       <ul className="nav-links">
         <li className="nav-link selected">
-          <HomeIcon className="fa" />
+          <HomeIcon className="fa homeIcon" />
           <p>Home</p>
         </li>
         <li className="nav-link">
