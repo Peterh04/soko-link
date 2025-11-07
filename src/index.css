@@ -60,6 +60,10 @@ select {
   font: inherit;
 }
 
+input:focus {
+  outline: none;
+}
+
 /* 8. Avoid text overflows */
 p,
 h1,

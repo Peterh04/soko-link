@@ -1,0 +1,44 @@
+.success-purchase-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100vh;
+}
+.success-purchase-page > .success-purchase-modal {
+  display: flex;
+  flex-direction: column;
+
+  padding: 2rem;
+
+  width: 42vh;
+  height: 350px;
+
+  border-radius: 10px;
+
+  gap: 1rem;
+
+  background-color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.success-purchase-modal > h3,
+p {
+  display: flex;
+  width: 100%;
+
+  justify-content: center;
+}
+
+.success-purchase-modal > button {
+  background-color: var(--light-secondary-400);
+
+  border-radius: 40px;
+}
+
+.success-purchase-modal > .style-btn {
+  background-color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}

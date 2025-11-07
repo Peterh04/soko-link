@@ -1,13 +1,29 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../styles/chatPage.css";
 
 import BackIcon from "../assets/icons/back.svg?react";
 import PhoneIcon from "../assets/icons/phone.svg?react";
 import MennuIcon from "../assets/icons/menu.svg?react";
 import SendIcon from "../assets/icons/send.svg?react";
+import VoiceIcon from "../assets/icons/voice.svg?react";
 
 export default function ChatPage() {
   const footerRef = useRef(null);
+  // const [isTexting, setIsTexting] = useState(false);
+
+  const [input, setInput] = useState({
+    message: "",
+    isTexting: false,
+  });
+
+  const handleInput = (e) => {
+    const value = e.target.value;
+    setInput((prev) => ({
+      ...prev,
+      message: value,
+      isTexting: value.trim().length > 0,
+    }));
+  };
 
   useEffect(() => {
     if (!window.visualViewport) return;
@@ -75,11 +91,23 @@ export default function ChatPage() {
 
       <footer ref={footerRef} className="send-message-container">
         <div className="input-container">
-          <input type="text" placeholder="Write your message here" />
+          <input
+            type="text"
+            value={input.message}
+            placeholder="Write your message here"
+            onChange={(e) => handleInput(e)}
+          />
         </div>
-        <button>
-          <SendIcon className="fa" />
-        </button>
+
+        {!input.isTexting ? (
+          <button>
+            <VoiceIcon className="fa" />
+          </button>
+        ) : (
+          <button>
+            <SendIcon className="fa" />
+          </button>
+        )}
       </footer>
     </main>
   );
