@@ -1,0 +1,179 @@
+.receipt-page {
+  display: flex;
+
+  flex-direction: column;
+
+  width: 100%;
+  height: 100vh;
+
+  position: relative;
+}
+
+.receipt-page > .receipt-page-header-container {
+  display: flex;
+
+  width: 100%;
+  height: 30vh;
+
+  background-color: var(--light-secondary-400);
+}
+
+.receipt-page-header-container > .receipt-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* or flex-start if you prefer */
+  height: 50px;
+  width: 100%;
+  padding: 0 1rem;
+  position: relative;
+}
+.receipt-page-header > .icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+
+  background-color: white;
+}
+
+.receipt-page-header > .icon-container > .fa {
+  width: 30px;
+  height: 30px;
+}
+
+.receipt-page-header > h3 {
+  position: absolute;
+  left: 50%;
+
+  font-weight: 600;
+
+  margin: 0;
+
+  transform: translateX(-50%);
+}
+
+.receipt-page > .receipt-container {
+  display: flex;
+  height: 60vh;
+  width: 95%;
+
+  border-radius: 10px;
+
+  position: absolute;
+
+  top: 10%;
+  left: 10px;
+  background-color: white;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.receipt-container > .receipt {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+
+  padding: 3rem 0.5rem 0.5rem 1rem;
+}
+
+.receipt > .receipt-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  gap: 1rem;
+}
+
+.receipt-item > .item-details {
+  display: flex;
+  gap: 1rem;
+
+  align-items: center;
+}
+
+.item-details > .item-image-container {
+  display: flex;
+
+  width: 80px;
+  height: 80px;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+.item-image-container > .item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.item-details > .item-details-meta {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.transaction-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start; /* 👈 fix alignment */
+}
+
+.transaction-details > .transaction-detail-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  /* background-color: red; */
+}
+
+.transaction-detail-container > div {
+  max-width: 200px;
+
+  /* background-color: yellow; */
+}
+
+.fee-details {
+  display: flex;
+  flex-direction: column;
+
+  gap: 1rem;
+
+  width: 100%;
+}
+
+.fee-details > .fee-detail-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.bar-code-container {
+  display: flex;
+  width: 100%;
+
+  justify-content: center;
+}
+
+.bar-code-container > img {
+  width: 80%;
+  height: 50px;
+}
+
+.receipt-page > button {
+  position: absolute;
+  bottom: 40px;
+  left: 20px;
+
+  width: 90%;
+  background-color: var(--light-secondary-400);
+}
