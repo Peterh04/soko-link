@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./App.css";
 import CommentReview from "./components/CommentReview";
 import ChatPage from "./pages/ChatPage";
@@ -8,13 +9,15 @@ import PaymentPage from "./pages/PaymentPage";
 import ProductPage from "./pages/ProductPage";
 import ReceiptPage from "./pages/ReceiptPages";
 import RegisterPage from "./pages/RegisterPage";
+import ResultsPage from "./pages/ResultsPage";
 import SignInPage from "./pages/SignInPage";
 import SuccessfulOrderPage from "./pages/SuccessfulOrderPage";
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState("");
   return (
     <>
-      <CommentPage />
+      <HomePage />
     </>
   );
 }

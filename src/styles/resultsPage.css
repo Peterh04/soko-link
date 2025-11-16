@@ -1,0 +1,281 @@
+.results-page {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100vh;
+
+  padding: 4rem 0.8rem;
+}
+
+.results-page > .resultsPage-header {
+  display: flex;
+  align-items: center;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  width: 100%;
+  height: 7vh;
+
+  z-index: 500;
+
+  background-color: white;
+
+  gap: 0.5rem;
+  padding: 0rem 0.5rem;
+}
+
+.resultsPage-header > .search-bar {
+  display: flex;
+
+  align-items: center;
+
+  border-radius: 20px;
+  border: 1px solid var(--light-secondary-400);
+  padding: 0.3rem 0.5rem;
+
+  width: 300px;
+  position: relative;
+}
+
+.search-bar > .clearBtn {
+  border: none;
+  background: transparent;
+  padding: 0;
+
+  position: absolute;
+  right: 20px;
+}
+
+.resultsPage-header > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 2px solid var(--light-ternary-400);
+  background-color: transparent;
+
+  padding: 0;
+
+  width: 45px;
+  height: 45px;
+
+  border-radius: 50%;
+}
+
+.resultsPage-header > .filterBtn {
+  background-color: var(--light-secondary-400);
+  border: none;
+}
+
+.filter-modal {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+
+  padding: 1.5rem;
+
+  gap: 1.5rem;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 65vh;
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+.filter-modal > .filter-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1.5px solid var(--light-ternary-400);
+}
+
+.filter-modal-header > button {
+  background-color: transparent;
+}
+
+.filter-price {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Slider container */
+.slider {
+  width: 100%;
+  height: 3px;
+  margin: 20px 0;
+  background: #ddd;
+  border-radius: 3px;
+  position: relative;
+}
+
+/* Track that fills between thumbs */
+.track {
+  background: #cfcfd4;
+
+  height: 100%;
+
+  position: absolute;
+
+  border-radius: 3px;
+}
+
+/* The draggable thumbs */
+.thumb {
+  height: 15px;
+  width: 15px;
+
+  background-color: white;
+
+  border-radius: 50%;
+  border: 2px solid var(--light-secondary-400);
+
+  top: 50%;
+  transform: translateY(-50%);
+
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+
+  cursor: grab;
+}
+
+/* Thumb hover effect */
+.thumb:hover {
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+}
+
+.slider-values {
+  display: flex;
+  justify-content: space-between;
+
+  font-weight: bold;
+}
+
+.filter-price > .filter-price-inputs {
+  display: flex;
+  width: 100%;
+
+  margin-top: 20px;
+
+  gap: 0.5rem;
+}
+
+.filter-price-inputs > input {
+  width: 180px;
+  height: 42px;
+
+  border-radius: 20px;
+
+  background-color: var(--light-ternary-200);
+
+  padding: 0.8rem;
+
+  border: 1px solid #cfcfd4;
+}
+
+.filter-modal > .sort-products {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sort-products > .sort-options {
+  display: flex;
+  width: 100%;
+
+  gap: 1rem;
+
+  overflow-x: scroll;
+  scrollbar-width: none;
+}
+
+.sort-options > .option {
+  display: flex;
+  align-items: center;
+
+  height: 40px;
+
+  white-space: nowrap;
+
+  min-width: 120px; /* minimum width */
+  flex: 1 0 auto;
+
+  background-color: transparent;
+  padding: 0 0.8rem;
+
+  border: 1px solid #cfcfd4;
+
+  border-radius: 20px;
+
+  cursor: pointer;
+}
+
+.sort-options > .option:hover {
+  background-color: var(--light-secondary-400);
+}
+
+.filter-rate-products {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+
+  gap: 0.5rem;
+}
+.rates {
+  display: flex;
+  width: 100%;
+
+  gap: 1rem;
+
+  overflow-x: scroll;
+  scrollbar-width: none;
+}
+
+.rates > .rate {
+  display: flex;
+  align-items: center;
+
+  height: 40px;
+
+  white-space: nowrap;
+
+  width: 80px;
+
+  background-color: transparent;
+  padding: 0 0.8rem;
+
+  border: 1px solid #cfcfd4;
+
+  border-radius: 20px;
+
+  cursor: pointer;
+}
+.rates > .rate:hover {
+  background-color: var(--light-secondary-400);
+}
+
+.filter-modal > .filter-modal-footer {
+  display: flex;
+
+  border-top: 1.5px solid var(--light-ternary-400);
+}
+
+.filter-modal-footer > button {
+  padding: 0;
+  padding: 0.7rem 3.5rem;
+
+  border-radius: 40px;
+}
+
+.filter-modal-footer > .resetBtn {
+  background-color: var(--light-ternary-200);
+}

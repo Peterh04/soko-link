@@ -12,6 +12,7 @@ import CategoryItem from "../components/CategoryItem";
 
 import sofaPreview from "../assets/sofaPreview.jpeg";
 import NavBar from "../components/NavBar";
+import ProductPreview from "../components/ProductPreview";
 
 export default function HomePage() {
   return (
@@ -76,61 +77,9 @@ export default function HomePage() {
           <h3>Trending</h3>
         </div>
         <ul className="trending-list">
-          <div className="product-preview">
-            <div className="product-preview-img-container">
-              <img src={sofaPreview} alt={name} className="prod-image" />
-            </div>
-            <div className="product-info">
-              <p className="price">Ksh 40,000</p>
-              <h3 className="prod-name">Three seater for sale</h3>
-              <div className="product-meta">
-                <p className="prod-location">Ngara, Nairobi</p>
-                <p className="prod-condition">Brand new</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="product-preview">
-            <div className="product-preview-img-container">
-              <img src={sofaPreview} alt={name} className="prod-image" />
-            </div>
-            <div className="product-info">
-              <p className="price">Ksh 40,000</p>
-              <h3 className="prod-name">Three seater for sale</h3>
-              <div className="product-meta">
-                <p className="prod-location">Ngara, Nairobi</p>
-                <p className="prod-condition">Brand new</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="product-preview">
-            <div className="product-preview-img-container">
-              <img src={sofaPreview} alt={name} className="prod-image" />
-            </div>
-            <div className="product-info">
-              <p className="price">Ksh 40,000</p>
-              <h3 className="prod-name">Three seater for sale</h3>
-              <div className="product-meta">
-                <p className="prod-location">Ngara, Nairobi</p>
-                <p className="prod-condition">Brand new</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="product-preview">
-            <div className="product-preview-img-container">
-              <img src={sofaPreview} alt={name} className="prod-image" />
-            </div>
-            <div className="product-info">
-              <p className="price">Ksh 40,000</p>
-              <h3 className="prod-name">Three seater for sale</h3>
-              <div className="product-meta">
-                <p className="prod-location">Ngara, Nairobi</p>
-                <p className="prod-condition">Brand new</p>
-              </div>
-            </div>
-          </div>
+          <ProductPreview />
+          <ProductPreview />
+          <ProductPreview />
         </ul>
       </section>
 
