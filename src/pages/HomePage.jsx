@@ -13,8 +13,43 @@ import CategoryItem from "../components/CategoryItem";
 import sofaPreview from "../assets/sofaPreview.jpeg";
 import NavBar from "../components/NavBar";
 import ProductPreview from "../components/ProductPreview";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { image } from "framer-motion/client";
 
 export default function HomePage() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const { data } = await axios.get("http://localhost:5001/api/products");
+
+        const filteredProducts = data.products.map((product) => ({
+          id: product.id,
+          title: product.title,
+          description: product.description,
+          location: product.location,
+          price: product.price,
+          images: product.images,
+          createdAt: product.createdAt,
+          vendorId: product.vendorId,
+        }));
+        setProducts(filteredProducts);
+        console.log(filteredProducts);
+      } catch (error) {
+        console.error(
+          "Failed to fetch products",
+          error.response?.data || error.message
+        );
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const priceString = (price) => Number(price).toLocaleString();
+
   return (
     <main aria-label="HomePage" className="home-page">
       <header aria-label="homepage header" className="homepage-header">
@@ -50,7 +85,6 @@ export default function HomePage() {
       <section aria-label="categories" className="category-section">
         <div className="section-header">
           <h3>Category</h3>
-
           <p>See All</p>
         </div>
 
@@ -77,9 +111,15 @@ export default function HomePage() {
           <h3>Trending</h3>
         </div>
         <ul className="trending-list">
-          <ProductPreview />
-          <ProductPreview />
-          <ProductPreview />
+          {products.map((product) => (
+            <ProductPreview
+              key={product.id}
+              name={product.title}
+              price={priceString(product.price)}
+              location={product.location}
+              image={product.images[0]}
+            />
+          ))}
         </ul>
       </section>
 

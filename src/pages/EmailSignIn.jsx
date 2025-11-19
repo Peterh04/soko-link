@@ -1,4 +1,5 @@
 import "../styles/EmailSignIn.css";
+import axios from "axios";
 import googleIcon from "../assets/icons/google.svg";
 import appleIcon from "../assets/icons/apple.svg";
 import mail from "../assets/icons/mail.svg";
@@ -6,10 +7,35 @@ import view from "../assets/icons/view.svg";
 import hide from "../assets/icons/hide.svg";
 import padlock from "../assets/icons/padlock.svg";
 import usePasswordVisiblity from "../hooks/usePasswordVisibility";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function EmailSignIn() {
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
   const { isPasswordVisible, handlePasswordVisibility } =
     usePasswordVisiblity();
+
+  const handleForm = async (e) => {
+    e.preventDefault();
+    const { email, password } = form;
+
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5001/api/users/login",
+        { email, password }
+      );
+      console.log("Login succesful", data);
+      localStorage.setItem("accessToken", data.token);
+      navigate("/");
+    } catch (error) {
+      console.error("Login Error", error.response?.data || error.message);
+    }
+  };
   return (
     <main aria-label="EmailSignIn-page" className="emailSignIn-page">
       <div className="logo-container">
@@ -27,6 +53,7 @@ export default function EmailSignIn() {
                 name="userEmail"
                 required={true}
                 autoComplete="off"
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
               />
             </div>
           </div>
@@ -41,6 +68,7 @@ export default function EmailSignIn() {
                 name="userPassword"
                 required={true}
                 autoComplete="off"
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
               />
               <button
                 className="btn-password-toggle"
@@ -54,7 +82,7 @@ export default function EmailSignIn() {
               </button>
             </div>
           </div>
-          <button>Login</button>
+          <button onClick={handleForm}>Login</button>
         </form>
         <p className="divider-text">or </p>
         <div className="sign-in-options">

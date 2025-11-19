@@ -1,8 +1,12 @@
 import "../styles/signInPage.css";
 import googleIcon from "../assets/icons/google.svg";
 import appleIcon from "../assets/icons/apple.svg";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
 
 export default function SignInPage() {
+  const navigate = useNavigate();
   return (
     <main aria-label="SignInPage" className="signIn-page">
       <div className="logo-container">
@@ -27,7 +31,12 @@ export default function SignInPage() {
 
           <p className="divider-text">or </p>
 
-          <button className="sign-in-option email">Sign in with Email</button>
+          <button
+            className="sign-in-option email"
+            onClick={() => navigate("/login/email")}
+          >
+            Sign in with Email
+          </button>
 
           <button className="sign-in-option guest">Continue as Guest</button>
         </div>

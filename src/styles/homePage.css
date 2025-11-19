@@ -113,15 +113,14 @@
 .category-section > .section-header {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 
   width: 100%;
-
-  background-color: red;
 }
 
 .section-header > p {
   color: var(--light-secondary-400);
+  width: 30%;
 }
 
 .category-section > .category-list {

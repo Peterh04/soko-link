@@ -1,7 +1,7 @@
 .product-preview {
   display: flex;
   align-items: center;
-  height: 150px;
+  height: 180px;
 
   background-color: var(--light-secondary-200);
 
@@ -15,8 +15,8 @@
   justify-content: center;
   align-items: center;
 
-  width: 150px;
-  height: 100px;
+  width: 170px;
+  height: 130px;
 
   border-radius: 20px;
   background-color: var(--light-secondary-200);

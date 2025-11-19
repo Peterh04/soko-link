@@ -7,10 +7,50 @@ import view from "../assets/icons/view.svg";
 import hide from "../assets/icons/hide.svg";
 import padlock from "../assets/icons/padlock.svg";
 import usePasswordVisiblity from "../hooks/usePasswordVisibility";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterPage() {
   const { isPasswordVisible, handlePasswordVisibility } =
     usePasswordVisiblity();
+
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [passwordMismatch, setPasswordMismatch] = useState(false);
+
+  const handleForm = async (e) => {
+    e.preventDefault();
+    const { name, email, password, confirmPassword } = form;
+
+    if (confirmPassword !== password) {
+      setPasswordMismatch(true);
+    } else {
+      try {
+        const { data } = await axios.post(
+          "http://localhost:5001/api/users/register",
+          { name, email, password }
+        );
+
+        console.log("Register succesful", data);
+
+        navigate("/login/email");
+      } catch (error) {
+        console.error(
+          "Registration error",
+          error.response?.data || error.message
+        );
+      }
+    }
+  };
+
   return (
     <main aria-label="Register-page" className="register-page">
       <section aria-label="register section" className="register-section">
@@ -29,6 +69,7 @@ export default function RegisterPage() {
                 name="userName"
                 required={true}
                 autoComplete="off"
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
               />
             </div>
           </div>
@@ -42,13 +83,14 @@ export default function RegisterPage() {
                 name="userEmail"
                 required={true}
                 autoComplete="off"
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
               />
             </div>
           </div>
 
           <div className="form-control">
             <label htmlFor="user-password">Enter your password</label>
-            <div className="input-wrapper">
+            <div className={`input-wrapper ${passwordMismatch ? "error" : ""}`}>
               <img src={padlock} alt="padlock" className="fa"></img>
               <input
                 type={isPasswordVisible ? "text" : "password"}
@@ -56,6 +98,7 @@ export default function RegisterPage() {
                 name="userPassword"
                 required={true}
                 autoComplete="off"
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
               />
               <button
                 className="btn-password-toggle"
@@ -72,7 +115,7 @@ export default function RegisterPage() {
 
           <div className="form-control">
             <label htmlFor="re-entry-password">Re-enter your password</label>
-            <div className="input-wrapper">
+            <div className={`input-wrapper ${passwordMismatch ? "error" : ""}`}>
               <img src={padlock} alt="padlock" className="fa"></img>
               <input
                 type={isPasswordVisible ? "text" : "password"}
@@ -80,6 +123,9 @@ export default function RegisterPage() {
                 name="userPassword"
                 required={true}
                 autoComplete="off"
+                onChange={(e) =>
+                  setForm({ ...form, confirmPassword: e.target.value })
+                }
               />
               <button
                 className="btn-password-toggle"
@@ -93,7 +139,7 @@ export default function RegisterPage() {
               </button>
             </div>
           </div>
-          <button>Sign up</button>
+          <button onClick={handleForm}>Sign up</button>
         </form>
         <p className="divider-text">or </p>
         <div className="sign-in-options">
@@ -109,9 +155,43 @@ export default function RegisterPage() {
         </div>
 
         <p>
-          You do have an account? <span>Login</span>
+          You do have an account?{" "}
+          <span onClick={() => navigate("/login")}>Login</span>
         </p>
       </section>
     </main>
   );
 }
+
+// const [form, setForm] = useState({
+//     userName: "",
+//     email: "",
+//     password: "",
+//     confirmPassword: "",
+//   });
+
+//   // const [message, setMessage] = useState("");
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     const { userName, email, password, confirmPassword } = form;
+
+//     if (confirmPassword !== password) alert("Passwords don't match");
+//     else {
+//       try {
+//         const { data } = await axios.post(
+//           "http://localhost:5001/api/auth/register",
+//           {
+//             userName,
+//             email,
+//             password,
+//           }
+//         );
+//         console.log("User registered Successfully", data);
+//         alert(`Welcome, ${data.userName}`);
+//       } catch (err) {
+//         console.error("Registration error", err.response?.data || err.message);
+//         alert(err.response?.data?.message || "Registartion failed!");
+//       }
+//     }
+//   };

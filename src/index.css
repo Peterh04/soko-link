@@ -139,6 +139,11 @@ form > .form-control > .input-wrapper {
   background-color: rgb(255, 255, 255);
 }
 
+form > .form-control > .input-wrapper.error {
+  outline: 1px solid red;
+  border: 1px solid red;
+}
+
 .form > .form-control > .input-wrapper > img {
   margin-left: 5px;
 }
