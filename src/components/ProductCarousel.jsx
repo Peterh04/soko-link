@@ -13,9 +13,7 @@ import productsImg from "../assets/result.png";
 import BackIcon from "../assets/icons/back1.svg?react";
 import ForwardIcon from "../assets/icons/forward.svg?react";
 
-export default function ProductCarousel() {
-  const images = [shirtImage, electronicsImg, furnitureImg, productsImg];
-
+export default function ProductCarousel({ images = [] }) {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
   const [swiperReady, setSwiperReady] = useState(false);
@@ -23,6 +21,8 @@ export default function ProductCarousel() {
   useEffect(() => {
     setSwiperReady(true);
   }, []);
+
+  if (!images || images.length === 0) return null; // Show nothing if no images
 
   return (
     <div className="carousel-container">

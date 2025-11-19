@@ -4,6 +4,7 @@ import sofaPreview from "../assets/sofaPreview.jpeg";
 import { useNavigate } from "react-router-dom";
 
 export default function ProductPreview({
+  id,
   name = "Three seater for sale",
   price = "40,000",
   location = "Ngara, Nairobi",
@@ -13,7 +14,7 @@ export default function ProductPreview({
   const navigate = useNavigate();
 
   return (
-    <div className="product-preview" onClick={() => navigate("/product")}>
+    <div className="product-preview" onClick={() => navigate(`/product/${id}`)}>
       <div className="product-preview-img-container">
         <img src={image} alt={name} className="prod-image" />
       </div>

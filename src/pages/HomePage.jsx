@@ -114,6 +114,7 @@ export default function HomePage() {
           {products.map((product) => (
             <ProductPreview
               key={product.id}
+              id={product.id}
               name={product.title}
               price={priceString(product.price)}
               location={product.location}
