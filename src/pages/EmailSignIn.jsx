@@ -10,7 +10,7 @@ import usePasswordVisiblity from "../hooks/usePasswordVisibility";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function EmailSignIn() {
+export default function EmailSignIn({ setUser }) {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",

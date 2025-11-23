@@ -5,8 +5,11 @@ import ChatIcon from "../assets/icons/chat.svg?react";
 import UserIcon from "../assets/icons/user1.svg?react";
 
 import "../styles/navbar.css";
+import { useNavigate } from "react-router-dom";
 
 export default function NavBar() {
+  const navigate = useNavigate();
+
   return (
     <nav className="navbar">
       <ul className="nav-links">
@@ -26,7 +29,7 @@ export default function NavBar() {
           <ChatIcon className="fa" />
           <p>Chat</p>
         </li>
-        <li className="nav-link">
+        <li className="nav-link" onClick={() => navigate("/profile")}>
           <UserIcon className="fa" />
           <p>Profile</p>
         </li>

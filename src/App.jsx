@@ -13,8 +13,12 @@ import ResultsPage from "./pages/ResultsPage";
 import SignInPage from "./pages/SignInPage";
 import SuccessfulOrderPage from "./pages/SuccessfulOrderPage";
 import { Routes, Route } from "react-router-dom";
+import ProfilePage from "./pages/ProfilePage";
+import SecurityPage from "./pages/SecurityPage";
 
 function App() {
+  const [user, setUser] = useState();
+
   return (
     <Routes>
       <Route path="/" element={<HomePage />}></Route>
@@ -22,6 +26,11 @@ function App() {
       <Route path="/login" element={<SignInPage />}></Route>
       <Route path="/login/email" element={<EmailSignIn />}></Route>
       <Route path="/product/:id" element={<ProductPage />}></Route>
+      <Route
+        path="/profile"
+        element={<ProfilePage user={user} setUser={setUser} />}
+      ></Route>
+      <Route path="/profile/security" element={<SecurityPage />}></Route>
     </Routes>
   );
 }
