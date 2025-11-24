@@ -1,18 +1,59 @@
 import usePasswordVisiblity from "../hooks/usePasswordVisibility";
 import "../styles/securityPage.css";
+import BackIcon from "../assets/icons/back.svg?react";
 import padlock from "../assets/icons/padlock.svg";
 import view from "../assets/icons/view.svg";
 import hide from "../assets/icons/hide.svg";
+import { useState } from "react";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function SecurityPage() {
+  const navigate = useNavigate();
+  const { logOut } = useAuth();
+  const [form, setForm] = useState({
+    oldPassword: "",
+    newPassword: "",
+  });
   const { isPasswordVisible, handlePasswordVisibility } =
     usePasswordVisiblity();
+
+  const handlePasswordForm = async (e) => {
+    const token = localStorage.getItem("accessToken");
+    e.preventDefault();
+    try {
+      const { data } = axios.patch(
+        "http://localhost:5001/api/user/update/password",
+        {
+          oldPassword: form.oldPassword,
+          newPassword: form.newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Updated Password successful", data);
+      logOut();
+    } catch (error) {
+      console.error(
+        "Failed to update user Password",
+        error.response?.data || error.message
+      );
+    }
+  };
   return (
     <main aria-label="security page" className="security-page">
       <header
         aria-label="security page header"
         className="security-page-header"
       >
+        <button className="back-btn" onClick={() => navigate("/profile")}>
+          <BackIcon className="fa" />
+        </button>
+
         <h3>Change Password</h3>
       </header>
       <form className="user-meta-form" aria-label="user meta form">
@@ -20,11 +61,12 @@ export default function SecurityPage() {
           <img src={padlock} alt="padlock" className="fa"></img>
           <input
             type={isPasswordVisible ? "text" : "password"}
-            id="user-password"
+            id="user-old-password"
             name="userPassword"
             required={true}
             autoComplete="off"
             placeholder="Enter old password"
+            onChange={(e) => setForm({ ...form, oldPassword: e.target.value })}
           />
           <button
             className="btn-password-toggle"
@@ -42,11 +84,12 @@ export default function SecurityPage() {
           <img src={padlock} alt="padlock" className="fa"></img>
           <input
             type={isPasswordVisible ? "text" : "password"}
-            id="user-password"
+            id="user-new-password"
             name="userPassword"
             required={true}
             autoComplete="off"
             placeholder="Enter new password"
+            onChange={(e) => setForm({ ...form, newPassword: e.target.value })}
           />
           <button
             className="btn-password-toggle"
@@ -60,7 +103,9 @@ export default function SecurityPage() {
           </button>
         </div>
 
-        <button type="submit">Change Password</button>
+        <button type="submit" onClick={handlePasswordForm}>
+          Change Password
+        </button>
       </form>
     </main>
   );

@@ -1,5 +1,6 @@
 import "../styles/productPage.css";
 import LikeIcon from "../assets/icons/like.svg?react";
+import FillLikeIcon from "../assets/icons/filledLike.svg?react";
 import BackIcon from "../assets/icons/back.svg?react";
 import ProductCarousel from "../components/ProductCarousel";
 import locationIcon from "../assets/icons/location.svg";
@@ -17,6 +18,7 @@ export default function ProductPage() {
   const navigate = useNavigate();
   const [product, setProduct] = useState([]);
   const { id } = useParams();
+  const [isLiked, setIsLiked] = useState(false);
   const [text, setText] =
     useState(`It is a long established fact that a reader will be distracted by the
             readable content of a page when looking at its layout. The point of
@@ -51,6 +53,7 @@ export default function ProductPage() {
           `http://localhost:5001/api/products/${id}`
         );
         const filteredProduct = {
+          id: data.product.id,
           title: data.product.title,
           price: data.product.price,
           images: data.product.images,
@@ -101,6 +104,36 @@ export default function ProductPage() {
     fetchComments();
   }, [product.vendorId]);
 
+  useEffect(() => {
+    const isLiked = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const { data } = await axios.get(
+          "http://localhost:5001/api/user/userWishlist/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("Succesfully fetched the wishlist", data.wishliist);
+        const liked = data.wishliist.some(
+          (item) => item.Product && item.Product.id === product.id
+        );
+        setIsLiked(liked);
+        console.log(`Already ${liked}`);
+      } catch (error) {
+        console.error(
+          "Failed to fetch wishlist",
+          error.response?.data || error.message
+        );
+      }
+    };
+
+    isLiked();
+  }, [product.id]);
+
   const priceString = (price) => Number(price).toLocaleString();
 
   const getDays = (creationDateString) => {
@@ -116,6 +149,53 @@ export default function ProductPage() {
     return date.toLocaleDateString();
   };
 
+  const handleLiking = async () => {
+    const token = localStorage.getItem("accessToken");
+    const productId = product.id;
+
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5001/api/user/userWishlist/add",
+        { productId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Added product to cartlist");
+      setIsLiked(true);
+    } catch (error) {
+      console.error(
+        "Failed to add to wishlist",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  const handleUnliking = async () => {
+    const token = localStorage.getItem("accessToken");
+    const productId = product.id;
+    try {
+      const { data } = await axios.delete(
+        "http://localhost:5001/api/user/userWishlist/remove",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          data: { productId },
+        }
+      );
+      console.log("Removed Product from wishlist");
+      setIsLiked(false);
+    } catch (error) {
+      console.error(
+        "Failed to remove product from wishlist",
+        error.response?.data || error.message
+      );
+    }
+  };
+
   return (
     <main aria-label="Product Page" className="product-page">
       <header aria-label="product pager header" className="product-page-header">
@@ -123,9 +203,16 @@ export default function ProductPage() {
           <BackIcon className="fa" />
         </button>
         <h3>Product Details</h3>
-        <button>
-          <LikeIcon className="fa" />
-        </button>
+
+        {isLiked ? (
+          <button className="unlike" onClick={handleUnliking}>
+            <FillLikeIcon className="fa" />
+          </button>
+        ) : (
+          <button className="like" onClick={handleLiking}>
+            <LikeIcon className="fa" />
+          </button>
+        )}
       </header>
 
       <ProductCarousel images={product.images || []} />
