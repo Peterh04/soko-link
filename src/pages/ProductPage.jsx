@@ -4,6 +4,7 @@ import FillLikeIcon from "../assets/icons/filledLike.svg?react";
 import BackIcon from "../assets/icons/back.svg?react";
 import ProductCarousel from "../components/ProductCarousel";
 import locationIcon from "../assets/icons/location.svg";
+import DeleteIcon from "../assets/icons/delete.svg?react";
 import ChatIcon from "../assets/icons/chat.svg?react";
 import PhoneIcon from "../assets/icons/phone.svg?react";
 import storeIcon from "../assets/icons/store.svg";
@@ -13,8 +14,10 @@ import FeedbackContainer from "../components/FeedbackContainer";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 export default function ProductPage() {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [product, setProduct] = useState([]);
   const { id } = useParams();
@@ -64,6 +67,7 @@ export default function ProductPage() {
         };
         setProduct(filteredProduct);
         setText(filteredProduct.description);
+        console.log(filteredProduct);
       } catch (error) {
         console.error(
           "Failed to fetch product",
@@ -196,6 +200,29 @@ export default function ProductPage() {
     }
   };
 
+  const handleDelete = async () => {
+    const token = localStorage.getItem("accessToken");
+    const productId = product.id;
+    try {
+      const { data } = await axios.delete(
+        "http://localhost:5001/api/products/vendor/deleteProduct",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+
+          data: { productId },
+        }
+      );
+      console.log("Succesfully deleted product");
+    } catch (error) {
+      console.error(
+        "Failed to delete product",
+        error.response?.data || error.message
+      );
+    }
+  };
+
   return (
     <main aria-label="Product Page" className="product-page">
       <header aria-label="product pager header" className="product-page-header">
@@ -211,6 +238,18 @@ export default function ProductPage() {
         ) : (
           <button className="like" onClick={handleLiking}>
             <LikeIcon className="fa" />
+          </button>
+        )}
+
+        {product?.vendorId == user.id && (
+          <button
+            className="back-btn"
+            onClick={() => {
+              handleDelete();
+              navigate("/");
+            }}
+          >
+            <DeleteIcon className="fa" />
           </button>
         )}
       </header>

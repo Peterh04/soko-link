@@ -17,13 +17,13 @@ export default function NavBar() {
           <HomeIcon className="fa homeIcon" />
           <p>Home</p>
         </li>
-        <li className="nav-link">
+        <li className="nav-link" onClick={() => navigate("/wishlist")}>
           <LikeIcon className="fa" />
           <p>Wishlist</p>
         </li>
         <li className="nav-link">
           <CartIcon className="fa" />
-          <p>Cart</p>
+          <p>Sell</p>
         </li>
         <li className="nav-link">
           <ChatIcon className="fa" />

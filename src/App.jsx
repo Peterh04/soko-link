@@ -15,6 +15,8 @@ import SuccessfulOrderPage from "./pages/SuccessfulOrderPage";
 import { Routes, Route } from "react-router-dom";
 import ProfilePage from "./pages/ProfilePage";
 import SecurityPage from "./pages/SecurityPage";
+import WishlistPage from "./pages/WishlistPage";
+import SellPage from "./pages/SellPage";
 
 function App() {
   const [user, setUser] = useState();
@@ -31,6 +33,8 @@ function App() {
         element={<ProfilePage user={user} setUser={setUser} />}
       ></Route>
       <Route path="/profile/security" element={<SecurityPage />}></Route>
+      <Route path="/wishlist" element={<WishlistPage />}></Route>
+      <Route path="/sell" element={<SellPage />}></Route>
     </Routes>
   );
 }
