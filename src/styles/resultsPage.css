@@ -279,3 +279,21 @@
 .filter-modal-footer > .resetBtn {
   background-color: var(--light-ternary-200);
 }
+
+.results-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+
+  margin-top: 15px;
+
+  overflow-y: scroll;
+
+  margin-bottom: 8rem;
+}

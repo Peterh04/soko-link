@@ -16,9 +16,15 @@ import ProductPreview from "../components/ProductPreview";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { image } from "framer-motion/client";
+import { useNavigate } from "react-router-dom";
 
-export default function HomePage() {
+export default function HomePage({
+  searchTerm,
+  setSearchTerm,
+  setSearchProducts,
+}) {
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -50,6 +56,33 @@ export default function HomePage() {
 
   const priceString = (price) => Number(price).toLocaleString();
 
+  const handleSearch = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:5001/api/products/search/${searchTerm}`
+      );
+      const filteredProducts = data.filteredProducts.map((product) => ({
+        id: product.id,
+        title: product.title,
+        description: product.description,
+        location: product.location,
+        price: product.price,
+        images: product.images,
+        createdAt: product.createdAt,
+        vendorId: product.vendorId,
+      }));
+      setSearchProducts(filteredProducts);
+      console.log(data);
+
+      navigate(`/products/search/${searchTerm}`);
+    } catch (error) {
+      console.error(
+        "Failed to search products",
+        error.response?.data || error.message
+      );
+    }
+  };
+
   return (
     <main aria-label="HomePage" className="home-page">
       <header aria-label="homepage header" className="homepage-header">
@@ -76,8 +109,12 @@ export default function HomePage() {
         </div>
         <div className="header-bottom">
           <div className="search-bar">
-            <SearchIcon className="fa" />
-            <input type="text" placeholder="Search" />
+            <SearchIcon className="fa" onClick={handleSearch} />
+            <input
+              type="text"
+              placeholder="Search"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
         </div>
       </header>

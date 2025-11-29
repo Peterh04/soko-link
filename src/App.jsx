@@ -20,10 +20,22 @@ import SellPage from "./pages/SellPage";
 
 function App() {
   const [user, setUser] = useState();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchProducts, setSearchProducts] = useState(null);
 
   return (
     <Routes>
-      <Route path="/" element={<HomePage />}></Route>
+      <Route
+        path="/"
+        element={
+          <HomePage
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            setSearchProducts={setSearchProducts}
+            searchProducts={searchProducts}
+          />
+        }
+      ></Route>
       <Route path="/register" element={<RegisterPage />}></Route>
       <Route path="/login" element={<SignInPage />}></Route>
       <Route path="/login/email" element={<EmailSignIn />}></Route>
@@ -35,6 +47,17 @@ function App() {
       <Route path="/profile/security" element={<SecurityPage />}></Route>
       <Route path="/wishlist" element={<WishlistPage />}></Route>
       <Route path="/sell" element={<SellPage />}></Route>
+      <Route
+        path="/products/search/:term"
+        element={
+          <ResultsPage
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            setSearchProducts={setSearchProducts}
+            searchProducts={searchProducts}
+          />
+        }
+      ></Route>
     </Routes>
   );
 }
