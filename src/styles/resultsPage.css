@@ -89,6 +89,8 @@
   height: 65vh;
 
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+  background-color: white;
 }
 .filter-modal > .filter-modal-header {
   display: flex;

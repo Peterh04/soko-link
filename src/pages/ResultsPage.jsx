@@ -6,7 +6,7 @@ import { useState } from "react";
 import ReactSlider from "react-slider";
 import ProductPreview from "../components/ProductPreview";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function ResultsPage({
   searchTerm,
@@ -19,6 +19,12 @@ export default function ResultsPage({
   const [message, setMessage] = useState("");
   const [value, setValue] = useState([0, 500000]);
   const [isModalExpanded, setIsModalExpanded] = useState(false);
+  const [filterValues, setFilteredValues] = useState({
+    lowPrice: 0,
+    highPrice: 0,
+    rating: 0,
+    sortBy: "",
+  });
 
   const handleTyping = (e) => {
     const text = e.target.value;
@@ -78,6 +84,44 @@ export default function ResultsPage({
       );
     }
   };
+
+  const handleApplyFilters = async () => {
+    try {
+      const params = new URLSearchParams();
+
+      if (filterValues.lowPrice)
+        params.append("minPrice", filterValues.lowPrice);
+      if (filterValues.highPrice)
+        params.append("maxPrice", filterValues.highPrice);
+      if (filterValues.rating) params.append("rating", filterValues.rating);
+      if (filterValues.sortBy) params.append("sort", filterValues.sortBy);
+
+      const url = `http://localhost:5001/api/products/search/${searchTerm}?${params.toString()}`;
+
+      const { data } = await axios.get(url);
+
+      const filteredProducts = data.filteredProducts.map((product) => ({
+        id: product.id,
+        title: product.title,
+        description: product.description,
+        location: product.location,
+        price: product.price,
+        images: product.images,
+        createdAt: product.createdAt,
+        vendorId: product.vendorId,
+      }));
+      console.log("Filters applied:", filterValues);
+
+      setSearchProducts(filteredProducts);
+      setIsModalExpanded(false);
+    } catch (error) {
+      console.error(
+        "Failed to fetch filtered products",
+        error.response?.data || error.message
+      );
+    }
+  };
+
   return (
     <main aria-label="results page" className="results-page">
       <header aria-label="resultsPage header" className="resultsPage-header">
@@ -161,11 +205,23 @@ export default function ResultsPage({
                 className="low-price-input"
                 placeholder="Low price"
                 type="number"
+                onChange={(e) =>
+                  setFilteredValues({
+                    ...filterValues,
+                    lowPrice: e.target.value,
+                  })
+                }
               ></input>
               <input
                 className="high-price-input"
                 placeholder="High price"
                 type="number"
+                onChange={(e) =>
+                  setFilteredValues({
+                    ...filterValues,
+                    highPrice: e.target.value,
+                  })
+                }
               ></input>
             </div>
           </section>
@@ -173,13 +229,53 @@ export default function ResultsPage({
           <section aria-label="sort products" className="sort-products">
             <h3>Sort by</h3>
             <div aria-label="sort options" className="sort-options">
-              <div className="option">Most Recent</div>
+              <div
+                className="option"
+                onClick={() =>
+                  setFilteredValues({
+                    ...filterValues,
+                    sortBy: "recent",
+                  })
+                }
+              >
+                Most Recent
+              </div>
 
-              <div className="option">Popular</div>
+              <div
+                className="option"
+                onClick={() =>
+                  setFilteredValues({
+                    ...filterValues,
+                    sortBy: "popular",
+                  })
+                }
+              >
+                Popular
+              </div>
 
-              <div className="option">Low Price</div>
+              <div
+                className="option"
+                onClick={() =>
+                  setFilteredValues({
+                    ...filterValues,
+                    sortBy: "lowPrice",
+                  })
+                }
+              >
+                Low Price
+              </div>
 
-              <div className="option">High Price</div>
+              <div
+                className="option"
+                onClick={() =>
+                  setFilteredValues({
+                    ...filterValues,
+                    sortBy: "highPrice",
+                  })
+                }
+              >
+                High Price
+              </div>
             </div>
           </section>
 
@@ -191,15 +287,65 @@ export default function ResultsPage({
             <div aria-label="rate filter" className="rates">
               <div className="rate">☆ All</div>
 
-              <div className="rate">☆ 5</div>
+              <div
+                className="rate"
+                onClick={() =>
+                  setFilteredValues({
+                    ...filterValues,
+                    rating: 5,
+                  })
+                }
+              >
+                ☆ 5
+              </div>
 
-              <div className="rate">☆ 4</div>
+              <div
+                className="rate"
+                onClick={() =>
+                  setFilteredValues({
+                    ...filterValues,
+                    rating: 4,
+                  })
+                }
+              >
+                ☆ 4
+              </div>
 
-              <div className="rate">☆ 3</div>
+              <div
+                className="rate"
+                onClick={() =>
+                  setFilteredValues({
+                    ...filterValues,
+                    rating: 3,
+                  })
+                }
+              >
+                ☆ 3
+              </div>
 
-              <div className="rate">☆ 2</div>
+              <div
+                className="rate"
+                onClick={() =>
+                  setFilteredValues({
+                    ...filterValues,
+                    rating: 2,
+                  })
+                }
+              >
+                ☆ 2
+              </div>
 
-              <div className="rate">☆ 1</div>
+              <div
+                className="rate"
+                onClick={() =>
+                  setFilteredValues({
+                    ...filterValues,
+                    rating: 1,
+                  })
+                }
+              >
+                ☆ 1
+              </div>
             </div>
           </section>
 
@@ -208,7 +354,7 @@ export default function ResultsPage({
             className="filter-modal-footer"
           >
             <button className="resetBtn">Reset</button>
-            <button>Apply</button>
+            <button onClick={handleApplyFilters}>Apply</button>
           </footer>
         </div>
       )}
