@@ -15,8 +15,9 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { Oval } from "react-loader-spinner";
 
-export default function ProductPage() {
+export default function ProductPage({ setBuyerId, setVendorId }) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [product, setProduct] = useState([]);
@@ -32,6 +33,7 @@ export default function ProductPage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isStoreExpanded, setIsStoreExpanded] = useState(false);
   const [comments, setComments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleStoreExpansion = () => {
     setIsStoreExpanded((cond) => !cond);
@@ -66,7 +68,10 @@ export default function ProductPage() {
           vendorId: data.product.vendorId,
         };
         setProduct(filteredProduct);
+        setVendorId(filteredProduct.vendorId);
+        setBuyerId(user.id);
         setText(filteredProduct.description);
+        setIsLoading(false);
         console.log(filteredProduct);
       } catch (error) {
         console.error(
@@ -223,6 +228,14 @@ export default function ProductPage() {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="loading-container">
+        <Oval height={60} width={60} visible={true} />
+      </div>
+    );
+  }
+
   return (
     <main aria-label="Product Page" className="product-page">
       <header aria-label="product pager header" className="product-page-header">
@@ -285,7 +298,7 @@ export default function ProductPage() {
             <h5 className="vendor-name">Jenny Doe</h5>
           </div>
           <div className="vender-contact">
-            <button>
+            <button onClick={() => navigate("/connect")}>
               <ChatIcon className="fa" />
             </button>
             <button

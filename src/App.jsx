@@ -17,11 +17,14 @@ import ProfilePage from "./pages/ProfilePage";
 import SecurityPage from "./pages/SecurityPage";
 import WishlistPage from "./pages/WishlistPage";
 import SellPage from "./pages/SellPage";
+import ChatsPage from "./pages/ChatsPage";
 
 function App() {
   const [user, setUser] = useState();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchProducts, setSearchProducts] = useState(null);
+  const [buyerId, setBuyerId] = useState();
+  const [vendorId, setVendorId] = useState();
 
   return (
     <Routes>
@@ -39,7 +42,12 @@ function App() {
       <Route path="/register" element={<RegisterPage />}></Route>
       <Route path="/login" element={<SignInPage />}></Route>
       <Route path="/login/email" element={<EmailSignIn />}></Route>
-      <Route path="/product/:id" element={<ProductPage />}></Route>
+      <Route
+        path="/product/:id"
+        element={
+          <ProductPage setBuyerId={setBuyerId} setVendorId={setVendorId} />
+        }
+      ></Route>
       <Route
         path="/profile"
         element={<ProfilePage user={user} setUser={setUser} />}
@@ -56,6 +64,16 @@ function App() {
             setSearchProducts={setSearchProducts}
             searchProducts={searchProducts}
           />
+        }
+      ></Route>
+      <Route
+        path="/connect"
+        element={<ChatPage buyerId={buyerId} vendorId={vendorId} />}
+      ></Route>
+      <Route
+        path="/chats"
+        element={
+          <ChatsPage setBuyerId={setBuyerId} setVendorId={setVendorId} />
         }
       ></Route>
     </Routes>

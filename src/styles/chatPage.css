@@ -119,3 +119,46 @@
 .send-message-container > .input-container > input:focus {
   outline: none;
 }
+
+.chat-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 5rem;
+  gap: 10px;
+}
+.chat-message {
+  display: flex;
+
+  max-width: 70%;
+  padding: 10px;
+
+  min-height: 50px;
+
+  border-radius: 10px;
+  background-color: red;
+
+  position: relative;
+}
+
+.chat-message > .message-content {
+  word-wrap: break-word;
+}
+
+.chat-message .time {
+  font-size: 0.7rem;
+  color: gray;
+  margin-left: 10px;
+  align-self: flex-end;
+}
+
+.chat-message.self {
+  margin-left: auto; /* your messages go right */
+  background-color: #dcf8c6;
+}
+
+.chat-message.other {
+  margin-right: auto; /* received messages go left */
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+}

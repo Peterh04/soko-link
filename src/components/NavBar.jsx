@@ -25,9 +25,9 @@ export default function NavBar() {
           <CartIcon className="fa" />
           <p>Sell</p>
         </li>
-        <li className="nav-link">
+        <li className="nav-link" onClick={() => navigate("/chats")}>
           <ChatIcon className="fa" />
-          <p>Chat</p>
+          <p>Chats</p>
         </li>
         <li className="nav-link" onClick={() => navigate("/profile")}>
           <UserIcon className="fa" />
