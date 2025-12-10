@@ -25,6 +25,7 @@ function App() {
   const [searchProducts, setSearchProducts] = useState(null);
   const [buyerId, setBuyerId] = useState();
   const [vendorId, setVendorId] = useState();
+  const [sender, setSender] = useState();
 
   return (
     <Routes>
@@ -68,14 +69,21 @@ function App() {
       ></Route>
       <Route
         path="/connect"
-        element={<ChatPage buyerId={buyerId} vendorId={vendorId} />}
+        element={
+          <ChatPage buyerId={buyerId} vendorId={vendorId} sender={sender} />
+        }
       ></Route>
       <Route
         path="/chats"
         element={
-          <ChatsPage setBuyerId={setBuyerId} setVendorId={setVendorId} />
+          <ChatsPage
+            setBuyerId={setBuyerId}
+            setVendorId={setVendorId}
+            setSender={setSender}
+          />
         }
       ></Route>
+      <Route path="/payment" element={<PaymentPage />}></Route>
     </Routes>
   );
 }

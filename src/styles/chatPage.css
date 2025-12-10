@@ -153,12 +153,140 @@
 }
 
 .chat-message.self {
-  margin-left: auto; /* your messages go right */
+  margin-left: auto;
   background-color: #dcf8c6;
 }
 
 .chat-message.other {
-  margin-right: auto; /* received messages go left */
+  margin-right: auto;
   background-color: #ffffff;
   border: 1px solid #ccc;
+}
+
+.invoice-message {
+  display: flex;
+  flex-direction: column;
+
+  background-color: var(--light-ternary-400);
+
+  gap: 5px;
+  padding: 10px;
+
+  border-radius: 8px;
+}
+
+.invoice-message button {
+  align-self: flex-start;
+  border: none;
+  background-color: var(--light-secondary-400);
+
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+
+  cursor: pointer;
+}
+
+/*Option Modal */
+.option-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  height: 10vh;
+  width: 200px;
+
+  border-radius: 10px;
+
+  background-color: white;
+
+  position: absolute;
+  right: 10px;
+  top: 58px;
+
+  visibility: hidden;
+}
+
+.option-modal.open {
+  visibility: visible;
+}
+
+.option-modal > .option-list {
+  display: flex;
+  flex-direction: column;
+
+  width: 90%;
+  height: 90%;
+
+  padding: 0.2rem;
+
+  background-color: transparent;
+
+  gap: 10px;
+}
+
+.option-list > .option {
+  display: flex;
+
+  background-color: transparent;
+}
+
+.option-list > .option:hover {
+  cursor: pointer;
+}
+
+.invoice-modal {
+  display: flex;
+  flex-direction: column;
+
+  padding: 1rem;
+
+  min-height: 30vh;
+  width: 100%;
+
+  gap: 2rem;
+
+  background-color: var(--light-secondary-200);
+
+  border-radius: 10px;
+
+  position: relative;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.invoice-modal > form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 1rem;
+}
+
+.invoice-modal > form > input {
+  display: flex;
+  align-items: center;
+
+  padding: 0.5rem;
+  border-radius: 10px;
+}
+
+.invoice-modal > form > button {
+  background-color: var(--light-secondary-400);
+}
+
+.invoice-modal > form > .form-group {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.3rem;
+}
+
+.invoice-modal > button {
+  position: absolute;
+  top: 10px;
+  right: 20px;
 }

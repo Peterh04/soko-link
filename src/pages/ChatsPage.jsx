@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Oval } from "react-loader-spinner";
 
-export default function ChatsPage({ setBuyerId, setVendorId }) {
+export default function ChatsPage({ setBuyerId, setVendorId, setSender }) {
   const navigate = useNavigate();
   const [messages, setMessages] = useState(null);
   const [isLoading, setIsLoadig] = useState(true);
@@ -55,8 +55,10 @@ export default function ChatsPage({ setBuyerId, setVendorId }) {
             onClick={() => {
               setBuyerId(msg.senderId);
               setVendorId(msg.receiverId);
+              setSender(msg.sender);
               navigate("/connect");
             }}
+            key={msg.id}
           >
             <div className="vender-profile">
               <div className="vendor-image-container">
