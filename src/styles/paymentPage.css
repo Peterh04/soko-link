@@ -170,6 +170,9 @@
 }
 
 .payment-modal > form > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--light-secondary-400);
 }
 

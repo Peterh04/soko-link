@@ -227,7 +227,11 @@ export default function ChatPage({ buyerId, vendorId, sender }) {
             ) : (
               <div className="invoice-message">
                 <p>Invoice #{msg.content.split(":")[1]}</p>
-                <button onClick={() => navigate("/payment")}>
+                <button
+                  onClick={() =>
+                    navigate(`/payment/${Number(msg.content.split(":")[1])}`)
+                  }
+                >
                   Proceed to Payment
                 </button>
                 <span className="time">

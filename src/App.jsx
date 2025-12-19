@@ -26,6 +26,12 @@ function App() {
   const [buyerId, setBuyerId] = useState();
   const [vendorId, setVendorId] = useState();
   const [sender, setSender] = useState();
+  const [invoice, setInnvoice] = useState({
+    phoneNumber: null,
+    amount: 0,
+  });
+
+  const [receipt, setReceipt] = useState(null);
 
   return (
     <Routes>
@@ -83,7 +89,14 @@ function App() {
           />
         }
       ></Route>
-      <Route path="/payment" element={<PaymentPage />}></Route>
+      <Route
+        path="/payment/:id"
+        element={<PaymentPage setReceipt={setReceipt} />}
+      ></Route>
+      <Route
+        path="/paymennt/success/:id"
+        element={<ReceiptPage receipt={receipt} />}
+      ></Route>
     </Routes>
   );
 }
