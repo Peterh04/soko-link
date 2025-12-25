@@ -9,8 +9,9 @@ import padlock from "../assets/icons/padlock.svg";
 import usePasswordVisiblity from "../hooks/usePasswordVisibility";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-export default function EmailSignIn({ setUser }) {
+import { useAuth } from "../context/AuthContext";
+export default function EmailSignIn() {
+  const { setUser } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
@@ -31,6 +32,7 @@ export default function EmailSignIn({ setUser }) {
       );
       console.log("Login succesful", data);
       localStorage.setItem("accessToken", data.token);
+      setUser(data.user);
       navigate("/");
     } catch (error) {
       console.error("Login Error", error.response?.data || error.message);

@@ -16,30 +16,36 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Oval } from "react-loader-spinner";
+import { io } from "socket.io-client";
 
-export default function ProductPage({ setBuyerId, setVendorId }) {
-  const { user } = useAuth();
+const socket = io("http://localhost:5001");
+
+export default function ProductPage({ setBuyerId, setVendorId, setMessages }) {
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [product, setProduct] = useState([]);
   const { id } = useParams();
   const [isLiked, setIsLiked] = useState(false);
   const [text, setText] =
     useState(`It is a long established fact that a reader will be distracted by the
-            readable content of a page when looking at its layout. The point of
-            using Lorem Ipsum is that it has a more-or-less normal distribution of
-            letters, as opposed to using 'Content here, content here', making it
-            look like readable English.`);
+              readable content of a page when looking at its layout. The point of
+              using Lorem Ipsum is that it has a more-or-less normal distribution of
+              letters, as opposed to using 'Content here, content here', making it
+              look like readable English.`);
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [isStoreExpanded, setIsStoreExpanded] = useState(false);
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const roomId = `${user.id}-${product.vendorId}`;
+
   const handleStoreExpansion = () => {
     setIsStoreExpanded((cond) => !cond);
   };
 
   console.log("Product ID from URL:", id);
+  console.log(user);
 
   const MAX_WORDS = 30;
 
@@ -50,8 +56,15 @@ export default function ProductPage({ setBuyerId, setVendorId }) {
     ? text
     : words.slice(0, MAX_WORDS).join(" ") + (isLongText ? "..." : "");
 
+  useEffect(() => {
+    console.log("USER CHANGED:", user);
+  }, [user]);
+
   // Fetch product
   useEffect(() => {
+    if (loading) return;
+    if (!user) return;
+
     const fetchProduct = async () => {
       try {
         const { data } = await axios.get(
@@ -81,7 +94,7 @@ export default function ProductPage({ setBuyerId, setVendorId }) {
       }
     };
     fetchProduct();
-  }, [id]);
+  }, [id, user, loading]);
 
   //fetchComment
   useEffect(() => {
@@ -228,13 +241,29 @@ export default function ProductPage({ setBuyerId, setVendorId }) {
     }
   };
 
-  if (isLoading) {
+  if (loading || isLoading) {
     return (
       <div className="loading-container">
         <Oval height={60} width={60} visible={true} />
       </div>
     );
   }
+
+  const requestInvoice = () => {
+    const msgData = {
+      roomId,
+      content: `Please could you send me the invoice of ${product.title} priced at ${product.price} `,
+      createdAt: new Date(),
+      senderId: user.id,
+      receiverId: product.vendorId,
+      type: "normal",
+    };
+
+    socket.emit("sendMessage", msgData);
+
+    setMessages((prev) => [...prev, msgData]);
+    console.log("sent");
+  };
 
   return (
     <main aria-label="Product Page" className="product-page">
@@ -254,7 +283,7 @@ export default function ProductPage({ setBuyerId, setVendorId }) {
           </button>
         )}
 
-        {product?.vendorId == user.id && (
+        {user && product?.vendorId === user.id && (
           <button
             className="back-btn"
             onClick={() => {
@@ -416,7 +445,13 @@ export default function ProductPage({ setBuyerId, setVendorId }) {
           </p>
         </div>
 
-        <button>
+        <button
+          onClick={() => {
+            socket.emit("joinRoom", { roomId });
+            requestInvoice();
+            navigate("/connect");
+          }}
+        >
           <InvoiceIcon className="fa" />
           Request Invoice
         </button>

@@ -30,6 +30,7 @@ function App() {
     phoneNumber: null,
     amount: 0,
   });
+  const [messages, setMessages] = useState([]);
 
   const [receipt, setReceipt] = useState(null);
 
@@ -52,7 +53,13 @@ function App() {
       <Route
         path="/product/:id"
         element={
-          <ProductPage setBuyerId={setBuyerId} setVendorId={setVendorId} />
+          <ProductPage
+            setBuyerId={setBuyerId}
+            setVendorId={setVendorId}
+            key={location.pathname}
+            messages={messages}
+            setMessages={setMessages}
+          />
         }
       ></Route>
       <Route
@@ -76,7 +83,13 @@ function App() {
       <Route
         path="/connect"
         element={
-          <ChatPage buyerId={buyerId} vendorId={vendorId} sender={sender} />
+          <ChatPage
+            buyerId={buyerId}
+            vendorId={vendorId}
+            sender={sender}
+            messages={messages}
+            setMessages={setMessages}
+          />
         }
       ></Route>
       <Route

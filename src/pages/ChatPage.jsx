@@ -14,7 +14,13 @@ import { useNavigate } from "react-router-dom";
 
 const socket = io("http://localhost:5001");
 
-export default function ChatPage({ buyerId, vendorId, sender }) {
+export default function ChatPage({
+  buyerId,
+  vendorId,
+  sender,
+  messages,
+  setMessages,
+}) {
   const { user } = useAuth();
   const footerRef = useRef(null);
 
@@ -22,7 +28,6 @@ export default function ChatPage({ buyerId, vendorId, sender }) {
   const navigate = useNavigate();
 
   const [ismodalOptionOpen, setIsModalOptionOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
   const [isLoading, setIsLoadig] = useState(true);
   const [userInvoiceDetails, setUserInvoiceDetails] = useState({
@@ -35,7 +40,6 @@ export default function ChatPage({ buyerId, vendorId, sender }) {
 
   const isTexting = messageInput.trim().length > 0;
 
-  // Adjust footer for mobile keyboard
   useEffect(() => {
     if (!window.visualViewport) return;
 

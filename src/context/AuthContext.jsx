@@ -1,22 +1,30 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
-      try {
-        const token = localStorage.getItem("accessToken");
-        if (!token) {
-          setUser(null);
-          return setLoading(false);
-        }
+      const token = localStorage.getItem("accessToken");
 
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
         const { data } = await axios.get("http://localhost:5001/api/user/me", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -26,9 +34,10 @@ export function AuthProvider({ children }) {
         setUser(data.user);
       } catch (error) {
         console.error(
-          "Failed to fetch User",
+          "Failed to fetch user",
           error.response?.data || error.message
         );
+        localStorage.removeItem("accessToken");
         setUser(null);
       } finally {
         setLoading(false);
@@ -38,12 +47,12 @@ export function AuthProvider({ children }) {
     fetchUser();
   }, []);
 
-  const navigate = useNavigate();
-  const logOut = () => {
+  const logOut = useCallback(() => {
     localStorage.removeItem("accessToken");
     setUser(null);
     navigate("/login");
-  };
+  }, [navigate]);
+
   return (
     <AuthContext.Provider value={{ user, setUser, loading, logOut }}>
       {children}
@@ -51,4 +60,10 @@ export function AuthProvider({ children }) {
   );
 }
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) {
+    throw new Error("useAuth must be used within AuthProvider");
+  }
+  return ctx;
+};
