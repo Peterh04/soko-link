@@ -1,0 +1,63 @@
+.invoices-page {
+  display: flex;
+  flex-direction: column;
+
+  height: 100vh;
+  width: 100%;
+
+  gap: 1rem;
+
+  padding-top: 8vh;
+}
+
+.invoices-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  width: 100%;
+  height: 5vh;
+
+  z-index: 500;
+  background-color: white;
+}
+
+.invoices-page-header > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0;
+
+  width: 35px;
+  height: 35px;
+
+  border-radius: 50%;
+
+  position: absolute;
+  left: 20px;
+}
+
+.invoices-section {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  background-color: white;
+
+  gap: 1rem;
+}
+
+.invoices-section > .invoice {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.3mrem;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}

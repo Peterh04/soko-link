@@ -4,6 +4,7 @@ import PenIcon from "../assets/icons/pen.svg?react";
 import TickIcon from "../assets/icons/tick.svg?react";
 import CameraIcon from "../assets/icons/camera.svg?react";
 import LikeIcon from "../assets/icons/like.svg?react";
+import InvoiceIcon from "../assets/icons/invoice.svg?react";
 import ShieldIIcon from "../assets/icons/shield.svg?react";
 import LogoutIcon from "../assets/icons/logout.svg?react";
 import PhoneIcon from "../assets/icons/phone.svg?react";
@@ -130,6 +131,16 @@ export default function ProfilePage() {
               <LikeIcon className="fa" />
             </div>
             Wishlist
+          </div>
+          <FowardIcon className="fa" />
+        </div>
+
+        <div className="link-card" onClick={() => navigate("/invoices")}>
+          <div className="link-content">
+            <div className="icon-container">
+              <InvoiceIcon className="fa" />
+            </div>
+            Invoices
           </div>
           <FowardIcon className="fa" />
         </div>

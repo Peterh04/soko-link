@@ -252,7 +252,9 @@ export default function ProductPage({ setBuyerId, setVendorId, setMessages }) {
   const requestInvoice = () => {
     const msgData = {
       roomId,
-      content: `Please could you send me the invoice of ${product.title} priced at ${product.price} `,
+      content: `Hello, please could you send me the invoice of ${
+        product.title
+      } priced at ${priceString(product.price)}KSh `,
       createdAt: new Date(),
       senderId: user.id,
       receiverId: product.vendorId,

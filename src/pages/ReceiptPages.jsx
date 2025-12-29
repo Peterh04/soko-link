@@ -4,7 +4,9 @@ import BackIcon from "../assets/icons/back.svg?react";
 import barCode from "../assets/barcode.gif";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 export default function ReceiptPage({ receipt }) {
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   useEffect(() => {
     const getProduct = async () => {
@@ -84,7 +86,7 @@ export default function ReceiptPage({ receipt }) {
         className="receipt-page-header-container"
       >
         <div className="receipt-page-header">
-          <div className="icon-container">
+          <div className="icon-container" onClick={() => navigate(-1)}>
             <BackIcon className="fa" />
           </div>
           <h3>Detail Payment</h3>

@@ -18,6 +18,7 @@ import SecurityPage from "./pages/SecurityPage";
 import WishlistPage from "./pages/WishlistPage";
 import SellPage from "./pages/SellPage";
 import ChatsPage from "./pages/ChatsPage";
+import InvoicesPage from "./pages/InvoicesPage";
 
 function App() {
   const [user, setUser] = useState();
@@ -109,6 +110,10 @@ function App() {
       <Route
         path="/paymennt/success/:id"
         element={<ReceiptPage receipt={receipt} />}
+      ></Route>
+      <Route
+        path="/invoices"
+        element={<InvoicesPage setReceipt={setReceipt} />}
       ></Route>
     </Routes>
   );
