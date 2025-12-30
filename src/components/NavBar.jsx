@@ -5,33 +5,70 @@ import ChatIcon from "../assets/icons/chat.svg?react";
 import UserIcon from "../assets/icons/user1.svg?react";
 
 import "../styles/navbar.css";
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function NavBar() {
-  const navigate = useNavigate();
-
   return (
     <nav className="navbar">
       <ul className="nav-links">
-        <li className="nav-link selected">
-          <HomeIcon className="fa homeIcon" />
-          <p>Home</p>
+        <li>
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            <HomeIcon className="fa" />
+            <p>Home</p>
+          </NavLink>
         </li>
-        <li className="nav-link" onClick={() => navigate("/wishlist")}>
-          <LikeIcon className="fa" />
-          <p>Wishlist</p>
+
+        <li>
+          <NavLink
+            to="/wishlist"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            <LikeIcon className="fa" />
+            <p>Wishlist</p>
+          </NavLink>
         </li>
-        <li className="nav-link">
-          <CartIcon className="fa" />
-          <p>Sell</p>
+
+        <li>
+          <NavLink
+            to="/sell"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            <CartIcon className="fa" />
+            <p>Sell</p>
+          </NavLink>
         </li>
-        <li className="nav-link" onClick={() => navigate("/chats")}>
-          <ChatIcon className="fa" />
-          <p>Chats</p>
+
+        <li>
+          <NavLink
+            to="/chats"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            <ChatIcon className="fa" />
+            <p>Chats</p>
+          </NavLink>
         </li>
-        <li className="nav-link" onClick={() => navigate("/profile")}>
-          <UserIcon className="fa" />
-          <p>Profile</p>
+
+        <li>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            <UserIcon className="fa" />
+            <p>Profile</p>
+          </NavLink>
         </li>
       </ul>
     </nav>

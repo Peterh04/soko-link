@@ -4,48 +4,41 @@
 
 .nav-links {
   display: flex;
-
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
-
   gap: 5px;
-
   background-color: white;
   z-index: 11000;
 }
 
-.nav-links > .nav-link {
+.nav-links li .nav-link {
   display: flex;
   flex-direction: column;
-
   justify-content: center;
   align-items: center;
 
   width: 80px;
   height: 80px;
-
   cursor: pointer;
-}
 
-.nav-link.selected > p,
-.nav-link.selected > .fa {
-  color: var(--light-secondary-400);
-}
-
-.nav-link > p {
   color: gray;
+  text-decoration: none;
 }
 
-.nav-link > .fa {
-  color: gray;
+.nav-links li .nav-link p {
+  margin: 0;
 }
 
-.nav-link > .homeIcon {
+.fa {
   width: 1.5rem;
   height: 1.5rem;
+}
+
+.nav-links li .nav-link.active {
+  color: var(--light-secondary-400);
 }
 
 @media only screen and (min-width: 600px) {
@@ -58,7 +51,6 @@
   .nav-links {
     top: 0;
     bottom: auto;
-
     gap: 5px;
   }
 }
