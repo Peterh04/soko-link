@@ -250,21 +250,29 @@ export default function ProductPage({ setBuyerId, setVendorId, setMessages }) {
   }
 
   const requestInvoice = () => {
+    const receiverId = product.vendorId; // vendor
+    const senderId = user.id; // current user
+
+    const roomId =
+      senderId < receiverId
+        ? `${senderId}-${receiverId}`
+        : `${receiverId}-${senderId}`;
+
     const msgData = {
       roomId,
       content: `Hello, please could you send me the invoice of ${
         product.title
-      } priced at ${priceString(product.price)}KSh `,
+      } priced at ${priceString(product.price)}KSh`,
       createdAt: new Date(),
-      senderId: user.id,
-      receiverId: product.vendorId,
+      senderId,
+      receiverId,
       type: "normal",
     };
 
     socket.emit("sendMessage", msgData);
 
     setMessages((prev) => [...prev, msgData]);
-    console.log("sent");
+    console.log("Invoice request sent");
   };
 
   return (

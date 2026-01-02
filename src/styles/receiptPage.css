@@ -69,6 +69,8 @@
   background-color: white;
 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  z-index: 500;
 }
 
 .receipt-container > .receipt {
@@ -169,11 +171,122 @@
   height: 50px;
 }
 
-.receipt-page > button {
+.receipt-page > button.reviewBtn {
+  position: absolute;
+  bottom: 110px;
+  left: 20px;
+
+  width: 90%;
+  background-color: var(--light-secondary-200);
+}
+
+.receipt-page > button.downloadReceiptBtn {
   position: absolute;
   bottom: 40px;
   left: 20px;
 
   width: 90%;
   background-color: var(--light-secondary-400);
+}
+
+/*review modal*/
+.review-modal {
+  display: flex;
+  flex-direction: column;
+
+  height: 40vh;
+  width: 95%;
+
+  border-radius: 10px;
+
+  position: absolute;
+
+  bottom: 20%;
+  left: 10px;
+  background-color: white;
+
+  padding: 1rem;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  z-index: 1000;
+
+  background-color: white;
+
+  visibility: hidden;
+}
+
+.review-modal.open {
+  visibility: visible;
+}
+
+.review-modal > .closeBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  right: 10px;
+  top: 20px;
+
+  height: 10px;
+  width: 10px;
+
+  border-radius: 0px;
+}
+
+.review-modal > .review-inputs {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.review-modal > .review-inputs > label {
+  margin-bottom: 5px;
+}
+
+.review-modal > .review-inputs > textarea {
+  display: flex;
+  padding: 0.5rem;
+  resize: none;
+
+  height: 100px;
+}
+
+.review-modal > .review-inputs > textarea:focus {
+  outline: none;
+}
+
+.review-scores {
+  display: flex;
+
+  width: 70%;
+  height: 70%;
+}
+
+.review-scores > .review-score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  height: 40px;
+  border: 1px solid grey;
+}
+
+.review-scores > .review-score:hover {
+  cursor: pointer;
+  background-color: var(--light-secondary-200);
+}
+
+.review-scores > .review-score.active {
+  background-color: var(--light-secondary-400);
+}
+
+.review-scores > .review-score .review-modal > button {
+  width: 90%;
+  position: absolute;
+
+  bottom: 12px;
 }

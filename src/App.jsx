@@ -27,6 +27,7 @@ function App() {
   const [buyerId, setBuyerId] = useState();
   const [vendorId, setVendorId] = useState();
   const [sender, setSender] = useState();
+  const [receiver, setReceiver] = useState();
   const [invoice, setInnvoice] = useState({
     phoneNumber: null,
     amount: 0,
@@ -100,6 +101,7 @@ function App() {
             setBuyerId={setBuyerId}
             setVendorId={setVendorId}
             setSender={setSender}
+            setReceiver={setReceiver}
           />
         }
       ></Route>

@@ -14,95 +14,77 @@ import { useNavigate } from "react-router-dom";
 
 const socket = io("http://localhost:5001");
 
-export default function ChatPage({
-  buyerId,
-  vendorId,
-  sender,
-  messages,
-  setMessages,
-}) {
+export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
   const { user } = useAuth();
   const footerRef = useRef(null);
 
-  const roomId = `${buyerId}-${vendorId}`;
+  const roomId =
+    buyerId < vendorId ? `${buyerId}-${vendorId}` : `${vendorId}-${buyerId}`;
   const navigate = useNavigate();
 
   const [ismodalOptionOpen, setIsModalOptionOpen] = useState(false);
   const [messageInput, setMessageInput] = useState("");
-  const [isLoading, setIsLoadig] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [userInvoiceDetails, setUserInvoiceDetails] = useState({
     number: "",
     amount: 0,
     productId: "",
   });
-  const [products, setProducts] = useState(null);
+  const [products, setProducts] = useState([]);
   const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
+  const [receiver, setReceiver] = useState(null);
 
   const isTexting = messageInput.trim().length > 0;
 
+  // Adjust footer for viewport changes
   useEffect(() => {
     if (!window.visualViewport) return;
-
     const viewport = window.visualViewport;
     const footer = footerRef.current;
     const originalTransform = "translateY(0px)";
-
     const adjustFooter = () => {
       const offset = window.innerHeight - viewport.height - viewport.offsetTop;
       footer.style.transform =
         offset > 0 ? `translateY(-${offset}px)` : originalTransform;
     };
-
     viewport.addEventListener("resize", adjustFooter);
     viewport.addEventListener("scroll", adjustFooter);
-
     return () => {
       viewport.removeEventListener("resize", adjustFooter);
       viewport.removeEventListener("scroll", adjustFooter);
     };
   }, []);
 
-  // Join room + receive messages
   useEffect(() => {
+    if (!roomId) return;
     socket.emit("joinRoom", { roomId });
-
     socket.on("receiveMessage", (msg) => {
       setMessages((prev) => [...prev, msg]);
     });
-
-    return () => {
-      socket.off("receiveMessage");
-    };
-  }, []);
+    return () => socket.off("receiveMessage");
+  }, [roomId]);
 
   useEffect(() => {
+    if (!roomId) return;
     const fetchMessages = async () => {
+      const token = localStorage.getItem("accessToken");
       try {
-        const token = localStorage.getItem("accessToken");
         const { data } = await axios.get(
           `http://localhost:5001/api/messages/${roomId}`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
-
         setMessages(data.messages);
-        console.log(data.messages);
-        console.log(sender);
-        setIsLoadig(false);
+        setIsLoading(false);
       } catch (error) {
-        console.error(
-          "Failed to fetch the messages",
-          error.response?.data || error.message
-        );
+        console.error("Failed to fetch messages", error);
       }
     };
-
     fetchMessages();
-  }, []);
+  }, [roomId]);
 
+  // Fetch vendor products
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     const getProducts = async () => {
@@ -110,39 +92,61 @@ export default function ChatPage({
         const { data } = await axios.get(
           "http://localhost:5001/api/products/vendor/getProducts",
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
-        setProducts(data.products);
+        setProducts(data.products || []);
       } catch (error) {
         console.error(
-          "Failed to get vedor products",
-          error.respose?.data || error.message
+          "Failed to get vendor products",
+          error.response?.data || error.message
         );
       }
     };
-
     getProducts();
   }, []);
 
+  // Fetch receiver details
+  useEffect(() => {
+    if (!buyerId || !vendorId) return;
+    const receiverId = user.id === buyerId ? vendorId : buyerId;
+    const token = localStorage.getItem("accessToken");
+    const getReceiverDetails = async () => {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:5001/api/messages/receiver?receiverId=${receiverId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setReceiver(data.receiver);
+      } catch (error) {
+        console.error(
+          "Failed to fetch receiver",
+          error.response?.data || error.message
+        );
+      }
+    };
+    getReceiverDetails();
+  }, [buyerId, vendorId, user.id]);
+
+  // Auto-scroll on new message
+  useEffect(() => {
+    const chatSection = document.querySelector(".chat-section");
+    if (chatSection) chatSection.scrollTop = chatSection.scrollHeight;
+  }, [messages]);
+
   const sendMessage = () => {
     if (!messageInput.trim()) return;
-
+    const receiverId = user.id === buyerId ? vendorId : buyerId;
     const msgData = {
       roomId,
       content: messageInput,
       createdAt: new Date(),
       senderId: user.id,
-      receiverId: vendorId,
+      receiverId,
       type: "normal",
     };
-
     socket.emit("sendMessage", msgData);
-
     setMessages((prev) => [...prev, msgData]);
-
     setMessageInput("");
   };
 
@@ -158,16 +162,24 @@ export default function ChatPage({
           phone: userInvoiceDetails.number,
           amount: userInvoiceDetails.amount,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log(buyerId, vendorId);
+
+      const receiverId = user.id === buyerId ? vendorId : buyerId;
+      const invoiceMessage = {
+        roomId,
+        content: `Invoice:${data.invoice.id}`,
+        createdAt: new Date(),
+        senderId: user.id,
+        receiverId,
+        type: "invoice",
+      };
+
+      socket.emit("sendMessage", invoiceMessage);
+      setMessages((prev) => [...prev, invoiceMessage]);
     } catch (error) {
       console.error(
-        "Failed to create a invoice",
+        "Failed to create invoice",
         error.response?.data || error.message
       );
     }
@@ -185,24 +197,23 @@ export default function ChatPage({
     <main className="chat-page">
       <header className="chat-page-header">
         <div className="chat-page-header-left">
-          <BackIcon className="fa" />
+          <div onClick={() => navigate(-1)}>
+            <BackIcon className="fa" />
+          </div>
           <div className="vender-profile">
             <div className="vendor-image-container">
               <img
-                // src={
-                //   sender.profileImage !== null
-                //     ? sender.profileImage
-                //     : "https://images.unsplash.com/photo-1597393922738-085ea04b5a07?auto=format&fit=crop&q=80"
-                // }
-                src="https://images.unsplash.com/photo-1597393922738-085ea04b5a07?auto=format&fit=crop&q=80"
+                src={
+                  receiver?.profileImage ||
+                  "https://images.unsplash.com/photo-1597393922738-085ea04b5a07?auto=format&fit=crop&q=80"
+                }
                 alt=""
                 className="vendor-img"
               />
             </div>
-            <h5 className="vendor-name">Jeny</h5>
+            <h5 className="vendor-name">{receiver?.name || "Vendor"}</h5>
           </div>
         </div>
-
         <div className="chat-page-header-right">
           <button onClick={() => (window.location.href = "tel:+123456789")}>
             <PhoneIcon className="fa" />
@@ -212,7 +223,6 @@ export default function ChatPage({
           </button>
         </div>
       </header>
-
       <section className="chat-section">
         {messages.map((msg, idx) => (
           <div
@@ -230,23 +240,31 @@ export default function ChatPage({
               </>
             ) : (
               <div className="invoice-message">
-                <p>Invoice #{msg.content.split(":")[1]}</p>
-                <button
-                  onClick={() =>
-                    navigate(`/payment/${Number(msg.content.split(":")[1])}`)
-                  }
-                >
-                  Proceed to Payment
-                </button>
-                <span className="time">
-                  {new Date(msg.createdAt).toLocaleTimeString()}
-                </span>
+                {(() => {
+                  const invoiceId = msg.content.includes(":")
+                    ? msg.content.split(":")[1]
+                    : msg.content.replace(/\D/g, "");
+                  return (
+                    <>
+                      <p>Invoice #{invoiceId}</p>
+                      <button
+                        onClick={() =>
+                          navigate(`/payment/${Number(invoiceId)}`)
+                        }
+                      >
+                        Proceed to Payment
+                      </button>
+                      <span className="time">
+                        {new Date(msg.createdAt).toLocaleTimeString()}
+                      </span>
+                    </>
+                  );
+                })()}
               </div>
             )}
           </div>
         ))}
       </section>
-
       <div
         className={`option-modal ${ismodalOptionOpen ? "open" : ""}`}
         aria-label="option modal"
@@ -262,7 +280,6 @@ export default function ChatPage({
           <li className="option">Settings</li>
         </ul>
       </div>
-
       {isInvoiceModalOpen && (
         <div className="invoice-modal" aria-label="invoice modal">
           <h3>Invoice</h3>
@@ -274,28 +291,26 @@ export default function ChatPage({
               id="user-number"
               placeholder="Please Enter number"
               required
-              onChange={(e) => {
+              onChange={(e) =>
                 setUserInvoiceDetails({
                   ...userInvoiceDetails,
                   number: e.target.value,
-                });
-              }}
+                })
+              }
             />
-
             <input
               type="number"
               name="invoice-amount"
               id="invoice-amount"
               placeholder="Please Enter amount"
               required
-              onChange={(e) => {
+              onChange={(e) =>
                 setUserInvoiceDetails({
                   ...userInvoiceDetails,
                   amount: e.target.value,
-                });
-              }}
+                })
+              }
             />
-
             <div className="form-group">
               <label
                 htmlFor="products-selection"
@@ -306,12 +321,12 @@ export default function ChatPage({
               <select
                 id="products-selection"
                 required
-                onChange={(e) => {
+                onChange={(e) =>
                   setUserInvoiceDetails({
                     ...userInvoiceDetails,
                     productId: Number(e.target.value),
-                  });
-                }}
+                  })
+                }
               >
                 <option value="">-- Select Product --</option>
                 {products.map((product) => (
@@ -326,7 +341,6 @@ export default function ChatPage({
                 ))}
               </select>
             </div>
-
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -339,7 +353,6 @@ export default function ChatPage({
           </form>
         </div>
       )}
-
       <footer ref={footerRef} className="send-message-container">
         <div className="input-container">
           <input
@@ -349,7 +362,6 @@ export default function ChatPage({
             onChange={(e) => setMessageInput(e.target.value)}
           />
         </div>
-
         {!isTexting ? (
           <button>
             <VoiceIcon className="fa" />
@@ -360,6 +372,7 @@ export default function ChatPage({
           </button>
         )}
       </footer>
+      ß
     </main>
   );
 }

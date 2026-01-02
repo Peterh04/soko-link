@@ -8,6 +8,12 @@ import { useNavigate } from "react-router-dom";
 export default function ReceiptPage({ receipt }) {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
+  const [userCommented, setUserCommented] = useState(false);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [review, setReview] = useState({
+    content: "",
+    score: 0,
+  });
   useEffect(() => {
     const getProduct = async () => {
       try {
@@ -77,6 +83,60 @@ export default function ReceiptPage({ receipt }) {
     doc.text(`Time: ${formatDateTimeLocal(receipt.createdAt)}`, 20, 90);
 
     doc.save(`receipt-${receipt.id}.pdf`);
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const hasUserCommented = async () => {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:5001/api/invoices/${receipt.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setUserCommented(data.invoice.product.alreadyReviewed);
+      } catch (error) {
+        console.error(
+          `Failed to fetch user commented status`,
+          error.response?.data || error.message
+        );
+      }
+    };
+
+    hasUserCommented();
+  }, [receipt.id]);
+
+  const handleReviewSubmission = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("accessToken");
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5001/api/comment",
+        {
+          content: review.content,
+          images: 2,
+          vendorId: receipt.vendorId,
+          rating: review.score,
+          productId: receipt.productId,
+          invoiceId: Number(receipt.id),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Succesfully  submitted the review");
+      setIsReviewModalOpen(false);
+    } catch (error) {
+      console.error(
+        "Failed to submit review",
+        error.response?.data || error.message
+      );
+    }
   };
 
   return (
@@ -149,7 +209,65 @@ export default function ReceiptPage({ receipt }) {
           </div>
         </section>
       </div>
-      <button onClick={downloadReceipt}>Download E-receipt</button>
+      {!userCommented && (
+        <button
+          onClick={() => {
+            setIsReviewModalOpen(true);
+          }}
+          className="reviewBtn"
+        >
+          Write a review
+        </button>
+      )}
+      <button onClick={downloadReceipt} className="downloadReceiptBtn">
+        Download E-receipt
+      </button>
+
+      <form
+        aria-label="review modal"
+        className={`review-modal ${isReviewModalOpen ? "open" : ""}`}
+        onSubmit={handleReviewSubmission}
+      >
+        <h4>Overall and rating</h4>
+        <button
+          aria-label="close btn"
+          className="closeBtn"
+          onClick={() => {
+            setIsReviewModalOpen(false);
+          }}
+        >
+          X
+        </button>
+
+        <div aria-label="review iputs" className="review-inputs">
+          <label htmlFor="overall-review">Overall</label>
+          <textarea
+            name="overall-review"
+            id="overall-review"
+            maxLength={100}
+            placeholder="What is your opinion of the product or the vendor?"
+            required
+            onChange={(e) => setReview({ ...review, content: e.target.value })}
+          ></textarea>
+        </div>
+        <div aria-label="review iputs" className="review-inputs">
+          <label htmlFor="rating-review">Review score</label>
+          <div className="review-scores">
+            {[1, 2, 3, 4, 5].map((score) => (
+              <div
+                className={`review-score ${
+                  review.score === score ? "active" : ""
+                }`}
+                key={score}
+                onClick={(prev) => setReview({ ...prev, score })}
+              >
+                {score}
+              </div>
+            ))}
+          </div>
+        </div>
+        <button>Add Review</button>
+      </form>
     </main>
   );
 }
