@@ -20,7 +20,13 @@ import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5001");
 
-export default function ProductPage({ setBuyerId, setVendorId, setMessages }) {
+export default function ProductPage({
+  setBuyerId,
+  setVendorId,
+  setMessages,
+  vendorReviews,
+  setVendorReviews,
+}) {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [product, setProduct] = useState([]);
@@ -35,7 +41,6 @@ export default function ProductPage({ setBuyerId, setVendorId, setMessages }) {
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [isStoreExpanded, setIsStoreExpanded] = useState(false);
-  const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const roomId = `${user.id}-${product.vendorId}`;
@@ -113,7 +118,7 @@ export default function ProductPage({ setBuyerId, setVendorId, setMessages }) {
           images: comment.images,
           buyer: comment.buyer,
         }));
-        setComments(filteredComments);
+        setVendorReviews(filteredComments);
         console.log(filteredComments);
       } catch (error) {
         console.error(
@@ -424,20 +429,23 @@ export default function ProductPage({ setBuyerId, setVendorId, setMessages }) {
                 <h5 className="vendor-name">Jenny Doe</h5>
               </div>
 
-              <p>View all ads(42)</p>
+              <div onClick={() => navigate("/products")}>View all ads(42)</div>
             </div>
 
             <div className="feedback-section">
               <div className="section-header">
                 <h4>Feedback about vendor</h4>
-                <p>view all({comments.length})</p>
+                <p onClick={() => navigate("/reviews")}>
+                  view all({vendorReviews.length})
+                </p>
               </div>
               <div className="feedback-showcase">
-                {comments.slice(0, 2).map((comment) => (
+                {vendorReviews.slice(0, 2).map((comment) => (
                   <FeedbackContainer
                     key={comment.id}
                     name={comment.buyer.name}
                     comment={comment.content}
+                    profileImage={comment.buyer.profileImage}
                     date={getDate(comment.createdAt)}
                   />
                 ))}

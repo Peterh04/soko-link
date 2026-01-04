@@ -19,6 +19,7 @@ import WishlistPage from "./pages/WishlistPage";
 import SellPage from "./pages/SellPage";
 import ChatsPage from "./pages/ChatsPage";
 import InvoicesPage from "./pages/InvoicesPage";
+import ProductsPage from "./pages/ProductsPage";
 
 function App() {
   const [user, setUser] = useState();
@@ -35,6 +36,7 @@ function App() {
   const [messages, setMessages] = useState([]);
 
   const [receipt, setReceipt] = useState(null);
+  const [vendorReviews, setVendorReviews] = useState([]);
 
   return (
     <Routes>
@@ -61,6 +63,8 @@ function App() {
             key={location.pathname}
             messages={messages}
             setMessages={setMessages}
+            vendorReviews={vendorReviews}
+            setVendorReviews={setVendorReviews}
           />
         }
       ></Route>
@@ -116,6 +120,14 @@ function App() {
       <Route
         path="/invoices"
         element={<InvoicesPage setReceipt={setReceipt} />}
+      ></Route>
+      <Route
+        path="/reviews"
+        element={<CommentPage vendorReviews={vendorReviews} />}
+      ></Route>
+      <Route
+        path="/products"
+        element={<ProductsPage vendorId={vendorId} />}
       ></Route>
     </Routes>
   );
