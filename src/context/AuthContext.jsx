@@ -21,6 +21,8 @@ export function AuthProvider({ children }) {
 
       if (!token) {
         setLoading(false);
+        setUser("Guest");
+        console.log("I am a guest");
         return;
       }
 

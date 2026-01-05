@@ -11,12 +11,22 @@ export default function ChatsPage({
   setVendorId,
   setSender,
   setReceiver,
+  setIsLoginModalOpen,
 }) {
   const navigate = useNavigate();
   const [messages, setMessages] = useState(null);
   const [isLoading, setIsLoadig] = useState(true);
 
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (loading) return;
+
+    if (!user || user === "Guest") {
+      setIsLoginModalOpen(true);
+      return;
+    }
+  }, [user, loading, setIsLoginModalOpen]);
 
   useEffect(() => {
     const getMessages = async () => {

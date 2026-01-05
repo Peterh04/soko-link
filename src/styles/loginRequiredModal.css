@@ -1,0 +1,84 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000000;
+
+  animation: overlayFadeIn 0.2s ease-out;
+}
+
+.login-required-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  padding: 1rem;
+
+  width: 90%;
+  height: 20vh;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  border-radius: 5px;
+
+  visibility: hidden;
+}
+
+.login-required-modal.open {
+  visibility: visible;
+}
+
+.login-required-modal > .modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  background: none;
+  border: none;
+  padding: 0.25rem;
+
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+
+  color: gray;
+}
+
+.login-required-modal > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1rem;
+  border-radius: 5px;
+  width: 80%;
+  color: white;
+  background-color: var(--dark-secondary-400);
+
+  cursor: pointer;
+}
+
+.login-required-modal > div:hover {
+  background-color: var(--light-secondary-400);
+}
+
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

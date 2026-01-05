@@ -1,9 +1,11 @@
 import "../styles/sellPage.css";
 import NavBar from "../components/NavBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
-export default function SellPage() {
+export default function SellPage({ setIsLoginModalOpen }) {
+  const { user, loading } = useAuth();
   const [form, setForm] = useState({
     title: "",
     location: "",
@@ -12,14 +14,6 @@ export default function SellPage() {
     images: "",
   });
 
-  // const updateUserVendor =  async  (e) =>{
-  //    const token = localStorage.getItem("accessToken");
-  //      e.preventDefault();
-
-  //      try{
-
-  //      }
-  // }
   const handleForm = async (e) => {
     const token = localStorage.getItem("accessToken");
     e.preventDefault();
@@ -52,6 +46,15 @@ export default function SellPage() {
       );
     }
   };
+
+  useEffect(() => {
+    if (loading) return;
+
+    if (!user || user === "Guest") {
+      setIsLoginModalOpen(true);
+      return;
+    }
+  }, [user, loading, setIsLoginModalOpen]);
   return (
     <main aria-label="sell page" className="sell-page">
       <header aria-label="sell page header" className="sell-page-header">

@@ -6,7 +6,7 @@ import { useState } from "react";
 import ReactSlider from "react-slider";
 import ProductPreview from "../components/ProductPreview";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function ResultsPage({
   searchTerm,
@@ -125,7 +125,7 @@ export default function ResultsPage({
   return (
     <main aria-label="results page" className="results-page">
       <header aria-label="resultsPage header" className="resultsPage-header">
-        <button className="backBtn">
+        <button className="backBtn" onClick={() => navigate(-1)}>
           <BackIcon />
         </button>
         <div className="search-bar">

@@ -3,9 +3,21 @@ import NavBar from "../components/NavBar";
 import "../styles/wishListPage.css";
 import axios from "axios";
 import ProductPreview from "../components/ProductPreview";
+import LoginRequired from "../components/LoginRequired";
+import { useAuth } from "../context/AuthContext";
 
-export default function WishlistPage() {
+export default function WishlistPage({ setIsLoginModalOpen }) {
+  const { user, loading } = useAuth();
   const [wishlist, setWishlist] = useState([]);
+
+  useEffect(() => {
+    if (loading) return;
+
+    if (!user || user === "Guest") {
+      setIsLoginModalOpen(true);
+      return;
+    }
+  }, [user, loading, setIsLoginModalOpen]);
   useEffect(() => {
     const fetchUserWishlist = async () => {
       try {

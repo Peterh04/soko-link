@@ -372,7 +372,6 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
           </button>
         )}
       </footer>
-      ß
     </main>
   );
 }

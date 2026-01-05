@@ -15,8 +15,8 @@ import { useAuth } from "../context/AuthContext.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function ProfilePage() {
-  const { user, logOut, setUser } = useAuth();
+export default function ProfilePage({ setIsLoginModalOpen }) {
+  const { user, logOut, setUser, loading } = useAuth();
   const [isEdited, setIsEdited] = useState(false);
 
   const [form, setForm] = useState({
@@ -57,6 +57,14 @@ export default function ProfilePage() {
     }
   };
 
+  useEffect(() => {
+    if (loading) return;
+
+    if (!user || user === "Guest") {
+      setIsLoginModalOpen(true);
+      return;
+    }
+  }, [user, loading, setIsLoginModalOpen]);
   return (
     <main aria-label="profile page" className="profile-page">
       <header aria-label="profile page header" className="profile-page-header">

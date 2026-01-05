@@ -38,7 +38,12 @@ export default function SignInPage() {
             Sign in with Email
           </button>
 
-          <button className="sign-in-option guest">Continue as Guest</button>
+          <button
+            className="sign-in-option guest"
+            onClick={() => navigate("/")}
+          >
+            Continue as Guest
+          </button>
         </div>
       </div>
     </main>
