@@ -41,7 +41,7 @@ export default function ChatsPage({
           }
         );
         setMessages(data.messages);
-        console.log(data);
+
         setIsLoadig(false);
       } catch (error) {
         console.error(

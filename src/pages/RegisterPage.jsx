@@ -39,8 +39,6 @@ export default function RegisterPage() {
           { name, email, password }
         );
 
-        console.log("Register succesful", data);
-
         navigate("/login/email");
       } catch (error) {
         console.error(
@@ -162,36 +160,3 @@ export default function RegisterPage() {
     </main>
   );
 }
-
-// const [form, setForm] = useState({
-//     userName: "",
-//     email: "",
-//     password: "",
-//     confirmPassword: "",
-//   });
-
-//   // const [message, setMessage] = useState("");
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     const { userName, email, password, confirmPassword } = form;
-
-//     if (confirmPassword !== password) alert("Passwords don't match");
-//     else {
-//       try {
-//         const { data } = await axios.post(
-//           "http://localhost:5001/api/auth/register",
-//           {
-//             userName,
-//             email,
-//             password,
-//           }
-//         );
-//         console.log("User registered Successfully", data);
-//         alert(`Welcome, ${data.userName}`);
-//       } catch (err) {
-//         console.error("Registration error", err.response?.data || err.message);
-//         alert(err.response?.data?.message || "Registartion failed!");
-//       }
-//     }
-//   };

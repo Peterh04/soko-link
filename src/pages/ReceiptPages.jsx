@@ -5,7 +5,7 @@ import barCode from "../assets/barcode.gif";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-export default function ReceiptPage({ receipt }) {
+export default function ReceiptPage({ receipt, vendorId }) {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [userCommented, setUserCommented] = useState(false);
@@ -25,7 +25,6 @@ export default function ReceiptPage({ receipt }) {
           price: data.product.price,
           image: data.product.images[0],
         });
-        console.log(receipt);
       } catch (error) {
         console.error(
           "Failed to fetch the product",
@@ -97,6 +96,7 @@ export default function ReceiptPage({ receipt }) {
             },
           }
         );
+        console.log(data.invoice.product);
         setUserCommented(data.invoice.product.alreadyReviewed);
       } catch (error) {
         console.error(
@@ -118,7 +118,7 @@ export default function ReceiptPage({ receipt }) {
         {
           content: review.content,
           images: 2,
-          vendorId: receipt.vendorId,
+          vendorId: receipt.vendorId ? receipt.vendorId : vendorId,
           rating: review.score,
           productId: receipt.productId,
           invoiceId: Number(receipt.id),
@@ -129,7 +129,8 @@ export default function ReceiptPage({ receipt }) {
           },
         }
       );
-      console.log("Succesfully  submitted the review");
+      console.log("Submitted Review", data);
+      setUserCommented(true);
       setIsReviewModalOpen(false);
     } catch (error) {
       console.error(
@@ -259,7 +260,7 @@ export default function ReceiptPage({ receipt }) {
                   review.score === score ? "active" : ""
                 }`}
                 key={score}
-                onClick={(prev) => setReview({ ...prev, score })}
+                onClick={() => setReview((prev) => ({ ...prev, score }))}
               >
                 {score}
               </div>

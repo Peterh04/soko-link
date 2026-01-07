@@ -35,7 +35,7 @@ export default function SecurityPage() {
           },
         }
       );
-      console.log("Updated Password successful", data);
+
       logOut();
     } catch (error) {
       console.error(

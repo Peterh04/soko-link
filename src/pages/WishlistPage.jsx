@@ -31,7 +31,6 @@ export default function WishlistPage({ setIsLoginModalOpen }) {
           }
         );
 
-        console.log("Succesfully fetched the wishlist", data.wishliist);
         setWishlist(data.wishliist);
       } catch (error) {
         console.error(

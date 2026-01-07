@@ -76,6 +76,7 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
           }
         );
         setMessages(data.messages);
+        console.log(data.messages);
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch messages", error);
@@ -150,33 +151,67 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
     setMessageInput("");
   };
 
+  // const generateInvoice = async () => {
+  //   const token = localStorage.getItem("accessToken");
+  //   try {
+  //     const receiverId = user.id === buyerId ? vendorId : buyerId;
+  //     const { data } = await axios.post(
+  //       "http://localhost:5001/api/invoices/create",
+  //       {
+  //         vendorId,
+  //         buyerId: receiverId,
+  //         productId: userInvoiceDetails.productId,
+  //         phone: userInvoiceDetails.number,
+  //         amount: userInvoiceDetails.amount,
+  //       },
+  //       { headers: { Authorization: `Bearer ${token}` } }
+  //     );
+
+  //     const receiverId = user.id === buyerId ? vendorId : buyerId;
+  //     const invoiceMessage = {
+  //       roomId,
+  //       content: `Invoice:${data.invoice.id}`,
+  //       createdAt: new Date(),
+  //       senderId: user.id,
+  //       receiverId,
+  //       type: "invoice",
+  //     };
+
+  //     socket.emit("sendMessage", invoiceMessage);
+  //   } catch (error) {
+  //     console.error(
+  //       "Failed to create invoice",
+  //       error.response?.data || error.message
+  //     );
+  //   }
+  // };
+
   const generateInvoice = async () => {
     const token = localStorage.getItem("accessToken");
+
+    // 🧠 buyer is ALWAYS the other person in the chat
+    const actualBuyerId = user.id === buyerId ? vendorId : buyerId;
+
     try {
       const { data } = await axios.post(
         "http://localhost:5001/api/invoices/create",
         {
-          vendorId,
-          buyerId,
+          buyerId: actualBuyerId, // ✅ correct buyer
           productId: userInvoiceDetails.productId,
           phone: userInvoiceDetails.number,
           amount: userInvoiceDetails.amount,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
 
-      const receiverId = user.id === buyerId ? vendorId : buyerId;
-      const invoiceMessage = {
-        roomId,
-        content: `Invoice:${data.invoice.id}`,
-        createdAt: new Date(),
+      socket.emit("sendMessage", {
         senderId: user.id,
-        receiverId,
+        receiverId: actualBuyerId,
+        content: `invoice:${data.invoice.id}`,
         type: "invoice",
-      };
-
-      socket.emit("sendMessage", invoiceMessage);
-      setMessages((prev) => [...prev, invoiceMessage]);
+      });
     } catch (error) {
       console.error(
         "Failed to create invoice",

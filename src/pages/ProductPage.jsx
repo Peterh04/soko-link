@@ -26,6 +26,7 @@ export default function ProductPage({
   setMessages,
   vendorReviews,
   setVendorReviews,
+  setIsLoginModalOpen,
 }) {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
@@ -49,9 +50,6 @@ export default function ProductPage({
     setIsStoreExpanded((cond) => !cond);
   };
 
-  console.log("Product ID from URL:", id);
-  console.log(user);
-
   const MAX_WORDS = 30;
 
   const words = text.trim().split(/\s+/);
@@ -60,10 +58,6 @@ export default function ProductPage({
   const displayText = isExpanded
     ? text
     : words.slice(0, MAX_WORDS).join(" ") + (isLongText ? "..." : "");
-
-  useEffect(() => {
-    console.log("USER CHANGED:", user);
-  }, [user]);
 
   // Fetch product
   useEffect(() => {
@@ -90,7 +84,6 @@ export default function ProductPage({
         setBuyerId(user.id);
         setText(filteredProduct.description);
         setIsLoading(false);
-        console.log(filteredProduct);
       } catch (error) {
         console.error(
           "Failed to fetch product",
@@ -119,7 +112,6 @@ export default function ProductPage({
           buyer: comment.buyer,
         }));
         setVendorReviews(filteredComments);
-        console.log(filteredComments);
       } catch (error) {
         console.error(
           "Failed to fetch comments",
@@ -144,12 +136,10 @@ export default function ProductPage({
           }
         );
 
-        console.log("Succesfully fetched the wishlist", data.wishliist);
         const liked = data.wishliist.some(
           (item) => item.Product && item.Product.id === product.id
         );
         setIsLiked(liked);
-        console.log(`Already ${liked}`);
       } catch (error) {
         console.error(
           "Failed to fetch wishlist",
@@ -177,6 +167,12 @@ export default function ProductPage({
   };
 
   const handleLiking = async () => {
+    if (loading) return;
+
+    if (!user || user === "Guest") {
+      setIsLoginModalOpen(true);
+      return;
+    }
     const token = localStorage.getItem("accessToken");
     const productId = product.id;
 
@@ -190,7 +186,7 @@ export default function ProductPage({
           },
         }
       );
-      console.log("Added product to cartlist");
+
       setIsLiked(true);
     } catch (error) {
       console.error(
@@ -213,7 +209,7 @@ export default function ProductPage({
           data: { productId },
         }
       );
-      console.log("Removed Product from wishlist");
+
       setIsLiked(false);
     } catch (error) {
       console.error(
@@ -237,7 +233,6 @@ export default function ProductPage({
           data: { productId },
         }
       );
-      console.log("Succesfully deleted product");
     } catch (error) {
       console.error(
         "Failed to delete product",
@@ -277,7 +272,6 @@ export default function ProductPage({
     socket.emit("sendMessage", msgData);
 
     setMessages((prev) => [...prev, msgData]);
-    console.log("Invoice request sent");
   };
 
   return (

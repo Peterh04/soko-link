@@ -74,7 +74,6 @@ export default function ResultsPage({
         vendorId: product.vendorId,
       }));
       setSearchProducts(filteredProducts);
-      console.log(data);
 
       navigate(`/products/search/${searchTerm}`);
     } catch (error) {
@@ -110,7 +109,6 @@ export default function ResultsPage({
         createdAt: product.createdAt,
         vendorId: product.vendorId,
       }));
-      console.log("Filters applied:", filterValues);
 
       setSearchProducts(filteredProducts);
       setIsModalExpanded(false);

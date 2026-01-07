@@ -24,6 +24,7 @@ import LoginRequired from "./components/LoginRequired";
 
 function App() {
   const [user, setUser] = useState();
+  const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchProducts, setSearchProducts] = useState(null);
   const [buyerId, setBuyerId] = useState();
@@ -57,6 +58,8 @@ function App() {
           path="/"
           element={
             <HomePage
+              products={products}
+              setProducts={setProducts}
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
               setSearchProducts={setSearchProducts}
@@ -78,6 +81,7 @@ function App() {
               setMessages={setMessages}
               vendorReviews={vendorReviews}
               setVendorReviews={setVendorReviews}
+              setIsLoginModalOpen={setIsLoginModalOpen}
             />
           }
         ></Route>
@@ -142,7 +146,7 @@ function App() {
         ></Route>
         <Route
           path="/paymennt/success/:id"
-          element={<ReceiptPage receipt={receipt} />}
+          element={<ReceiptPage receipt={receipt} vendorId={vendorId} />}
         ></Route>
         <Route
           path="/invoices"

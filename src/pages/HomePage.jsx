@@ -10,20 +10,20 @@ import SearchIcon from "../assets/icons/lol.svg?react";
 import ClothIcon from "../assets/icons/cloth.svg?react";
 import CategoryItem from "../components/CategoryItem";
 
-import sofaPreview from "../assets/sofaPreview.jpeg";
 import NavBar from "../components/NavBar";
 import ProductPreview from "../components/ProductPreview";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { image } from "framer-motion/client";
+import { useEffect } from "react";
+
 import { useNavigate } from "react-router-dom";
 
 export default function HomePage({
+  products,
+  setProducts,
   searchTerm,
   setSearchTerm,
   setSearchProducts,
 }) {
-  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,7 +42,6 @@ export default function HomePage({
           vendorId: product.vendorId,
         }));
         setProducts(filteredProducts);
-        console.log(filteredProducts);
       } catch (error) {
         console.error(
           "Failed to fetch products",
@@ -72,7 +71,6 @@ export default function HomePage({
         vendorId: product.vendorId,
       }));
       setSearchProducts(filteredProducts);
-      console.log(data);
 
       navigate(`/products/search/${searchTerm}`);
     } catch (error) {

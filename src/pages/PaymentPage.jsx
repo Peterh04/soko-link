@@ -39,7 +39,7 @@ export default function PaymentPage({ setReceipt }) {
             invoiceId: invoice?.id,
           }
         );
-        console.log("STK Push Response:", data);
+
         alert("Check your phone to complete the payment!");
       } catch (err) {
         console.error(err.response?.data || err.message);
@@ -48,8 +48,6 @@ export default function PaymentPage({ setReceipt }) {
     }
 
     if (selectedId === 2) {
-      // Card payment
-      console.log({ cardNumber, cvv, expiry });
       alert("Card payment integration goes here");
     }
   };

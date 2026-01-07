@@ -3,8 +3,10 @@ import NavBar from "../components/NavBar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function SellPage({ setIsLoginModalOpen }) {
+  const navigate = useNavigate();
   const { user, loading } = useAuth();
   const [form, setForm] = useState({
     title: "",
@@ -38,7 +40,8 @@ export default function SellPage({ setIsLoginModalOpen }) {
           },
         }
       );
-      console.log("Created Product post succesful!");
+      console.log("Succesful in creating the porduct! ");
+      navigate("/");
     } catch (error) {
       console.error(
         "Failed to create a product post",

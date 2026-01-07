@@ -30,7 +30,7 @@ export default function EmailSignIn() {
         "http://localhost:5001/api/users/login",
         { email, password }
       );
-      console.log("Login succesful", data);
+
       localStorage.setItem("accessToken", data.token);
       setUser(data.user);
       navigate("/");
@@ -100,7 +100,8 @@ export default function EmailSignIn() {
         </div>
 
         <p>
-          Don't have an account? <span>Register</span>
+          Don't have an account?{" "}
+          <span onClick={() => navigate("/register")}>Register</span>
         </p>
       </section>
     </main>

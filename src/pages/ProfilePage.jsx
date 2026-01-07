@@ -49,7 +49,7 @@ export default function ProfilePage({ setIsLoginModalOpen }) {
           },
         }
       );
-      console.log("Updated succesful", data);
+
       setUser(data.user);
       setIsEdited(false);
     } catch (error) {
@@ -133,7 +133,7 @@ export default function ProfilePage({ setIsLoginModalOpen }) {
 
       <section aria-label="general settings" className="general-settings">
         <h4>General</h4>
-        <div className="link-card">
+        <div className="link-card" onClick={() => navigate("/wishlist")}>
           <div className="link-content">
             <div className="icon-container">
               <LikeIcon className="fa" />

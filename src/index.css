@@ -97,6 +97,10 @@ h6 {
   isolation: isolate;
 }
 
+span {
+  cursor: pointer;
+}
+
 button {
   border: none;
   cursor: pointer;
