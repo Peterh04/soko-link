@@ -40,6 +40,12 @@
 .nav-links li .nav-link.active {
   color: var(--light-secondary-400);
 }
+@media only screen and (max-width: 400px) {
+  .nav-links li .nav-link {
+    width: 70px;
+    height: 70px;
+  }
+}
 
 @media only screen and (min-width: 600px) {
   .nav-links {
