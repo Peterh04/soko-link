@@ -20,7 +20,7 @@ Technologies Used
 
 Frontend: React.js, HTML, CSS
 
-Backend: Node.js, Express.js (GitHub Repo
+Backend: Node.js, Express.js (GitHub Repo: https://github.com/Peterh04/soko-link-backend
 )
 
 Database: PostgreSQL
