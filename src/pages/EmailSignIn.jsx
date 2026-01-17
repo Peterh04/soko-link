@@ -27,7 +27,7 @@ export default function EmailSignIn() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5001/api/users/login",
+        `${import.meta.env.VITE_API_URL}/api/users/login`,
         { email, password }
       );
 
@@ -84,7 +84,9 @@ export default function EmailSignIn() {
               </button>
             </div>
           </div>
-          <button onClick={handleForm}>Login</button>
+          <button type="button" onClick={handleForm}>
+            Login
+          </button>
         </form>
         <p className="divider-text">or </p>
         <div className="sign-in-options">

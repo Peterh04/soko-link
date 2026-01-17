@@ -26,11 +26,14 @@ export function AuthProvider({ children }) {
       }
 
       try {
-        const { data } = await axios.get("http://localhost:5001/api/user/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/user/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         setUser(data.user);
       } catch (error) {

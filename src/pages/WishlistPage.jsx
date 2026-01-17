@@ -23,7 +23,7 @@ export default function WishlistPage({ setIsLoginModalOpen }) {
       try {
         const token = localStorage.getItem("accessToken");
         const { data } = await axios.get(
-          "http://localhost:5001/api/user/userWishlist/",
+          `${import.meta.env.VITE_API_URL}/api/user/userWishlist/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

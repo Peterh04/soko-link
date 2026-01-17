@@ -31,7 +31,7 @@ export default function SellPage({ setIsLoginModalOpen }) {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5001/api/products/vendor/createProduct",
+        `${import.meta.env.VITE_API_URL}/api/products/vendor/createProduct`,
         fomrData,
         {
           headers: {

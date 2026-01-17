@@ -29,7 +29,9 @@ export default function HomePage({
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5001/api/products");
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/products`,
+        );
 
         const filteredProducts = data.products.map((product) => ({
           id: product.id,
@@ -45,20 +47,20 @@ export default function HomePage({
       } catch (error) {
         console.error(
           "Failed to fetch products",
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [products]);
 
   const priceString = (price) => Number(price).toLocaleString();
 
   const handleSearch = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5001/api/products/search/${searchTerm}`
+        `${import.meta.env.VITE_API_URL}/api/products/search/${searchTerm}`,
       );
       const filteredProducts = data.filteredProducts.map((product) => ({
         id: product.id,
@@ -76,7 +78,7 @@ export default function HomePage({
     } catch (error) {
       console.error(
         "Failed to search products",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     }
   };

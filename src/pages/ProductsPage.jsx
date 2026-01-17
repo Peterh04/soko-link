@@ -14,7 +14,9 @@ export default function ProductsPage({ vendorId }) {
     const getVedorsProducts = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5001/api/products/vendor/${vendorId}/getProducts`,
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/products/vendor/${vendorId}/getProducts`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

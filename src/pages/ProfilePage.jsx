@@ -41,7 +41,7 @@ export default function ProfilePage({ setIsLoginModalOpen }) {
 
     try {
       const { data } = await axios.patch(
-        "http://localhost:5001/api/user/update",
+        `${import.meta.env.VITE_API_URL}/api/user/update`,
         formData,
         {
           headers: {

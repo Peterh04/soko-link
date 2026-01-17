@@ -3,7 +3,6 @@ import googleIcon from "../assets/icons/google.svg";
 import appleIcon from "../assets/icons/apple.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 
 export default function SignInPage() {
   const navigate = useNavigate();

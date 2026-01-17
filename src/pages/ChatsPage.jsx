@@ -33,12 +33,12 @@ export default function ChatsPage({
       const token = localStorage.getItem("accessToken");
       try {
         const { data } = await axios.get(
-          "http://localhost:5001/api/messages/",
+          `${import.meta.env.VITE_API_URL}/api/messages/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         setMessages(data.messages);
 
@@ -46,7 +46,7 @@ export default function ChatsPage({
       } catch (error) {
         console.error(
           "Failed to fetch messages",
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
       }
     };
@@ -68,15 +68,14 @@ export default function ChatsPage({
       </header>
       <div className="chats-section">
         {messages.map((msg) => {
-          const isSender = msg.sender.id === user.id; // use sender object
-          const chatPartner = isSender ? msg.receiver : msg.sender; // corrected spelling
+          const isSender = msg.sender.id === user.id;
+          const chatPartner = isSender ? msg.receiver : msg.sender;
 
           return (
             <div
               className="chat-container"
               key={msg.id}
               onClick={() => {
-                // set buyer and vendor correctly
                 setBuyerId(isSender ? msg.sender.id : msg.receiver.id);
                 setVendorId(isSender ? msg.receiver.id : msg.sender.id);
                 navigate("/connect");

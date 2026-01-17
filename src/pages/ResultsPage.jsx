@@ -61,7 +61,7 @@ export default function ResultsPage({
   const handleSearch = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5001/api/products/search/${searchTerm}`
+        `${import.meta.env.VITE_API_URL}/api/products/search/${searchTerm}`
       );
       const filteredProducts = data.filteredProducts.map((product) => ({
         id: product.id,
@@ -95,7 +95,9 @@ export default function ResultsPage({
       if (filterValues.rating) params.append("rating", filterValues.rating);
       if (filterValues.sortBy) params.append("sort", filterValues.sortBy);
 
-      const url = `http://localhost:5001/api/products/search/${searchTerm}?${params.toString()}`;
+      const url = `${
+        import.meta.env.VITE_API_URL
+      }/api/products/search/${searchTerm}?${params.toString()}`;
 
       const { data } = await axios.get(url);
 

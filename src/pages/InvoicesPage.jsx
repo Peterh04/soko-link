@@ -11,7 +11,7 @@ export default function InvoicesPage({ setReceipt }) {
     const getUserInvoices = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:5001/api/invoices/",
+          `${import.meta.env.VITE_API_URL}/api/invoices/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

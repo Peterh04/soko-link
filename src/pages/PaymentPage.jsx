@@ -9,7 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5001");
+const socket = io(import.meta.env.VITE_API_URL);
 
 export default function PaymentPage({ setReceipt }) {
   const [selectedId, setSelectedId] = useState();
@@ -32,7 +32,7 @@ export default function PaymentPage({ setReceipt }) {
       // M-Pesa payment
       try {
         const { data } = await axios.post(
-          "http://localhost:5001/api/mpesa/stkpush",
+          `${import.meta.env.VITE_API_URL}/api/mpesa/stkpush`,
           {
             phone: phone,
             amount: invoice?.amount,
@@ -57,7 +57,7 @@ export default function PaymentPage({ setReceipt }) {
       const token = localStorage.getItem("accessToken");
       try {
         const { data } = await axios.get(
-          `http://localhost:5001/api/invoices/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/invoices/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -80,7 +80,7 @@ export default function PaymentPage({ setReceipt }) {
     const intervalId = setInterval(async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5001/api/invoices/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/invoices/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

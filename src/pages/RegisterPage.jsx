@@ -35,7 +35,7 @@ export default function RegisterPage() {
     } else {
       try {
         const { data } = await axios.post(
-          "http://localhost:5001/api/users/register",
+          `${import.meta.env.VITE_API_URL}/api/users/register`,
           { name, email, password }
         );
 

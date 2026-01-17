@@ -18,7 +18,7 @@ export default function ReceiptPage({ receipt, vendorId }) {
     const getProduct = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5001/api/products/${receipt.productId}`
+          `${import.meta.env.VITE_API_URL}/api/products/${receipt.productId}`
         );
         setProduct({
           title: data.product.title,
@@ -89,7 +89,7 @@ export default function ReceiptPage({ receipt, vendorId }) {
     const hasUserCommented = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5001/api/invoices/${receipt.id}`,
+          `${import.meta.env.VITE_API_URL}/api/invoices/${receipt.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -114,7 +114,7 @@ export default function ReceiptPage({ receipt, vendorId }) {
     const token = localStorage.getItem("accessToken");
     try {
       const { data } = await axios.post(
-        "http://localhost:5001/api/comment",
+        `${import.meta.env.VITE_API_URL}/api/comment`,
         {
           content: review.content,
           images: 2,

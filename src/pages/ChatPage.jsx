@@ -12,7 +12,7 @@ import { useAuth } from "../context/AuthContext";
 import { Oval } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 
-const socket = io("http://localhost:5001");
+const socket = io(import.meta.env.VITE_API_URL);
 
 export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
   const { user } = useAuth();
@@ -36,7 +36,6 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
 
   const isTexting = messageInput.trim().length > 0;
 
-  // Adjust footer for viewport changes
   useEffect(() => {
     if (!window.visualViewport) return;
     const viewport = window.visualViewport;
@@ -70,13 +69,12 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
       const token = localStorage.getItem("accessToken");
       try {
         const { data } = await axios.get(
-          `http://localhost:5001/api/messages/${roomId}`,
+          `${import.meta.env.VITE_API_URL}/api/messages/${roomId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
-          }
+          },
         );
         setMessages(data.messages);
-        console.log(data.messages);
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch messages", error);
@@ -91,16 +89,16 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
     const getProducts = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:5001/api/products/vendor/getProducts",
+          `${import.meta.env.VITE_API_URL}/api/products/vendor/getProducts`,
           {
             headers: { Authorization: `Bearer ${token}` },
-          }
+          },
         );
         setProducts(data.products || []);
       } catch (error) {
         console.error(
           "Failed to get vendor products",
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
       }
     };
@@ -115,21 +113,22 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
     const getReceiverDetails = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5001/api/messages/receiver?receiverId=${receiverId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/messages/receiver?receiverId=${receiverId}`,
+          { headers: { Authorization: `Bearer ${token}` } },
         );
         setReceiver(data.receiver);
       } catch (error) {
         console.error(
           "Failed to fetch receiver",
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
       }
     };
     getReceiverDetails();
   }, [buyerId, vendorId, user.id]);
 
-  // Auto-scroll on new message
   useEffect(() => {
     const chatSection = document.querySelector(".chat-section");
     if (chatSection) chatSection.scrollTop = chatSection.scrollHeight;
@@ -151,59 +150,23 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
     setMessageInput("");
   };
 
-  // const generateInvoice = async () => {
-  //   const token = localStorage.getItem("accessToken");
-  //   try {
-  //     const receiverId = user.id === buyerId ? vendorId : buyerId;
-  //     const { data } = await axios.post(
-  //       "http://localhost:5001/api/invoices/create",
-  //       {
-  //         vendorId,
-  //         buyerId: receiverId,
-  //         productId: userInvoiceDetails.productId,
-  //         phone: userInvoiceDetails.number,
-  //         amount: userInvoiceDetails.amount,
-  //       },
-  //       { headers: { Authorization: `Bearer ${token}` } }
-  //     );
-
-  //     const receiverId = user.id === buyerId ? vendorId : buyerId;
-  //     const invoiceMessage = {
-  //       roomId,
-  //       content: `Invoice:${data.invoice.id}`,
-  //       createdAt: new Date(),
-  //       senderId: user.id,
-  //       receiverId,
-  //       type: "invoice",
-  //     };
-
-  //     socket.emit("sendMessage", invoiceMessage);
-  //   } catch (error) {
-  //     console.error(
-  //       "Failed to create invoice",
-  //       error.response?.data || error.message
-  //     );
-  //   }
-  // };
-
   const generateInvoice = async () => {
     const token = localStorage.getItem("accessToken");
 
-    // 🧠 buyer is ALWAYS the other person in the chat
     const actualBuyerId = user.id === buyerId ? vendorId : buyerId;
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5001/api/invoices/create",
+        `${import.meta.env.VITE_API_URL}/api/invoices/create`,
         {
-          buyerId: actualBuyerId, // ✅ correct buyer
+          buyerId: actualBuyerId,
           productId: userInvoiceDetails.productId,
           phone: userInvoiceDetails.number,
           amount: userInvoiceDetails.amount,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       socket.emit("sendMessage", {
@@ -215,7 +178,7 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
     } catch (error) {
       console.error(
         "Failed to create invoice",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     }
   };

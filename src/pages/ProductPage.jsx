@@ -18,7 +18,7 @@ import { useAuth } from "../context/AuthContext";
 import { Oval } from "react-loader-spinner";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5001");
+const socket = io(import.meta.env.VITE_API_URL);
 
 export default function ProductPage({
   setBuyerId,
@@ -67,7 +67,7 @@ export default function ProductPage({
     const fetchProduct = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5001/api/products/${id}`
+          `${import.meta.env.VITE_API_URL}/api/products/${id}`,
         );
         const filteredProduct = {
           id: data.product.id,
@@ -87,7 +87,7 @@ export default function ProductPage({
       } catch (error) {
         console.error(
           "Failed to fetch product",
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
       }
     };
@@ -101,7 +101,7 @@ export default function ProductPage({
     const fetchComments = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5001/api/comment/${product.vendorId}`
+          `${import.meta.env.VITE_API_URL}/api/comment/${product.vendorId}`,
         );
         const filteredComments = data.comments.map((comment) => ({
           id: comment.id,
@@ -115,7 +115,7 @@ export default function ProductPage({
       } catch (error) {
         console.error(
           "Failed to fetch comments",
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
       }
     };
@@ -128,22 +128,22 @@ export default function ProductPage({
       try {
         const token = localStorage.getItem("accessToken");
         const { data } = await axios.get(
-          "http://localhost:5001/api/user/userWishlist/",
+          `${import.meta.env.VITE_API_URL}/api/user/userWishlist/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
 
         const liked = data.wishliist.some(
-          (item) => item.Product && item.Product.id === product.id
+          (item) => item.Product && item.Product.id === product.id,
         );
         setIsLiked(liked);
       } catch (error) {
         console.error(
           "Failed to fetch wishlist",
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
       }
     };
@@ -178,20 +178,20 @@ export default function ProductPage({
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5001/api/user/userWishlist/add",
+        `${import.meta.env.VITE_API_URL}/api/user/userWishlist/add`,
         { productId },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       setIsLiked(true);
     } catch (error) {
       console.error(
         "Failed to add to wishlist",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     }
   };
@@ -201,20 +201,20 @@ export default function ProductPage({
     const productId = product.id;
     try {
       const { data } = await axios.delete(
-        "http://localhost:5001/api/user/userWishlist/remove",
+        `${import.meta.env.VITE_API_URL}/api/user/userWishlist/remove`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
           data: { productId },
-        }
+        },
       );
 
       setIsLiked(false);
     } catch (error) {
       console.error(
         "Failed to remove product from wishlist",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     }
   };
@@ -224,19 +224,19 @@ export default function ProductPage({
     const productId = product.id;
     try {
       const { data } = await axios.delete(
-        "http://localhost:5001/api/products/vendor/deleteProduct",
+        `${import.meta.env.VITE_API_URL}/api/products/vendor/deleteProduct`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
 
           data: { productId },
-        }
+        },
       );
     } catch (error) {
       console.error(
         "Failed to delete product",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     }
   };
@@ -250,8 +250,8 @@ export default function ProductPage({
   }
 
   const requestInvoice = () => {
-    const receiverId = product.vendorId; // vendor
-    const senderId = user.id; // current user
+    const receiverId = product.vendorId;
+    const senderId = user.id;
 
     const roomId =
       senderId < receiverId
@@ -336,7 +336,15 @@ export default function ProductPage({
             <h5 className="vendor-name">Jenny Doe</h5>
           </div>
           <div className="vender-contact">
-            <button onClick={() => navigate("/connect")}>
+            <button
+              onClick={() => {
+                if (!user || user === "Guest") {
+                  setIsLoginModalOpen(true);
+                  return;
+                }
+                navigate("/connect");
+              }}
+            >
               <ChatIcon className="fa" />
             </button>
             <button

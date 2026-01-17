@@ -24,7 +24,7 @@ export default function SecurityPage() {
     e.preventDefault();
     try {
       const { data } = axios.patch(
-        "http://localhost:5001/api/user/update/password",
+        `${import.meta.env.VITE_API_URL}/api/user/update/password`,
         {
           oldPassword: form.oldPassword,
           newPassword: form.newPassword,
