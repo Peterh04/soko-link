@@ -114,6 +114,11 @@ export default function HomePage({
               type="text"
               placeholder="Search"
               onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
             />
           </div>
         </div>
@@ -122,7 +127,7 @@ export default function HomePage({
       <section aria-label="categories" className="category-section">
         <div className="section-header">
           <h3>Category</h3>
-          <p>See All</p>
+          <div>See All</div>
         </div>
 
         <ul className="category-list">

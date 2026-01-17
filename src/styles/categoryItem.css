@@ -5,6 +5,8 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
+
+  cursor: pointer;
 }
 
 .category-item > p {
@@ -35,8 +37,8 @@
 
 @media only screen and (min-width: 600px) {
   .category-item-icon-container {
-    width: 125px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
   }
 }
 @media only screen and (min-width: 700px) {
@@ -44,14 +46,14 @@
 
 @media only screen and (min-width: 800px) {
   .category-item-icon-container {
-    width: 145px;
-    height: 145px;
+    width: 90px;
+    height: 90px;
   }
 }
 
 @media only screen and (min-width: 900px) {
   .category-item-icon-container {
-    width: 165px;
-    height: 165px;
+    width: 100px;
+    height: 100px;
   }
 }

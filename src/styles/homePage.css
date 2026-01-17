@@ -92,6 +92,8 @@
   align-items: center;
 
   gap: 5px;
+
+  width: 100%;
 }
 
 .search-bar > .fa {
@@ -99,6 +101,7 @@
 }
 
 .search-bar > input {
+  width: 100%;
   background-color: transparent;
 }
 
@@ -118,9 +121,8 @@
   width: 100%;
 }
 
-.section-header > p {
+.section-header > div {
   color: var(--light-secondary-400);
-  width: 30%;
 }
 
 .category-section > .category-list {

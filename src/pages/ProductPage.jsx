@@ -250,6 +250,10 @@ export default function ProductPage({
   }
 
   const requestInvoice = () => {
+    if (!user || user === "Guest") {
+      setIsLoginModalOpen(true);
+      return;
+    }
     const receiverId = product.vendorId;
     const senderId = user.id;
 

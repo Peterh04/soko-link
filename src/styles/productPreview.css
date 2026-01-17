@@ -8,6 +8,8 @@
   padding: 2rem 0.5rem;
 
   gap: 10px;
+
+  cursor: pointer;
 }
 
 .product-preview > .product-preview-img-container {
@@ -37,6 +39,16 @@
 
 .product-info > .product-meta {
   display: flex;
+}
+
+.product-meta > .prod-location {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.product-meta > .prod-condition {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .product-meta > .prod-location::after {
