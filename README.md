@@ -20,7 +20,8 @@ Technologies Used
 
 Frontend: React.js, HTML, CSS
 
-Backend: Node.js, Express.js
+Backend: Node.js, Express.js (GitHub Repo
+)
 
 Database: PostgreSQL
 
