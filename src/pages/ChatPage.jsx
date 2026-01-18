@@ -195,7 +195,7 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
     <main className="chat-page">
       <header className="chat-page-header">
         <div className="chat-page-header-left">
-          <div onClick={() => navigate(-1)}>
+          <div onClick={() => navigate(-1)} className="btn">
             <BackIcon className="fa" />
           </div>
           <div className="vender-profile">

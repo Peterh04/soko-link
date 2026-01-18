@@ -32,6 +32,10 @@
   gap: 1rem;
 }
 
+.btn {
+  cursor: pointer;
+}
+
 .chat-page-header-left > .vender-profile {
   display: flex;
   align-items: center;
@@ -67,6 +71,22 @@
 .chat-page-header > .chat-page-header-right {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
+}
+
+.chat-page-header > .chat-page-header-right > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  width: 50px;
+  height: 50px;
+
+  border-radius: 50%;
+
+  background-color: transparent;
 }
 .chat-page-header-right > .contact-menu {
   display: flex;
