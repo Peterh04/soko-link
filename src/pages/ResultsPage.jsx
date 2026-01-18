@@ -61,7 +61,7 @@ export default function ResultsPage({
   const handleSearch = async () => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/products/search/${searchTerm}`
+        `${import.meta.env.VITE_API_URL}/api/products/search/${searchTerm}`,
       );
       const filteredProducts = data.filteredProducts.map((product) => ({
         id: product.id,
@@ -79,7 +79,7 @@ export default function ResultsPage({
     } catch (error) {
       console.error(
         "Failed to search products",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     }
   };
@@ -117,7 +117,7 @@ export default function ResultsPage({
     } catch (error) {
       console.error(
         "Failed to fetch filtered products",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     }
   };
@@ -126,7 +126,7 @@ export default function ResultsPage({
     <main aria-label="results page" className="results-page">
       <header aria-label="resultsPage header" className="resultsPage-header">
         <button className="backBtn" onClick={() => navigate(-1)}>
-          <BackIcon />
+          <BackIcon className="fa" />
         </button>
         <div className="search-bar">
           <SearchIcon className="fa" onClick={handleSearch} />
@@ -136,6 +136,11 @@ export default function ResultsPage({
             onChange={(e) => {
               setSearchTerm(e.target.value);
             }}
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                handleSearch();
+              }
+            }}
           />
           {isTyping && (
             <button className="clearBtn" onClick={clearTyping}>
@@ -144,7 +149,7 @@ export default function ResultsPage({
           )}
         </div>
         <button className="filterBtn" onClick={() => setIsModalExpanded(true)}>
-          <FilterIconn />
+          <FilterIconn className="fa" />
         </button>
       </header>
 

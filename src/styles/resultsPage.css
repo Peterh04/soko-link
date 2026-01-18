@@ -37,7 +37,7 @@
   border: 1px solid var(--light-secondary-400);
   padding: 0.3rem 0.5rem;
 
-  width: 300px;
+  width: 100%;
   position: relative;
 }
 
@@ -299,3 +299,41 @@
 
   margin-bottom: 8rem;
 }
+
+/* @media only screen and (max-width: 400px) {
+  
+} */
+@media only screen and (max-width: 400px) {
+  .resultsPage-header > button {
+    width: 5px;
+    height: 5px;
+  }
+
+  .resultsPage-header > button > .fa {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .resultsPage-header > button {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media only screen and (min-width: 700px) {
+}
+
+@media only screen and (min-width: 768px) {
+}
+
+@media only screen and (min-width: 1100px) {
+}
+
+/* @media only screen and (min-width: 1200px) {
+  .resultsPage-header > .search-bar {
+    display: flex;
+    width: 100%;
+  }
+} */
