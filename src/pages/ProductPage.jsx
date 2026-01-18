@@ -30,7 +30,7 @@ export default function ProductPage({
 }) {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState({});
   const { id } = useParams();
   const [isLiked, setIsLiked] = useState(false);
   const [text, setText] =
@@ -44,7 +44,12 @@ export default function ProductPage({
   const [isStoreExpanded, setIsStoreExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const roomId = `${user.id}-${product.vendorId}`;
+  const roomId =
+    user && product.vendorId
+      ? user.id < product.vendorId
+        ? `${user.id}-${product.vendorId}`
+        : `${product.vendorId}-${user.id}`
+      : null;
 
   const handleStoreExpansion = () => {
     setIsStoreExpanded((cond) => !cond);
@@ -346,7 +351,8 @@ export default function ProductPage({
                   setIsLoginModalOpen(true);
                   return;
                 }
-                navigate("/connect");
+
+                navigate(`/connect/${user.id}/${product.vendorId}`);
               }}
             >
               <ChatIcon className="fa" />
@@ -475,7 +481,7 @@ export default function ProductPage({
           onClick={() => {
             socket.emit("joinRoom", { roomId });
             requestInvoice();
-            navigate("/connect");
+            navigate(`/connect/${user.id}/${product.vendorId}`);
           }}
         >
           <InvoiceIcon className="fa" />

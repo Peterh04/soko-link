@@ -14,7 +14,7 @@ export default function ChatsPage({
   setIsLoginModalOpen,
 }) {
   const navigate = useNavigate();
-  const [messages, setMessages] = useState(null);
+  const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoadig] = useState(true);
 
   const { user, loading } = useAuth();
@@ -24,7 +24,6 @@ export default function ChatsPage({
 
     if (!user || user === "Guest") {
       setIsLoginModalOpen(true);
-      return;
     }
   }, [user, loading, setIsLoginModalOpen]);
 
@@ -40,27 +39,28 @@ export default function ChatsPage({
             },
           },
         );
-        setMessages(data.messages);
-
+        setMessages(data.messages || []);
         setIsLoadig(false);
       } catch (error) {
         console.error(
           "Failed to fetch messages",
           error.response?.data || error.message,
         );
+        setIsLoadig(false);
       }
     };
 
     getMessages();
   }, []);
 
-  if (isLoading) {
+  if (isLoading || loading || !user) {
     return (
       <div className="loading-container">
         <Oval height={60} width={60} visible={true} />
       </div>
     );
   }
+
   return (
     <main aria-label="chats page" className="chats-page">
       <header className="chat-page-header">
@@ -68,6 +68,8 @@ export default function ChatsPage({
       </header>
       <div className="chats-section">
         {messages.map((msg) => {
+          if (!msg.sender || !msg.receiver) return null;
+
           const isSender = msg.sender.id === user.id;
           const chatPartner = isSender ? msg.receiver : msg.sender;
 
@@ -78,7 +80,9 @@ export default function ChatsPage({
               onClick={() => {
                 setBuyerId(isSender ? msg.sender.id : msg.receiver.id);
                 setVendorId(isSender ? msg.receiver.id : msg.sender.id);
-                navigate("/connect");
+                navigate(
+                  `/connect/${isSender ? msg.sender.id : msg.receiver.id}/${isSender ? msg.receiver.id : msg.sender.id}`,
+                );
               }}
             >
               <div className="vender-profile">

@@ -10,18 +10,24 @@ import { io } from "socket.io-client";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Oval } from "react-loader-spinner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const socket = io(import.meta.env.VITE_API_URL);
 
-export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
+export default function ChatPage() {
   const { user } = useAuth();
   const footerRef = useRef(null);
 
+  const { buyerId, vendorId } = useParams();
+  const bId = Number(buyerId);
+  const vId = Number(vendorId);
+
   const roomId =
-    buyerId < vendorId ? `${buyerId}-${vendorId}` : `${vendorId}-${buyerId}`;
+    bId && vId ? (bId < vId ? `${bId}-${vId}` : `${vId}-${bId}`) : null;
+
   const navigate = useNavigate();
 
+  const [messages, setMessages] = useState([]);
   const [ismodalOptionOpen, setIsModalOptionOpen] = useState(false);
   const [messageInput, setMessageInput] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -40,12 +46,15 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
     if (!window.visualViewport) return;
     const viewport = window.visualViewport;
     const footer = footerRef.current;
+    if (!footer) return;
+
     const originalTransform = "translateY(0px)";
     const adjustFooter = () => {
       const offset = window.innerHeight - viewport.height - viewport.offsetTop;
       footer.style.transform =
         offset > 0 ? `translateY(-${offset}px)` : originalTransform;
     };
+
     viewport.addEventListener("resize", adjustFooter);
     viewport.addEventListener("scroll", adjustFooter);
     return () => {
@@ -56,15 +65,19 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
 
   useEffect(() => {
     if (!roomId) return;
+
     socket.emit("joinRoom", { roomId });
+
     socket.on("receiveMessage", (msg) => {
       setMessages((prev) => [...prev, msg]);
     });
+
     return () => socket.off("receiveMessage");
   }, [roomId]);
 
   useEffect(() => {
     if (!roomId) return;
+
     const fetchMessages = async () => {
       const token = localStorage.getItem("accessToken");
       try {
@@ -74,18 +87,21 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
             headers: { Authorization: `Bearer ${token}` },
           },
         );
-        setMessages(data.messages);
+        setMessages(data.messages || []);
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch messages", error);
+        setIsLoading(false);
       }
     };
+
     fetchMessages();
   }, [roomId]);
 
-  // Fetch vendor products
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
+    if (!token) return;
+
     const getProducts = async () => {
       try {
         const { data } = await axios.get(
@@ -96,38 +112,33 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
         );
         setProducts(data.products || []);
       } catch (error) {
-        console.error(
-          "Failed to get vendor products",
-          error.response?.data || error.message,
-        );
+        console.error("Failed to get vendor products", error);
       }
     };
+
     getProducts();
   }, []);
 
-  // Fetch receiver details
   useEffect(() => {
-    if (!buyerId || !vendorId) return;
-    const receiverId = user.id === buyerId ? vendorId : buyerId;
+    if (!user || !bId || !vId) return;
+
+    const receiverId = user.id === bId ? vId : bId;
     const token = localStorage.getItem("accessToken");
+
     const getReceiverDetails = async () => {
       try {
         const { data } = await axios.get(
-          `${
-            import.meta.env.VITE_API_URL
-          }/api/messages/receiver?receiverId=${receiverId}`,
+          `${import.meta.env.VITE_API_URL}/api/messages/receiver?receiverId=${receiverId}`,
           { headers: { Authorization: `Bearer ${token}` } },
         );
         setReceiver(data.receiver);
       } catch (error) {
-        console.error(
-          "Failed to fetch receiver",
-          error.response?.data || error.message,
-        );
+        console.error("Failed to fetch receiver", error);
       }
     };
+
     getReceiverDetails();
-  }, [buyerId, vendorId, user.id]);
+  }, [user, bId, vId]);
 
   useEffect(() => {
     const chatSection = document.querySelector(".chat-section");
@@ -135,8 +146,10 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
   }, [messages]);
 
   const sendMessage = () => {
-    if (!messageInput.trim()) return;
-    const receiverId = user.id === buyerId ? vendorId : buyerId;
+    if (!messageInput.trim() || !user || !roomId) return;
+
+    const receiverId = user.id === bId ? vId : bId;
+
     const msgData = {
       roomId,
       content: messageInput,
@@ -145,6 +158,7 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
       receiverId,
       type: "normal",
     };
+
     socket.emit("sendMessage", msgData);
     setMessages((prev) => [...prev, msgData]);
     setMessageInput("");
@@ -152,8 +166,9 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
 
   const generateInvoice = async () => {
     const token = localStorage.getItem("accessToken");
+    if (!user) return;
 
-    const actualBuyerId = user.id === buyerId ? vendorId : buyerId;
+    const actualBuyerId = user.id === bId ? vId : bId;
 
     try {
       const { data } = await axios.post(
@@ -164,9 +179,7 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
           phone: userInvoiceDetails.number,
           amount: userInvoiceDetails.amount,
         },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       socket.emit("sendMessage", {
@@ -176,14 +189,11 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
         type: "invoice",
       });
     } catch (error) {
-      console.error(
-        "Failed to create invoice",
-        error.response?.data || error.message,
-      );
+      console.error("Failed to create invoice", error);
     }
   };
 
-  if (isLoading) {
+  if (isLoading || !user || !roomId) {
     return (
       <div className="loading-container">
         <Oval height={60} width={60} visible={true} />
@@ -222,7 +232,7 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
         </div>
       </header>
       <section className="chat-section">
-        {messages.map((msg, idx) => (
+        {messages?.map((msg, idx) => (
           <div
             key={idx}
             className={`chat-message ${

@@ -116,7 +116,7 @@ function App() {
           }
         ></Route>
         <Route
-          path="/connect"
+          path="/connect/:buyerId/:vendorId"
           element={
             <ChatPage
               buyerId={buyerId}
@@ -132,6 +132,8 @@ function App() {
           path="/chats"
           element={
             <ChatsPage
+              buyerId={buyerId}
+              vendorId={vendorId}
               setBuyerId={setBuyerId}
               setVendorId={setVendorId}
               setSender={setSender}
