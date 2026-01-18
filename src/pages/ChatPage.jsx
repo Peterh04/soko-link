@@ -351,6 +351,7 @@ export default function ChatPage({ buyerId, vendorId, messages, setMessages }) {
           </form>
         </div>
       )}
+      <div className="scroll-spacer"></div>
       <footer ref={footerRef} className="send-message-container">
         <div className="input-container">
           <input

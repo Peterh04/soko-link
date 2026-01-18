@@ -47,7 +47,7 @@ export default function ProfilePage({ setIsLoginModalOpen }) {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       setUser(data.user);

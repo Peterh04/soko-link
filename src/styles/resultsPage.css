@@ -321,19 +321,3 @@
     height: 40px;
   }
 }
-
-@media only screen and (min-width: 700px) {
-}
-
-@media only screen and (min-width: 768px) {
-}
-
-@media only screen and (min-width: 1100px) {
-}
-
-/* @media only screen and (min-width: 1200px) {
-  .resultsPage-header > .search-bar {
-    display: flex;
-    width: 100%;
-  }
-} */

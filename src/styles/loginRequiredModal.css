@@ -82,3 +82,22 @@
     opacity: 1;
   }
 }
+
+@media only screen and (max-width: 400px) {
+  .resultsPage-header > button {
+    width: 5px;
+    height: 5px;
+  }
+
+  .resultsPage-header > button > .fa {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .resultsPage-header > button {
+    width: 40px;
+    height: 40px;
+  }
+}

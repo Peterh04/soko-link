@@ -25,6 +25,8 @@
 
 .chat-container {
   display: flex;
+
+  cursor: pointer;
 }
 
 .chat-container > .vender-profile {
@@ -37,4 +39,10 @@
   padding: 0.5rem;
 
   background-color: var(--light-secondary-200);
+}
+
+@media only screen and (min-width: 700px) {
+  .chats-page > .chats-section {
+    padding: 2.4rem 0rem;
+  }
 }
