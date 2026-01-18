@@ -36,6 +36,11 @@
 
   justify-content: center;
 }
+.header-location > p {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 1.4rem;
+}
 
 .header-location > .header-location-info {
   display: flex;
@@ -161,6 +166,9 @@
   overflow-y: scroll;
 
   margin-bottom: 8rem;
+}
+
+@media only screen and (min-width: 400px) {
 }
 
 @media only screen and (min-width: 600px) {
