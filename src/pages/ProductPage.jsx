@@ -319,7 +319,7 @@ export default function ProductPage({
               {product.location}
               <span>,</span>
             </p>
-            <p>
+            <p className="days">
               <span>{getDays(product.createdAt)}</span>{" "}
               {getDays(product.createdAt) === 1 ? "day ago" : "days ago"}
             </p>
@@ -460,6 +460,8 @@ export default function ProductPage({
           </div>
         </section>
       </div>
+
+      <div className="scroll-spacer"></div>
 
       <footer>
         <div className="price-container">
