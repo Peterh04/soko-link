@@ -145,7 +145,7 @@ function App() {
           element={<PaymentPage setReceipt={setReceipt} />}
         ></Route>
         <Route
-          path="/paymennt/success/:id"
+          path="/payment/success/:id"
           element={<ReceiptPage receipt={receipt} vendorId={vendorId} />}
         ></Route>
         <Route

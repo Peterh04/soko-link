@@ -18,7 +18,7 @@ export default function ReceiptPage({ receipt, vendorId }) {
     const getProduct = async () => {
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/products/${receipt.productId}`
+          `${import.meta.env.VITE_API_URL}/api/products/${receipt.productId}`,
         );
         setProduct({
           title: data.product.title,
@@ -28,7 +28,7 @@ export default function ReceiptPage({ receipt, vendorId }) {
       } catch (error) {
         console.error(
           "Failed to fetch the product",
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
       }
     };
@@ -94,14 +94,14 @@ export default function ReceiptPage({ receipt, vendorId }) {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         console.log(data.invoice.product);
         setUserCommented(data.invoice.product.alreadyReviewed);
       } catch (error) {
         console.error(
           `Failed to fetch user commented status`,
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
       }
     };
@@ -127,7 +127,7 @@ export default function ReceiptPage({ receipt, vendorId }) {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       console.log("Submitted Review", data);
       setUserCommented(true);
@@ -135,7 +135,7 @@ export default function ReceiptPage({ receipt, vendorId }) {
     } catch (error) {
       console.error(
         "Failed to submit review",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     }
   };

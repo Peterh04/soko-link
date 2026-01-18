@@ -16,7 +16,7 @@ export default function InvoicesPage({ setReceipt }) {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         const sortedInvoices = data.invoices.sort((a, b) => {
           return new Date(b.createdAt) - new Date(a.createdAt);
@@ -26,7 +26,7 @@ export default function InvoicesPage({ setReceipt }) {
       } catch (error) {
         console.error(
           "Failed to fetch invoices",
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
       }
     };
@@ -86,7 +86,7 @@ export default function InvoicesPage({ setReceipt }) {
             key={invoice.id}
             onClick={() => {
               setReceipt(invoice);
-              navigate(`/paymennt/success/${invoice.id}`);
+              navigate(`/payment/success/${invoice.id}`);
             }}
           >
             <h4>Transaction ID: {invoice.transactionID}</h4>
