@@ -43,6 +43,7 @@ export default function ProductPage({
   const [isExpanded, setIsExpanded] = useState(false);
   const [isStoreExpanded, setIsStoreExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [vendor, setVendor] = useState({});
 
   const roomId =
     user && product.vendorId
@@ -85,6 +86,7 @@ export default function ProductPage({
           vendorId: data.product.vendorId,
         };
         setProduct(filteredProduct);
+        setVendor(data.product.vendor);
         setVendorId(filteredProduct.vendorId);
         setBuyerId(user.id);
         setText(filteredProduct.description);
@@ -337,12 +339,16 @@ export default function ProductPage({
           <div className="vender-profile">
             <div className="vendor-image-container">
               <img
-                src="https://images.unsplash.com/photo-1597393922738-085ea04b5a07?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1022"
-                alt=""
+                src={
+                  vendor.profileImage
+                    ? vendor?.profileImage
+                    : "https://images.unsplash.com/photo-1597393922738-085ea04b5a07?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1022"
+                }
+                alt={vendor?.name}
                 className="vendor-img"
               />
             </div>
-            <h5 className="vendor-name">Jenny Doe</h5>
+            <h5 className="vendor-name">{vendor?.name}</h5>
           </div>
           <div className="vender-contact">
             <button

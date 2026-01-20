@@ -38,11 +38,17 @@
   gap: 1rem;
 }
 
-.sell-page > .sell-meta-form > input {
+.sell-page > .sell-meta-form > input,
+select {
   padding: 0.5rem 1rem;
   border-radius: 10px;
 
   height: 50px;
+}
+
+.sell-page > .sell-meta-form > select {
+  border: none;
+  outline: none;
 }
 
 .sell-meta-form > #product-description {
@@ -51,6 +57,8 @@
   height: 100px;
 
   overflow-y: scroll;
+
+  padding: 0.4rem;
 }
 
 .sell-meta-form > button {

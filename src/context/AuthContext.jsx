@@ -32,16 +32,18 @@ export function AuthProvider({ children }) {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
 
         setUser(data.user);
+        localStorage.setItem("user", JSON.stringify(data.user));
       } catch (error) {
         console.error(
           "Failed to fetch user",
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
         localStorage.removeItem("accessToken");
+        localStorage.removeItem("user");
         setUser(null);
       } finally {
         setLoading(false);
@@ -53,6 +55,7 @@ export function AuthProvider({ children }) {
 
   const logOut = useCallback(() => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
     setUser(null);
     navigate("/login");
   }, [navigate]);

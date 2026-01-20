@@ -12,6 +12,9 @@ export default function SellPage({ setIsLoginModalOpen }) {
     title: "",
     location: "",
     description: "",
+    category: "",
+    condition: "",
+    vendor_phone: "",
     price: "",
     images: "",
   });
@@ -38,14 +41,14 @@ export default function SellPage({ setIsLoginModalOpen }) {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
       console.log("Succesful in creating the porduct! ");
       navigate("/");
     } catch (error) {
       console.error(
         "Failed to create a product post",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     }
   };
@@ -73,12 +76,25 @@ export default function SellPage({ setIsLoginModalOpen }) {
           onChange={(e) => setForm({ ...form, title: e.target.value })}
         />
 
-        <input
-          type="text"
-          aria-label="product Category"
-          className="product-catgory"
-          placeholder="Category*"
-        />
+        <select
+          id="product-category"
+          required
+          onChange={(e) => setForm({ ...form, category: e.target.value })}
+        >
+          <option value="">Category *</option>
+          <option value="Fashion">Fashion</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Beauty">Beauty</option>
+          <option value="Furniture">Furniture</option>
+          <option value="Vehicles">Vehicles</option>
+          <option value="Services">Services</option>
+          <option value="Repair_construnction">Repair & Construnction</option>
+          <option value="Leisure">Leisure</option>
+          <option value="Babies">Babies</option>
+          <option value="Food">Food</option>
+          <option value="Animals_pets">Animals & Pets</option>
+          <option value="Property">Property</option>
+        </select>
 
         <input
           type="text"
@@ -88,12 +104,17 @@ export default function SellPage({ setIsLoginModalOpen }) {
           onChange={(e) => setForm({ ...form, location: e.target.value })}
         />
 
-        <input
-          type="text"
-          aria-label="product condition"
-          className="product-condition"
-          placeholder="Condition*"
-        />
+        <select
+          id="product_condition"
+          required
+          onChange={(e) => setForm({ ...form, condition: e.target.value })}
+        >
+          <option value="">Condition*</option>
+          <option value="Brand new">Brand New</option>
+          <option value="Used">Used</option>
+          <option value="EX-UK">EX-UK</option>
+          <option value="Refurbished">Refurbished</option>
+        </select>
 
         <textarea
           name="prod-description"
@@ -114,7 +135,8 @@ export default function SellPage({ setIsLoginModalOpen }) {
           type="text"
           aria-label="vendor Phone"
           className="vendor-phone"
-          placeholder="Phone nummber"
+          placeholder="Phone number : 254----"
+          onChange={(e) => setForm({ ...form, vendor_phone: e.target.value })}
         />
 
         <input
