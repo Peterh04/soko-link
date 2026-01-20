@@ -92,7 +92,6 @@ export default function ProductPage({
         setBuyerId(user.id);
         setText(filteredProduct.description);
         setIsLoading(false);
-        console.log(data);
       } catch (error) {
         console.error(
           "Failed to fetch product",
@@ -324,10 +323,7 @@ export default function ProductPage({
         <section aria-label="Product Overview" className="product-overview">
           <div className="product-meta">
             <img src={locationIcon} className="fa"></img>
-            <p>
-              {product.location}
-              <span>,</span>
-            </p>
+            <p>{product.location}</p>
             <p className="days">
               <span>{getDays(product.createdAt)}</span>{" "}
               {getDays(product.createdAt) === 1 ? "day ago" : "days ago"}
@@ -451,7 +447,7 @@ export default function ProductPage({
                     className="vendor-img"
                   />
                 </div>
-                <h5 className="vendor-name">Jenny Doe</h5>
+                <h5 className="vendor-name">{vendor.name}</h5>
               </div>
 
               <div onClick={() => navigate("/products")}>View all ads(42)</div>

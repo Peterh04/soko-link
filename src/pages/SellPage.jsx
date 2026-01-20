@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import useKenyaLocations from "../hooks/useLocationData";
 
 export default function SellPage({ setIsLoginModalOpen }) {
+  const kenyaLocations = useKenyaLocations();
+
   const navigate = useNavigate();
   const { user, loading } = useAuth();
   const [form, setForm] = useState({
@@ -19,12 +22,19 @@ export default function SellPage({ setIsLoginModalOpen }) {
     images: "",
   });
 
+  const [locationData, setLocationData] = useState(kenyaLocations);
+  const [selectedCounty, setSelectedCounty] = useState("");
+  const [selectedArea, setSelectedArea] = useState("");
+
+  const subCounties =
+    locationData.find((c) => c.county === selectedCounty)?.lgas || [];
+
   const handleForm = async (e) => {
     const token = localStorage.getItem("accessToken");
     e.preventDefault();
     const fomrData = new FormData();
     fomrData.append("title", form.title);
-    fomrData.append("location", form.location);
+    fomrData.append("location", `${selectedCounty}, ${selectedArea}`);
     fomrData.append("category", form.category);
     fomrData.append("condition", form.condition);
     fomrData.append("vendor_phone", form.vendor_phone);
@@ -83,8 +93,11 @@ export default function SellPage({ setIsLoginModalOpen }) {
           id="product-category"
           required
           onChange={(e) => setForm({ ...form, category: e.target.value })}
+          value={form.category}
         >
-          <option value="">Category *</option>
+          <option value="" disabled>
+            Category *
+          </option>
           <option value="Fashion">Fashion</option>
           <option value="Electronics">Electronics</option>
           <option value="Beauty">Beauty</option>
@@ -99,20 +112,48 @@ export default function SellPage({ setIsLoginModalOpen }) {
           <option value="Property">Property</option>
         </select>
 
-        <input
-          type="text"
-          aria-label="product location"
-          className="product-location"
-          placeholder="Location*"
-          onChange={(e) => setForm({ ...form, location: e.target.value })}
-        />
+        <select
+          value={selectedCounty}
+          id="county"
+          onChange={(e) => setSelectedCounty(e.target.value)}
+          required
+        >
+          <option value="" disabled>
+            Choose County
+          </option>
+          {locationData.map((location, id) => (
+            <option key={id} value={location.county}>
+              {location.county}
+            </option>
+          ))}
+        </select>
+
+        {selectedCounty && (
+          <select
+            value={selectedArea}
+            onChange={(e) => setSelectedArea(e.target.value)}
+            required
+          >
+            <option value="" disabled>
+              Choose Area
+            </option>
+            {subCounties.map((area, i) => (
+              <option key={i} value={area}>
+                {area}
+              </option>
+            ))}
+          </select>
+        )}
 
         <select
           id="product_condition"
           required
           onChange={(e) => setForm({ ...form, condition: e.target.value })}
+          value={form.condition}
         >
-          <option value="">Condition*</option>
+          <option value="" disabled>
+            Condition*
+          </option>
           <option value="Brand new">Brand New</option>
           <option value="Used">Used</option>
           <option value="EX-UK">EX-UK</option>

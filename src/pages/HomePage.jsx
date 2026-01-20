@@ -45,7 +45,6 @@ export default function HomePage({
           vendorId: product.vendorId,
         }));
         setProducts(filteredProducts);
-        console.log(data);
       } catch (error) {
         console.error(
           "Failed to fetch products",

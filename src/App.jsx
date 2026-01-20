@@ -21,7 +21,7 @@ import ChatsPage from "./pages/ChatsPage";
 import InvoicesPage from "./pages/InvoicesPage";
 import ProductsPage from "./pages/ProductsPage";
 import LoginRequired from "./components/LoginRequired";
-
+import axios from "axios";
 function App() {
   const [user, setUser] = useState();
   const [products, setProducts] = useState([]);
@@ -35,6 +35,7 @@ function App() {
     phoneNumber: null,
     amount: 0,
   });
+
   const [messages, setMessages] = useState([]);
   const [receipt, setReceipt] = useState(null);
   const [vendorReviews, setVendorReviews] = useState([]);
