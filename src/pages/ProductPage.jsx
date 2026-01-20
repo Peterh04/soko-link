@@ -367,6 +367,11 @@ export default function ProductPage({
             </button>
             <button
               onClick={() => {
+                if (!user || user === "Guest") {
+                  setIsLoginModalOpen(true);
+                  return;
+                }
+
                 window.location.href = `tel:+${product.vendor_phone}`;
               }}
             >
