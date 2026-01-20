@@ -80,6 +80,7 @@ export default function ProductPage({
           title: data.product.title,
           price: data.product.price,
           images: data.product.images,
+          vendor_phone: data.product.vendor_phone,
           location: data.product.location,
           description: data.product.description,
           createdAt: data.product.createdAt,
@@ -91,6 +92,7 @@ export default function ProductPage({
         setBuyerId(user.id);
         setText(filteredProduct.description);
         setIsLoading(false);
+        console.log(data);
       } catch (error) {
         console.error(
           "Failed to fetch product",
@@ -365,7 +367,7 @@ export default function ProductPage({
             </button>
             <button
               onClick={() => {
-                window.location.href = "tel:+1234567890";
+                window.location.href = `tel:+${product.vendor_phone}`;
               }}
             >
               <PhoneIcon className="fa" />

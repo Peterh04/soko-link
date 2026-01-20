@@ -37,6 +37,7 @@ export default function HomePage({
           id: product.id,
           title: product.title,
           description: product.description,
+          condition: product.condition,
           location: product.location,
           price: product.price,
           images: product.images,
@@ -44,6 +45,7 @@ export default function HomePage({
           vendorId: product.vendorId,
         }));
         setProducts(filteredProducts);
+        console.log(data);
       } catch (error) {
         console.error(
           "Failed to fetch products",
@@ -158,6 +160,7 @@ export default function HomePage({
               key={product.id}
               id={product.id}
               name={product.title}
+              condition={product.condition}
               price={priceString(product.price)}
               location={product.location}
               image={product.images[0]}

@@ -25,6 +25,9 @@ export default function SellPage({ setIsLoginModalOpen }) {
     const fomrData = new FormData();
     fomrData.append("title", form.title);
     fomrData.append("location", form.location);
+    fomrData.append("category", form.category);
+    fomrData.append("condition", form.condition);
+    fomrData.append("vendor_phone", form.vendor_phone);
     fomrData.append("description", form.description);
     fomrData.append("price", form.price);
 
