@@ -3,10 +3,13 @@ import NavBar from "../components/NavBar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { useAlert } from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 import useKenyaLocations from "../hooks/useLocationData";
+import AlertBox from "../components/AlertBox";
 
 export default function SellPage({ setIsLoginModalOpen }) {
+  const { showAlert } = useAlert();
   const kenyaLocations = useKenyaLocations();
 
   const navigate = useNavigate();
@@ -32,6 +35,7 @@ export default function SellPage({ setIsLoginModalOpen }) {
   const handleForm = async (e) => {
     const token = localStorage.getItem("accessToken");
     e.preventDefault();
+
     const fomrData = new FormData();
     fomrData.append("title", form.title);
     fomrData.append("location", `${selectedCounty}, ${selectedArea}`);
@@ -46,6 +50,43 @@ export default function SellPage({ setIsLoginModalOpen }) {
     }
 
     try {
+      if (!form.title) {
+        showAlert("Please enter the product title", "error");
+        return;
+      }
+      if (!form.category) {
+        showAlert("Please select a category", "error");
+        return;
+      }
+      if (!selectedCounty) {
+        showAlert("Please select a county", "error");
+        return;
+      }
+      if (!selectedArea) {
+        showAlert("Please select an area", "error");
+        return;
+      }
+      if (!form.condition) {
+        showAlert("Please select the product condition", "error");
+        return;
+      }
+      if (!form.description) {
+        showAlert("Please enter a product description", "error");
+        return;
+      }
+      if (!form.price) {
+        showAlert("Please enter the product price", "error");
+        return;
+      }
+      if (!form.vendor_phone) {
+        showAlert("Please enter your phone number", "error");
+        return;
+      }
+      if (form.images.length < 3) {
+        showAlert("Please provide at least 3 images", "error");
+        return;
+      }
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/products/vendor/createProduct`,
         fomrData,
@@ -56,7 +97,7 @@ export default function SellPage({ setIsLoginModalOpen }) {
           },
         },
       );
-      console.log("Succesful in creating the porduct! ");
+      showAlert("Successfully created the product!", "success", 1500);
       navigate("/");
     } catch (error) {
       console.error(

@@ -22,6 +22,8 @@ import InvoicesPage from "./pages/InvoicesPage";
 import ProductsPage from "./pages/ProductsPage";
 import LoginRequired from "./components/LoginRequired";
 import axios from "axios";
+import AlertBox from "./components/AlertBox";
+import { useAlert } from "./context/AlertContext";
 function App() {
   const [user, setUser] = useState();
   const [products, setProducts] = useState([]);
@@ -42,9 +44,15 @@ function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const navigate = useNavigate();
+  const { alert } = useAlert();
 
   return (
     <>
+      <AlertBox
+        message={alert.message}
+        type={alert.type}
+        visible={alert.visible}
+      />
       <LoginRequired
         isLoginModalOpen={isLoginModalOpen}
         onClose={() => {

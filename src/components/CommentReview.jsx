@@ -34,7 +34,7 @@ export default function CommentReview({
         <div className="user-rating">
           <p>
             {" "}
-            ⭐ <span>{reviewRate}</span>
+            ⭐ <span> {reviewRate}</span>
           </p>
         </div>
       </div>

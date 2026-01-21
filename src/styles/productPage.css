@@ -365,6 +365,10 @@
   padding: 1rem 1rem;
 
   gap: 1rem;
+
+  min-height: 20.5vh;
+  height: auto;
+  max-height: none;
 }
 
 .vendor-history-container > .section-header {

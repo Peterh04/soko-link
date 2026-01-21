@@ -14,9 +14,11 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAlert } from "../context/AlertContext";
 
 export default function ProfilePage({ setIsLoginModalOpen }) {
   const { user, logOut, setUser, loading } = useAuth();
+  const { showAlert } = useAlert();
   const [isEdited, setIsEdited] = useState(false);
 
   const [form, setForm] = useState({
@@ -28,48 +30,8 @@ export default function ProfilePage({ setIsLoginModalOpen }) {
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
-  // const handleForm = async (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData();
-
-  //   if (form.name) formData.append("name", form.name);
-  //   if (form.email) formData.append("email", form.email);
-  //   if (form.profileImage instanceof File)
-  //     formData.append("profileImage", form.profileImage);
-
-  //   for (let [key, value] of formData.entries()) {
-  //     console.log(key, value);
-  //   }
-
-  //   console.log(
-  //     "form.profileImage is instance of File?",
-  //     form.profileImage instanceof File,
-  //   );
-  //   console.log("form.profileImage:", form.profileImage);
-
-  //   try {
-  //     const { data } = await axios.patch(
-  //       `${import.meta.env.VITE_API_URL}/api/user/update`,
-  //       formData,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       },
-  //     );
-
-  //     setUser(data.user);
-  //     localStorage.setItem("user", JSON.stringify(data.user));
-  //     setIsEdited(false);
-  //   } catch (error) {
-  //     console.error("Failed to update", error.response?.data || error.message);
-  //   }
-  // };
   const handleForm = async (e) => {
     e.preventDefault();
-
-    console.log("=== CURRENT USER STATE BEFORE UPDATE ===");
-    console.log(user); // <-- this will show the current details including profileImage
 
     const formData = new FormData();
 
@@ -88,14 +50,12 @@ export default function ProfilePage({ setIsLoginModalOpen }) {
           },
         },
       );
-
-      console.log("=== RESPONSE FROM BACKEND ===");
-      console.log(data.user); // <-- check what Cloudinary URL came back
-
+      showAlert("Successfully updated your profile", "success", 1500);
       setUser(data.user);
       localStorage.setItem("user", JSON.stringify(data.user));
       setIsEdited(false);
     } catch (error) {
+      showAlert("Failed to update your profile", "error");
       console.error("Failed to update", error.response?.data || error.message);
     }
   };

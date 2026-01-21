@@ -270,3 +270,52 @@ body {
 body.dark-mode {
   background-color: var(--dark-background-400);
 }
+
+.alertBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 80%;
+  height: 50px;
+
+  position: fixed;
+  top: -60;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000000;
+
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+  color: white;
+
+  visibility: hidden;
+}
+.alertBox.visible {
+  visibility: visible;
+  animation: bounceDown 0.5s ease forwards;
+}
+
+.alertBox.error {
+  background-color: rgb(249, 146, 146);
+}
+
+.alertBox.success {
+  background-color: rgb(153, 244, 153);
+}
+
+@keyframes bounceDown {
+  0% {
+    top: -60px;
+    opacity: 0;
+  }
+  50% {
+    top: 30px;
+    opacity: 1;
+  }
+  100% {
+    top: 20px;
+    opacity: 1;
+  }
+}

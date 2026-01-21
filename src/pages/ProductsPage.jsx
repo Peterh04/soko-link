@@ -21,14 +21,13 @@ export default function ProductsPage({ vendorId }) {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         setVendorProducts(data.products);
-        console.log(data);
       } catch (error) {
         console.error(
           "Failed to fetch vendor's products",
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
       }
     };

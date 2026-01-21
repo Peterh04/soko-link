@@ -10,10 +10,13 @@ import usePasswordVisiblity from "../hooks/usePasswordVisibility";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAlert } from "../context/AlertContext";
 
 export default function RegisterPage() {
   const { isPasswordVisible, handlePasswordVisibility } =
     usePasswordVisiblity();
+
+  const { showAlert } = useAlert();
 
   const navigate = useNavigate();
 
@@ -32,19 +35,28 @@ export default function RegisterPage() {
 
     if (confirmPassword !== password) {
       setPasswordMismatch(true);
+      showAlert("Mismatch Passwords", "error");
     } else {
       try {
         const { data } = await axios.post(
           `${import.meta.env.VITE_API_URL}/api/users/register`,
-          { name, email, password }
+          { name, email, password },
         );
 
+        showAlert("Succesfully created the account", "success", 1500);
         navigate("/login/email");
       } catch (error) {
-        console.error(
-          "Registration error",
-          error.response?.data || error.message
-        );
+        if (error.response?.data.message == "Email already registered") {
+          showAlert("Email already in use", "error");
+        } else if (error.response?.data.message == "Invalid email format") {
+          showAlert("Enter a valid email", "error");
+        } else {
+          showAlert("Failed to create an account", "error");
+          console.error(
+            "Registration error",
+            error.response?.data || error.message,
+          );
+        }
       }
     }
   };

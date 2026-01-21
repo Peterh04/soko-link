@@ -97,6 +97,7 @@ export default function ReceiptPage({ receipt, vendorId }) {
           },
         );
         console.log(data.invoice.product);
+        console.log(receipt);
         setUserCommented(data.invoice.product.alreadyReviewed);
       } catch (error) {
         console.error(
@@ -118,7 +119,7 @@ export default function ReceiptPage({ receipt, vendorId }) {
         {
           content: review.content,
           images: 2,
-          vendorId: receipt.vendorId ? receipt.vendorId : vendorId,
+          vendorId: receipt.vendorId,
           rating: review.score,
           productId: receipt.productId,
           invoiceId: Number(receipt.id),

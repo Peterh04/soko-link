@@ -10,8 +10,11 @@ import usePasswordVisiblity from "../hooks/usePasswordVisibility";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import AlertBox from "../components/AlertBox";
+import { useAlert } from "../context/AlertContext";
 export default function EmailSignIn() {
   const { setUser } = useAuth();
+  const { alert, setAlert, showAlert, hideAlert } = useAlert();
   const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
@@ -28,21 +31,30 @@ export default function EmailSignIn() {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/users/login`,
-        { email, password }
+        { email, password },
       );
 
       localStorage.setItem("accessToken", data.token);
       setUser(data.user);
       navigate("/");
     } catch (error) {
-      console.error("Login Error", error.response?.data || error.message);
+      console.error("Login Error");
+      showAlert("invalid email or password", "error");
     }
   };
+
   return (
     <main aria-label="EmailSignIn-page" className="emailSignIn-page">
       <div className="logo-container">
         <img src="/src/assets/light_logo.png" alt="soko-link_logo" />
       </div>
+
+      <AlertBox
+        message={alert.message}
+        visible={alert.visible}
+        type={alert.type}
+        onClose={() => hideAlert()}
+      />
       <section aria-label="Sign-in section" className="sign-in-section">
         <form role="form" aria-label="login-form form" className="login-form ">
           <div className="form-control">

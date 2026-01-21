@@ -24,10 +24,9 @@ export default function FeedbackContainer({
           <h5 className="vendor-name">{name}</h5>
         </div>
 
-        <p className="user-comment-date">{date}</p>
+        <div className="user-comment-date">{date}</div>
       </div>
 
-      <div className="user-rating">3stars</div>
       <div>{comment}</div>
     </div>
   );

@@ -8,9 +8,11 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useAlert } from "../context/AlertContext";
 
 export default function SecurityPage() {
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
   const { logOut } = useAuth();
   const [form, setForm] = useState({
     oldPassword: "",
@@ -23,7 +25,7 @@ export default function SecurityPage() {
     const token = localStorage.getItem("accessToken");
     e.preventDefault();
     try {
-      const { data } = axios.patch(
+      const { data } = await axios.patch(
         `${import.meta.env.VITE_API_URL}/api/user/update/password`,
         {
           oldPassword: form.oldPassword,
@@ -33,14 +35,15 @@ export default function SecurityPage() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
-
+      showAlert("Successfully updated your password", "success", 1500);
       logOut();
     } catch (error) {
+      showAlert("Failed to update your password", "error");
       console.error(
         "Failed to update user Password",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     }
   };

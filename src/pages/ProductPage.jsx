@@ -17,6 +17,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Oval } from "react-loader-spinner";
 import { io } from "socket.io-client";
+import { useAlert } from "../context/AlertContext";
 
 const socket = io(import.meta.env.VITE_API_URL);
 
@@ -29,6 +30,7 @@ export default function ProductPage({
   setIsLoginModalOpen,
 }) {
   const { user, loading } = useAuth();
+  const { showAlert } = useAlert();
   const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const { id } = useParams();
@@ -217,7 +219,6 @@ export default function ProductPage({
           data: { productId },
         },
       );
-
       setIsLiked(false);
     } catch (error) {
       console.error(
@@ -241,7 +242,9 @@ export default function ProductPage({
           data: { productId },
         },
       );
+      showAlert("Successfully deleted the product", "success", 1500);
     } catch (error) {
+      showAlert("Failed to delete the product", "error");
       console.error(
         "Failed to delete product",
         error.response?.data || error.message,
@@ -306,7 +309,7 @@ export default function ProductPage({
 
         {user && product?.vendorId === user.id && (
           <button
-            className="back-btn"
+            className="delete-btn"
             onClick={() => {
               handleDelete();
               navigate("/");
@@ -442,23 +445,25 @@ export default function ProductPage({
               <div className="vender-profile">
                 <div className="vendor-image-container">
                   <img
-                    src="https://images.unsplash.com/photo-1597393922738-085ea04b5a07?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1022"
-                    alt=""
+                    src={vendor.profileImage}
+                    alt={vendor.name}
                     className="vendor-img"
                   />
                 </div>
                 <h5 className="vendor-name">{vendor.name}</h5>
               </div>
 
-              <div onClick={() => navigate("/products")}>View all ads(42)</div>
+              <div onClick={() => navigate("/products")}>
+                View all ads({vendor.totalProducts})
+              </div>
             </div>
 
             <div className="feedback-section">
               <div className="section-header">
                 <h4>Feedback about vendor</h4>
-                <p onClick={() => navigate("/reviews")}>
+                <div onClick={() => navigate("/reviews")}>
                   view all({vendorReviews.length})
-                </p>
+                </div>
               </div>
               <div className="feedback-showcase">
                 {vendorReviews.slice(0, 2).map((comment) => (

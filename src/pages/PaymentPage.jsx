@@ -8,6 +8,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import { io } from "socket.io-client";
+import { useAlert } from "../context/AlertContext";
 
 const socket = io(import.meta.env.VITE_API_URL);
 
@@ -22,7 +23,7 @@ export default function PaymentPage({ setReceipt }) {
   const [confirmedPaymet, setCofirmedPaymet] = useState(false);
 
   const navigate = useNavigate();
-
+  const { showAlert } = useAlert();
   const { id } = useParams();
 
   const handleSubmit = async (e) => {
@@ -37,7 +38,7 @@ export default function PaymentPage({ setReceipt }) {
             phone: phone,
             amount: invoice?.amount,
             invoiceId: invoice?.id,
-          }
+          },
         );
 
         alert("Check your phone to complete the payment!");
@@ -62,7 +63,7 @@ export default function PaymentPage({ setReceipt }) {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         setInvoice(data.invoice);
         setPhone(data.invoice.phone);
@@ -85,14 +86,14 @@ export default function PaymentPage({ setReceipt }) {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         if (data.invoice.status === "paid") {
           setReceipt(data.invoice);
           setCofirmedPaymet(true);
           clearInterval(intervalId);
-
-          navigate(`/paymennt/success/${id}`);
+          showAlert("Payment Succesfully", "success", 1500);
+          navigate(`/payment/success/${id}`);
         }
       } catch (error) {
         console.error("Failed to fetch", error.response?.data || error.message);
@@ -105,7 +106,9 @@ export default function PaymentPage({ setReceipt }) {
   return (
     <main aria-label="payment page" className="payment-page">
       <header className="payment-page-header">
-        <BackIcon className="fa" />
+        <button onClick={() => navigate(-1)}>
+          <BackIcon className="fa" />
+        </button>
         <h3>Payment Method</h3>
       </header>
 
