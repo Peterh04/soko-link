@@ -1,4 +1,3 @@
-import { duration } from "@mui/material";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const AlertContext = createContext(null);
