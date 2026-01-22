@@ -7,6 +7,7 @@ import {
 } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../modules/apiClient";
 
 const AuthContext = createContext(null);
 
@@ -17,33 +18,15 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const token = localStorage.getItem("accessToken");
-
-      if (!token) {
-        setLoading(false);
-        setUser("Guest");
-        return;
-      }
-
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/user/me`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-
+        const { data } = await api.get("/api/user/me");
+        console.log("Hi");
         setUser(data.user);
-        localStorage.setItem("user", JSON.stringify(data.user));
       } catch (error) {
         console.error(
           "Failed to fetch user",
           error.response?.data || error.message,
         );
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("user");
         setUser(null);
       } finally {
         setLoading(false);
@@ -53,11 +36,15 @@ export function AuthProvider({ children }) {
     fetchUser();
   }, []);
 
-  const logOut = useCallback(() => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("user");
-    setUser(null);
-    navigate("/login");
+  const logOut = useCallback(async () => {
+    try {
+      await api.post("/api/logout");
+    } catch (err) {
+      console.error("Logout failed", err);
+    } finally {
+      setUser(null);
+      navigate("/login");
+    }
   }, [navigate]);
 
   return (
