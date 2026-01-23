@@ -13,7 +13,7 @@ import InvoiceIcon from "../assets/icons/invoice.svg?react";
 import FeedbackContainer from "../components/FeedbackContainer";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+
 import { useAuth } from "../context/AuthContext";
 import { Oval } from "react-loader-spinner";
 import { io } from "socket.io-client";
@@ -75,9 +75,7 @@ export default function ProductPage({
 
     const fetchProduct = async () => {
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/products/${id}`,
-        );
+        const { data } = await api.get(`/api/products/${id}`);
         const filteredProduct = {
           id: data.product.id,
           title: data.product.title,
@@ -111,9 +109,7 @@ export default function ProductPage({
 
     const fetchComments = async () => {
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/comment/${product.vendorId}`,
-        );
+        const { data } = await api.get(`/api/comment/${product.vendorId}`);
         const filteredComments = data.comments.map((comment) => ({
           id: comment.id,
           content: comment.content,
@@ -137,16 +133,7 @@ export default function ProductPage({
   useEffect(() => {
     const isLiked = async () => {
       try {
-        const token = localStorage.getItem("accessToken");
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/user/userWishlist/`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-
+        const { data } = await api.get("/api/user/userWishlist/");
         const liked = data.wishliist.some(
           (item) => item.Product && item.Product.id === product.id,
         );
@@ -184,19 +171,12 @@ export default function ProductPage({
       setIsLoginModalOpen(true);
       return;
     }
-    const token = localStorage.getItem("accessToken");
     const productId = product.id;
 
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/user/userWishlist/add`,
-        { productId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const { data } = await api.post("/api/user/userWishlist/add", {
+        productId,
+      });
 
       setIsLiked(true);
     } catch (error) {
@@ -208,18 +188,11 @@ export default function ProductPage({
   };
 
   const handleUnliking = async () => {
-    const token = localStorage.getItem("accessToken");
     const productId = product.id;
     try {
-      const { data } = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/api/user/userWishlist/remove`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          data: { productId },
-        },
-      );
+      const { data } = await api.delete("/api/user/userWishlist/remove", {
+        data: { productId },
+      });
       setIsLiked(false);
     } catch (error) {
       console.error(
@@ -230,19 +203,11 @@ export default function ProductPage({
   };
 
   const handleDelete = async () => {
-    const token = localStorage.getItem("accessToken");
     const productId = product.id;
     try {
-      const { data } = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/api/products/vendor/deleteProduct`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-
-          data: { productId },
-        },
-      );
+      const { data } = await api.delete("/api/products/vendor/deleteProduct", {
+        data: { productId },
+      });
       showAlert("Successfully deleted the product", "success", 1500);
     } catch (error) {
       showAlert("Failed to delete the product", "error");
