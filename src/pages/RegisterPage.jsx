@@ -7,10 +7,10 @@ import view from "../assets/icons/view.svg";
 import hide from "../assets/icons/hide.svg";
 import padlock from "../assets/icons/padlock.svg";
 import usePasswordVisiblity from "../hooks/usePasswordVisibility";
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../context/AlertContext";
+import api from "../modules/apiClient";
 
 export default function RegisterPage() {
   const { isPasswordVisible, handlePasswordVisibility } =
@@ -38,11 +38,11 @@ export default function RegisterPage() {
       showAlert("Mismatch Passwords", "error");
     } else {
       try {
-        const { data } = await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/users/register`,
-          { name, email, password },
-        );
-
+        const { data } = await api.post("/api/users/register", {
+          name,
+          email,
+          password,
+        });
         showAlert("Succesfully created the account", "success", 1500);
         navigate("/login/email");
       } catch (error) {

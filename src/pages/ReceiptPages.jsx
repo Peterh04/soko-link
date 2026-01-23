@@ -3,8 +3,8 @@ import { jsPDF } from "jspdf";
 import BackIcon from "../assets/icons/back.svg?react";
 import barCode from "../assets/barcode.gif";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../modules/apiClient";
 export default function ReceiptPage({ receipt, vendorId }) {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
@@ -17,9 +17,7 @@ export default function ReceiptPage({ receipt, vendorId }) {
   useEffect(() => {
     const getProduct = async () => {
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/products/${receipt.productId}`,
-        );
+        const { data } = await api.get(`/api/products/${receipt.productId}`);
         setProduct({
           title: data.product.title,
           price: data.product.price,
@@ -85,17 +83,9 @@ export default function ReceiptPage({ receipt, vendorId }) {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
     const hasUserCommented = async () => {
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/invoices/${receipt.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
+        const { data } = await api.get(`/api/invoices/${receipt.id}`);
         console.log(data.invoice.product);
         console.log(receipt);
         setUserCommented(data.invoice.product.alreadyReviewed);
@@ -112,25 +102,16 @@ export default function ReceiptPage({ receipt, vendorId }) {
 
   const handleReviewSubmission = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("accessToken");
+
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/comment`,
-        {
-          content: review.content,
-          images: 2,
-          vendorId: receipt.vendorId,
-          rating: review.score,
-          productId: receipt.productId,
-          invoiceId: Number(receipt.id),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      console.log("Submitted Review", data);
+      const { data } = await api.post("/api/comment", {
+        content: review.content,
+        images: 2,
+        vendorId: receipt.vendorId,
+        rating: review.score,
+        productId: receipt.productId,
+        invoiceId: Number(receipt.id),
+      });
       setUserCommented(true);
       setIsReviewModalOpen(false);
     } catch (error) {

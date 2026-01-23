@@ -12,10 +12,10 @@ import CategoryItem from "../components/CategoryItem";
 
 import NavBar from "../components/NavBar";
 import ProductPreview from "../components/ProductPreview";
-import axios from "axios";
 import { useEffect } from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
+import api from "../modules/apiClient";
 
 export default function HomePage({
   products,
@@ -30,10 +30,7 @@ export default function HomePage({
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/products`,
-        );
-
+        const { data } = await api.get(`/api/products`);
         const filteredProducts = data.products.map((product) => ({
           id: product.id,
           title: product.title,
@@ -61,9 +58,7 @@ export default function HomePage({
 
   const handleSearch = async () => {
     try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/products/search/${searchTerm}`,
-      );
+      const { data } = await api.get(`/api/products/search/${searchTerm}`);
       const filteredProducts = data.filteredProducts.map((product) => ({
         id: product.id,
         title: product.title,

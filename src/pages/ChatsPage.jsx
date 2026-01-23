@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import "../styles/chatsPage.css";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Oval } from "react-loader-spinner";
 import { useAuth } from "../context/AuthContext";
+import api from "../modules/apiClient";
 
 export default function ChatsPage({
   setBuyerId,
@@ -29,16 +29,8 @@ export default function ChatsPage({
 
   useEffect(() => {
     const getMessages = async () => {
-      const token = localStorage.getItem("accessToken");
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/messages/`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
+        const { data } = await api.get(`/api/messages/`);
         setMessages(data.messages || []);
         setIsLoadig(false);
       } catch (error) {

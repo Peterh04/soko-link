@@ -5,8 +5,8 @@ import FilterIconn from "../assets/icons/filter.svg?react";
 import { useState } from "react";
 import ReactSlider from "react-slider";
 import ProductPreview from "../components/ProductPreview";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../modules/apiClient";
 
 export default function ResultsPage({
   searchTerm,
@@ -60,9 +60,7 @@ export default function ResultsPage({
 
   const handleSearch = async () => {
     try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/products/search/${searchTerm}`,
-      );
+      const { data } = await api.get(`/api/products/search/${searchTerm}`);
       const filteredProducts = data.filteredProducts.map((product) => ({
         id: product.id,
         title: product.title,
@@ -98,9 +96,7 @@ export default function ResultsPage({
       const url = `${
         import.meta.env.VITE_API_URL
       }/api/products/search/${searchTerm}?${params.toString()}`;
-
-      const { data } = await axios.get(url);
-
+      const { data } = await api.get(url);
       const filteredProducts = data.filteredProducts.map((product) => ({
         id: product.id,
         title: product.title,

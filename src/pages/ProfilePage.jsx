@@ -12,9 +12,9 @@ import FowardIcon from "../assets/icons/foward.svg?react";
 import NavBar from "../components/NavBar";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../context/AlertContext";
+import api from "../modules/apiClient.js";
 
 export default function ProfilePage({ setIsLoginModalOpen }) {
   const { user, logOut, setUser, loading } = useAuth();
@@ -27,7 +27,6 @@ export default function ProfilePage({ setIsLoginModalOpen }) {
     profileImage: "",
   });
 
-  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
   const handleForm = async (e) => {
@@ -41,15 +40,7 @@ export default function ProfilePage({ setIsLoginModalOpen }) {
       formData.append("profileImage", form.profileImage);
 
     try {
-      const { data } = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/api/user/update`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const { data } = await api.patch(`/api/user/update`);
       showAlert("Successfully updated your profile", "success", 1500);
       setUser(data.user);
       localStorage.setItem("user", JSON.stringify(data.user));

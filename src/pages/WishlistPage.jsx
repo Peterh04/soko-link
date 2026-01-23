@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import "../styles/wishListPage.css";
-import axios from "axios";
 import ProductPreview from "../components/ProductPreview";
 import LoginRequired from "../components/LoginRequired";
 import { useAuth } from "../context/AuthContext";

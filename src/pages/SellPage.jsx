@@ -1,12 +1,13 @@
 import "../styles/sellPage.css";
 import NavBar from "../components/NavBar";
 import { useEffect, useState } from "react";
-import axios from "axios";
+
 import { useAuth } from "../context/AuthContext";
 import { useAlert } from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 import useKenyaLocations from "../hooks/useLocationData";
 import AlertBox from "../components/AlertBox";
+import api from "../modules/apiClient";
 
 export default function SellPage({ setIsLoginModalOpen }) {
   const { showAlert } = useAlert();
@@ -86,13 +87,11 @@ export default function SellPage({ setIsLoginModalOpen }) {
         showAlert("Please provide at least 3 images", "error");
         return;
       }
-
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/products/vendor/createProduct`,
+      const { data } = await api.post(
+        "/api/products/vendor/createProduct",
         fomrData,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
         },

@@ -11,6 +11,8 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Oval } from "react-loader-spinner";
 import { useNavigate, useParams } from "react-router-dom";
+import api from "../modules/apiClient";
+import { getAccessToken } from "../modules/accessTokenModule";
 
 const socket = io(import.meta.env.VITE_API_URL);
 
@@ -79,14 +81,8 @@ export default function ChatPage() {
     if (!roomId) return;
 
     const fetchMessages = async () => {
-      const token = localStorage.getItem("accessToken");
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/messages/${roomId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const { data } = await api.get(`/api/messages/${roomId}`);
         setMessages(data.messages || []);
         setIsLoading(false);
       } catch (error) {
@@ -99,17 +95,11 @@ export default function ChatPage() {
   }, [roomId]);
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) return;
+    if (getAccessToken() === null) return;
 
     const getProducts = async () => {
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/products/vendor/getProducts`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const { data } = await api.get(`/api/products/vendor/getProducts`);
         setProducts(data.products || []);
       } catch (error) {
         console.error("Failed to get vendor products", error);
@@ -123,13 +113,11 @@ export default function ChatPage() {
     if (!user || !bId || !vId) return;
 
     const receiverId = user.id === bId ? vId : bId;
-    const token = localStorage.getItem("accessToken");
 
     const getReceiverDetails = async () => {
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/messages/receiver?receiverId=${receiverId}`,
-          { headers: { Authorization: `Bearer ${token}` } },
+        const { data } = await api.get(
+          `/api/messages/receiver?receiverId=${receiverId}`,
         );
         setReceiver(data.receiver);
       } catch (error) {
@@ -165,23 +153,17 @@ export default function ChatPage() {
   };
 
   const generateInvoice = async () => {
-    const token = localStorage.getItem("accessToken");
     if (!user) return;
 
     const actualBuyerId = user.id === bId ? vId : bId;
 
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/invoices/create`,
-        {
-          buyerId: actualBuyerId,
-          productId: userInvoiceDetails.productId,
-          phone: userInvoiceDetails.number,
-          amount: userInvoiceDetails.amount,
-        },
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-
+      const { data } = await api.post(`/api/invoices/create`, {
+        buyerId: actualBuyerId,
+        productId: userInvoiceDetails.productId,
+        phone: userInvoiceDetails.number,
+        amount: userInvoiceDetails.amount,
+      });
       socket.emit("sendMessage", {
         senderId: user.id,
         receiverId: actualBuyerId,

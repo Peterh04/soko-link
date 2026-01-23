@@ -3,25 +3,18 @@ import "../styles/productsPage.css";
 import BackIcon from "../assets/icons/back.svg?react";
 import ProductPreview from "../components/ProductPreview";
 import { useEffect, useState } from "react";
-import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
+import api from "../modules/apiClient";
 
 export default function ProductsPage({ vendorId }) {
   const navigate = useNavigate();
   const [vendorProducts, setVendorProducts] = useState([]);
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
     const getVedorsProducts = async () => {
       try {
-        const { data } = await axios.get(
-          `${
-            import.meta.env.VITE_API_URL
-          }/api/products/vendor/${vendorId}/getProducts`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
+        const { data } = await api.get(
+          "/api/products/vendor/${vendorId}/getProducts",
         );
         setVendorProducts(data.products);
       } catch (error) {

@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import { io } from "socket.io-client";
 import { useAlert } from "../context/AlertContext";
+import api from "../modules/apiClient";
 
 const socket = io(import.meta.env.VITE_API_URL);
 
@@ -32,15 +33,11 @@ export default function PaymentPage({ setReceipt }) {
     if (selectedId === 1) {
       // M-Pesa payment
       try {
-        const { data } = await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/mpesa/stkpush`,
-          {
-            phone: phone,
-            amount: invoice?.amount,
-            invoiceId: invoice?.id,
-          },
-        );
-
+        const { data } = await api.post(`/api/mpesa/stkpush`, {
+          phone: phone,
+          amount: invoice?.amount,
+          invoiceId: invoice?.id,
+        });
         alert("Check your phone to complete the payment!");
       } catch (err) {
         console.error(err.response?.data || err.message);
@@ -55,16 +52,8 @@ export default function PaymentPage({ setReceipt }) {
 
   useEffect(() => {
     const getInvoice = async () => {
-      const token = localStorage.getItem("accessToken");
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/invoices/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
+        const { data } = await api.get(`/api/invoices/${id}`);
         setInvoice(data.invoice);
         setPhone(data.invoice.phone);
       } catch (error) {
@@ -76,18 +65,9 @@ export default function PaymentPage({ setReceipt }) {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-
     const intervalId = setInterval(async () => {
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/invoices/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
+        const { data } = await api.get(`/api/invoices/${id}`);
         if (data.invoice.status === "paid") {
           setReceipt(data.invoice);
           setCofirmedPaymet(true);

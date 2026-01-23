@@ -2,22 +2,14 @@ import { useNavigate } from "react-router-dom";
 import "../styles/invoicesPage.css";
 import BackIcon from "../assets/icons/back.svg?react";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../modules/apiClient";
 
 export default function InvoicesPage({ setReceipt }) {
   const [invoices, setInvoices] = useState([]);
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
     const getUserInvoices = async () => {
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/invoices/`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
+        const { data } = await api.get(`/api/invoices/`);
         const sortedInvoices = data.invoices.sort((a, b) => {
           return new Date(b.createdAt) - new Date(a.createdAt);
         });
