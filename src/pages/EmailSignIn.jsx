@@ -1,5 +1,5 @@
 import "../styles/EmailSignIn.css";
-import axios from "axios";
+
 import googleIcon from "../assets/icons/google.svg";
 import appleIcon from "../assets/icons/apple.svg";
 import mail from "../assets/icons/mail.svg";
@@ -13,6 +13,7 @@ import { useAuth } from "../context/AuthContext";
 import AlertBox from "../components/AlertBox";
 import { useAlert } from "../context/AlertContext";
 import { setAccessToken } from "../modules/accessTokenModule";
+import api from "../modules/apiClient";
 export default function EmailSignIn() {
   const { setUser } = useAuth();
   const { alert, setAlert, showAlert, hideAlert } = useAlert();
@@ -30,11 +31,12 @@ export default function EmailSignIn() {
     const { email, password } = form;
 
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/users/login`,
-        { email, password },
-      );
+      const { data } = await api.post("/api/users/login", {
+        email,
+        password,
+      });
 
+      console.log("accessToken:", data.token);
       setAccessToken(data.token);
       setUser(data.user);
       navigate("/");
