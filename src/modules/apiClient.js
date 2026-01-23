@@ -6,9 +6,9 @@ const api = axios.create({
   withCredentials: true,
 });
 
-async function refreshAccessToken() {
+export async function refreshAccessToken() {
   try {
-    const { data } = await api.post("/api/token/refresh");
+    const { data } = await api.post("/api/users/token/refresh");
     return data.token;
   } catch {
     return null;

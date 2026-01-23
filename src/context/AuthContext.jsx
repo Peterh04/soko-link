@@ -7,7 +7,8 @@ import {
 } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import api from "../modules/apiClient";
+import api, { refreshAccessToken } from "../modules/apiClient";
+import { setAccessToken } from "../modules/accessTokenModule";
 
 const AuthContext = createContext(null);
 
@@ -17,23 +18,35 @@ export function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const initializeUser = async () => {
+      console.log("[Auth] Initializing user...");
+
       try {
-        const { data } = await api.get("/api/user/me");
-        console.log("Hi");
-        setUser(data.user);
-      } catch (error) {
-        console.error(
-          "Failed to fetch user",
-          error.response?.data || error.message,
-        );
+        console.log("[Auth] Calling refresh token endpoint...");
+        const newToken = await refreshAccessToken();
+
+        if (newToken) {
+          console.log("[Auth] Received new access token:", newToken);
+          setAccessToken(newToken);
+
+          console.log("[Auth] Fetching user with new access token...");
+          const { data } = await api.get("/api/user/me");
+          console.log("[Auth] Fetched user:", data.user);
+          setUser(data.user);
+        } else {
+          console.log("[Auth] No valid refresh token, setting user as Guest");
+          setUser("Guest");
+        }
+      } catch (err) {
+        console.error("[Auth] Failed to initialize user:", err);
         setUser(null);
       } finally {
         setLoading(false);
+        console.log("[Auth] Initialization complete, loading set to false");
       }
     };
 
-    fetchUser();
+    initializeUser();
   }, []);
 
   const logOut = useCallback(async () => {
