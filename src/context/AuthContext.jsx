@@ -5,7 +5,6 @@ import {
   useState,
   useCallback,
 } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import api, { refreshAccessToken } from "../modules/apiClient";
 import { setAccessToken } from "../modules/accessTokenModule";
@@ -19,23 +18,24 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const initializeUser = async () => {
-      setLoading(true); // ensure loading is true on every refresh
+      setLoading(true);
+
       try {
-        const newToken = await refreshAccessToken();
-        if (newToken) {
-          setAccessToken(newToken); // memory storage
-          const { data } = await api.get("/api/user/me", {
-            withCredentials: true,
-          });
+        const token = await refreshAccessToken();
+
+        if (token) {
+          setAccessToken(token);
+
+          const { data } = await api.get("/api/user/me");
           setUser(data.user);
         } else {
-          setUser(null); // not Guest
+          setUser(null); // Guest
         }
       } catch (err) {
-        console.error("Failed to initialize user", err);
+        console.error("Auth initialization failed:", err);
         setUser(null);
       } finally {
-        setLoading(false); // only stop loading when done
+        setLoading(false);
       }
     };
 
@@ -44,11 +44,12 @@ export function AuthProvider({ children }) {
 
   const logOut = useCallback(async () => {
     try {
-      await api.post("/api/logout");
+      await api.post("/api/users/logout");
     } catch (err) {
-      console.error("Logout failed", err);
+      console.error("Logout failed:", err);
     } finally {
       setUser(null);
+      setAccessToken(null);
       navigate("/login");
     }
   }, [navigate]);
@@ -62,8 +63,6 @@ export function AuthProvider({ children }) {
 
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
-  if (!ctx) {
-    throw new Error("useAuth must be used within AuthProvider");
-  }
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
   return ctx;
 };

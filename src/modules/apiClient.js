@@ -6,6 +6,7 @@ const api = axios.create({
   withCredentials: true,
 });
 
+// Refresh token function
 export async function refreshAccessToken() {
   try {
     const { data } = await api.post(
@@ -13,19 +14,20 @@ export async function refreshAccessToken() {
       {},
       { withCredentials: true },
     );
-    console.log("refresh success", data.token);
+
+    if (!data?.token) return null;
+
+    setAccessToken(data.token);
     return data.token;
   } catch (err) {
-    console.log("refresh failed", err);
     return null;
   }
 }
 
+// Request interceptor: attach token if available
 api.interceptors.request.use((config) => {
   const token = getAccessToken();
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   config.headers["Content-Type"] = "application/json";
   return config;
 });
@@ -39,11 +41,8 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       const newToken = await refreshAccessToken();
-      if (!newToken) {
-        return Promise.reject(new Error("Session expired, please login again"));
-      }
+      if (!newToken) return Promise.reject(error);
 
-      setAccessToken(newToken);
       originalRequest.headers.Authorization = `Bearer ${newToken}`;
       return api(originalRequest);
     }
