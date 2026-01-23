@@ -18,6 +18,7 @@ import { useAuth } from "../context/AuthContext";
 import { Oval } from "react-loader-spinner";
 import { io } from "socket.io-client";
 import { useAlert } from "../context/AlertContext";
+import api from "../modules/apiClient";
 
 const socket = io(import.meta.env.VITE_API_URL);
 

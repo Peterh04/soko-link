@@ -5,6 +5,7 @@ import axios from "axios";
 import ProductPreview from "../components/ProductPreview";
 import LoginRequired from "../components/LoginRequired";
 import { useAuth } from "../context/AuthContext";
+import api from "../modules/apiClient";
 
 export default function WishlistPage({ setIsLoginModalOpen }) {
   const { user, loading } = useAuth();
@@ -21,21 +22,13 @@ export default function WishlistPage({ setIsLoginModalOpen }) {
   useEffect(() => {
     const fetchUserWishlist = async () => {
       try {
-        const token = localStorage.getItem("accessToken");
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/user/userWishlist/`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const { data } = await api.get("/api/user/userWishlist/");
 
         setWishlist(data.wishliist);
       } catch (error) {
         console.error(
           "Failed to fetch user wishlist",
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
       }
     };
