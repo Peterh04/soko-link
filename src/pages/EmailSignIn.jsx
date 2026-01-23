@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import AlertBox from "../components/AlertBox";
 import { useAlert } from "../context/AlertContext";
+import { setAccessToken } from "../modules/accessTokenModule";
 export default function EmailSignIn() {
   const { setUser } = useAuth();
   const { alert, setAlert, showAlert, hideAlert } = useAlert();
@@ -34,6 +35,7 @@ export default function EmailSignIn() {
         { email, password },
       );
 
+      setAccessToken(data.token);
       setUser(data.user);
       navigate("/");
     } catch (error) {

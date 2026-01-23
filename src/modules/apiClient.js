@@ -6,49 +6,29 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Refresh token function
 export async function refreshAccessToken() {
   try {
-    const { data } = await api.post(
-      "/api/users/token/refresh",
-      {},
-      { withCredentials: true },
-    );
+    const response = await api.post("/api/users/token/refresh");
 
-    if (!data?.token) return null;
+    const token = response.data?.token;
+    if (!token) return null;
 
-    setAccessToken(data.token);
-    return data.token;
-  } catch (err) {
+    setAccessToken(token);
+    return token;
+  } catch (error) {
     return null;
   }
 }
 
-// Request interceptor: attach token if available
-api.interceptors.request.use((config) => {
-  const token = getAccessToken();
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  config.headers["Content-Type"] = "application/json";
-  return config;
-});
-
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      const newToken = await refreshAccessToken();
-      if (!newToken) return Promise.reject(error);
-
-      originalRequest.headers.Authorization = `Bearer ${newToken}`;
-      return api(originalRequest);
+api.interceptors.request.use(
+  (config) => {
+    const token = getAccessToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-
-    return Promise.reject(error);
+    return config;
   },
+  (error) => Promise.reject(error),
 );
 
 export default api;

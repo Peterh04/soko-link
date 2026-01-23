@@ -24,8 +24,6 @@ export function AuthProvider({ children }) {
         const token = await refreshAccessToken();
 
         if (token) {
-          setAccessToken(token);
-
           const { data } = await api.get("/api/user/me");
           setUser(data.user);
         } else {
