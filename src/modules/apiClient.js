@@ -8,9 +8,15 @@ const api = axios.create({
 
 export async function refreshAccessToken() {
   try {
-    const { data } = await api.post("/api/users/token/refresh");
+    const { data } = await api.post(
+      "/api/users/token/refresh",
+      {},
+      { withCredentials: true },
+    );
+    console.log("refresh success", data.token);
     return data.token;
-  } catch {
+  } catch (err) {
+    console.log("refresh failed", err);
     return null;
   }
 }

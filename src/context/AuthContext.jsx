@@ -19,30 +19,23 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const initializeUser = async () => {
-      console.log("[Auth] Initializing user...");
-
+      setLoading(true); // ensure loading is true on every refresh
       try {
-        console.log("[Auth] Calling refresh token endpoint...");
         const newToken = await refreshAccessToken();
-
         if (newToken) {
-          console.log("[Auth] Received new access token:", newToken);
-          setAccessToken(newToken);
-
-          console.log("[Auth] Fetching user with new access token...");
-          const { data } = await api.get("/api/user/me");
-          console.log("[Auth] Fetched user:", data.user);
+          setAccessToken(newToken); // memory storage
+          const { data } = await api.get("/api/user/me", {
+            withCredentials: true,
+          });
           setUser(data.user);
         } else {
-          console.log("[Auth] No valid refresh token, setting user as Guest");
-          setUser("Guest");
+          setUser(null); // not Guest
         }
       } catch (err) {
-        console.error("[Auth] Failed to initialize user:", err);
+        console.error("Failed to initialize user", err);
         setUser(null);
       } finally {
-        setLoading(false);
-        console.log("[Auth] Initialization complete, loading set to false");
+        setLoading(false); // only stop loading when done
       }
     };
 

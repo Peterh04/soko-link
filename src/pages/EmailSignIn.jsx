@@ -34,7 +34,6 @@ export default function EmailSignIn() {
         { email, password },
       );
 
-      localStorage.setItem("accessToken", data.token);
       setUser(data.user);
       navigate("/");
     } catch (error) {
