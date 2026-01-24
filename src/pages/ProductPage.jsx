@@ -71,11 +71,11 @@ export default function ProductPage({
   // Fetch product
   useEffect(() => {
     if (loading) return;
-    if (!user) return;
 
     const fetchProduct = async () => {
       try {
         const { data } = await api.get(`/api/products/${id}`);
+
         const filteredProduct = {
           id: data.product.id,
           title: data.product.title,
@@ -87,11 +87,16 @@ export default function ProductPage({
           createdAt: data.product.createdAt,
           vendorId: data.product.vendorId,
         };
+
         setProduct(filteredProduct);
         setVendor(data.product.vendor);
         setVendorId(filteredProduct.vendorId);
-        setBuyerId(user.id);
         setText(filteredProduct.description);
+
+        if (user) {
+          setBuyerId(user.id);
+        }
+
         setIsLoading(false);
       } catch (error) {
         console.error(
@@ -100,8 +105,9 @@ export default function ProductPage({
         );
       }
     };
+
     fetchProduct();
-  }, [id, user, loading]);
+  }, [id, loading, user]);
 
   //fetchComment
   useEffect(() => {
