@@ -5,7 +5,7 @@ import barCode from "../assets/barcode.gif";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../modules/apiClient";
-export default function ReceiptPage({ receipt, vendorId }) {
+export default function ReceiptPage({ receipt }) {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [userCommented, setUserCommented] = useState(false);
@@ -22,7 +22,7 @@ export default function ReceiptPage({ receipt, vendorId }) {
           title: data.product.title,
           price: data.product.price,
           image: data.product.images[0],
-          v: data,
+          vendorId: data.product.vendorId,
         });
         console.log(data);
       } catch (error) {
@@ -109,7 +109,7 @@ export default function ReceiptPage({ receipt, vendorId }) {
       const { data } = await api.post("/api/comment", {
         content: review.content,
         images: 2,
-        vendorId: receipt.vendorId,
+        vendorId: product.vendorId,
         rating: review.score,
         productId: receipt.productId,
         invoiceId: Number(receipt.id),
@@ -197,7 +197,6 @@ export default function ReceiptPage({ receipt, vendorId }) {
       {!userCommented && !isReviewModalOpen ? (
         <button
           onClick={() => {
-            console.log(product);
             setIsReviewModalOpen(true);
           }}
           className="reviewBtn"
