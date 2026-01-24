@@ -197,8 +197,8 @@ export default function ReceiptPage({ receipt, vendorId }) {
       {!userCommented && !isReviewModalOpen ? (
         <button
           onClick={() => {
-            setIsReviewModalOpen(true);
             console.log(product);
+            setIsReviewModalOpen(true);
           }}
           className="reviewBtn"
         >
