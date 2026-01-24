@@ -131,7 +131,14 @@ export default function ProductPage({
   }, [product.vendorId]);
 
   useEffect(() => {
-    const isLiked = async () => {
+    if (loading) return;
+    if (!user || !product.id) {
+      setIsLiked(false);
+      return;
+    }
+
+    const checkIsLiked = async () => {
+      if (user === null) return;
       try {
         const { data } = await api.get("/api/user/userWishlist/");
         const liked = data.wishliist.some(
@@ -146,8 +153,8 @@ export default function ProductPage({
       }
     };
 
-    isLiked();
-  }, [product.id]);
+    checkIsLiked();
+  }, [user, product.id, loading]);
 
   const priceString = (price) => Number(price).toLocaleString();
 

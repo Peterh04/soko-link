@@ -14,7 +14,7 @@ export default function ProductsPage({ vendorId }) {
     const getVedorsProducts = async () => {
       try {
         const { data } = await api.get(
-          "/api/products/vendor/${vendorId}/getProducts",
+          `/api/products/vendor/${vendorId}/getProducts`,
         );
         setVendorProducts(data.products);
       } catch (error) {
