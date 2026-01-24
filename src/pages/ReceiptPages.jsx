@@ -5,8 +5,10 @@ import barCode from "../assets/barcode.gif";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../modules/apiClient";
+import { useAlert } from "../context/AlertContext";
 export default function ReceiptPage({ receipt }) {
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
   const [product, setProduct] = useState(null);
   const [userCommented, setUserCommented] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
@@ -14,6 +16,7 @@ export default function ReceiptPage({ receipt }) {
     content: "",
     score: 0,
   });
+
   useEffect(() => {
     const getProduct = async () => {
       try {
@@ -116,7 +119,9 @@ export default function ReceiptPage({ receipt }) {
       });
       setUserCommented(true);
       setIsReviewModalOpen(false);
+      showAlert("Successfully reviewed", "success", 1500);
     } catch (error) {
+      showAlert("Failed to submit review");
       console.error(
         "Failed to submit review",
         error.response?.data || error.message,
