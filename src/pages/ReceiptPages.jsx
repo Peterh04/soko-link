@@ -22,6 +22,7 @@ export default function ReceiptPage({ receipt, vendorId }) {
           title: data.product.title,
           price: data.product.price,
           image: data.product.images[0],
+          v: data,
         });
         console.log(data);
       } catch (error) {
@@ -193,15 +194,18 @@ export default function ReceiptPage({ receipt, vendorId }) {
           </div>
         </section>
       </div>
-      {!userCommented && (
+      {!userCommented && !isReviewModalOpen ? (
         <button
           onClick={() => {
             setIsReviewModalOpen(true);
+            console.log(product);
           }}
           className="reviewBtn"
         >
           Write a review
         </button>
+      ) : (
+        ""
       )}
       <button onClick={downloadReceipt} className="downloadReceiptBtn">
         Download E-receipt
