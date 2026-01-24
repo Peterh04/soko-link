@@ -23,6 +23,7 @@ export default function ReceiptPage({ receipt, vendorId }) {
           price: data.product.price,
           image: data.product.images[0],
         });
+        console.log(data);
       } catch (error) {
         console.error(
           "Failed to fetch the product",

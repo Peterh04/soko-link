@@ -36,7 +36,6 @@ export default function EmailSignIn() {
         password,
       });
 
-      console.log("accessToken:", data.token);
       setAccessToken(data.token);
       setUser(data.user);
       navigate("/");

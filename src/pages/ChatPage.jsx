@@ -7,7 +7,6 @@ import MennuIcon from "../assets/icons/menu.svg?react";
 import SendIcon from "../assets/icons/send.svg?react";
 import VoiceIcon from "../assets/icons/voice.svg?react";
 import { io } from "socket.io-client";
-import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Oval } from "react-loader-spinner";
 import { useNavigate, useParams } from "react-router-dom";

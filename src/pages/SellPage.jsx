@@ -1,7 +1,6 @@
 import "../styles/sellPage.css";
 import NavBar from "../components/NavBar";
 import { useEffect, useState } from "react";
-
 import { useAuth } from "../context/AuthContext";
 import { useAlert } from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
