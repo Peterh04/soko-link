@@ -48,7 +48,10 @@ export default function EmailSignIn() {
   return (
     <main aria-label="EmailSignIn-page" className="emailSignIn-page">
       <div className="logo-container">
-        <img src="/src/assets/light_logo.png" alt="soko-link_logo" />
+        <img
+          src="https://res.cloudinary.com/dvut2bhks/image/upload/v1769247521/light_logo_tig2nr.png"
+          alt="soko-link_logo"
+        />
       </div>
 
       <AlertBox
