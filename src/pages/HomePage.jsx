@@ -12,7 +12,7 @@ import CategoryItem from "../components/CategoryItem";
 
 import NavBar from "../components/NavBar";
 import ProductPreview from "../components/ProductPreview";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "../modules/apiClient";
@@ -52,6 +52,10 @@ export default function HomePage({
     };
 
     fetchProducts();
+  }, []);
+
+  const firstTenProducts = useMemo(() => {
+    return products.slice(0, 10);
   }, [products]);
 
   const priceString = (price) => Number(price).toLocaleString();
@@ -150,7 +154,7 @@ export default function HomePage({
           <h3>Trending</h3>
         </div>
         <ul className="trending-list">
-          {products.map((product) => (
+          {firstTenProducts.map((product) => (
             <ProductPreview
               key={product.id}
               id={product.id}

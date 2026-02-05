@@ -38,7 +38,7 @@ export default function PaymentPage({ setReceipt }) {
           amount: invoice?.amount,
           invoiceId: invoice?.id,
         });
-        alert("Check your phone to complete the payment!");
+        showAlert("Check your phone to complete the payment!", "success", 1500);
       } catch (err) {
         console.error(err.response?.data || err.message);
         alert("Failed to initiate payment");
