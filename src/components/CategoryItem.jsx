@@ -39,7 +39,7 @@ export default function CategoryItem({
     <li
       className="category-item"
       onClick={() => {
-        console.log(categoryTerm);
+        console.log(name);
         setCategoryTerm(name);
         handleCategoryFilter;
       }}
