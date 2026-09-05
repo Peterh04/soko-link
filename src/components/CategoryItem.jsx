@@ -28,8 +28,6 @@ export default function CategoryItem({
       }));
       console.log(filteredCategoryProducts);
       setFilteredCategoryProducts(filteredCategoryProducts);
-
-      console.log(filteredCategoryProducts);
     } catch (error) {
       console.error(
         "Failed to get products based on this category",
@@ -41,6 +39,7 @@ export default function CategoryItem({
     <li
       className="category-item"
       onClick={() => {
+        console.log("Hi");
         setCategoryTerm(name);
         handleCategoryFilter;
       }}
