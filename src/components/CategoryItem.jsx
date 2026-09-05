@@ -28,6 +28,7 @@ export default function CategoryItem({
       }));
       console.log(filteredCategoryProducts);
       setFilteredCategoryProducts(filteredCategoryProducts);
+      navigate(`/products/category/${name}`);
     } catch (error) {
       console.error(
         "Failed to get products based on this category",
