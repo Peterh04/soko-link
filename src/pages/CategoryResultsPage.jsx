@@ -16,7 +16,7 @@ const CategoryResultsPage = ({ filteredCategoryProducts }) => {
       </header>
 
       <section aria-label="seatch results" className="results-section">
-        {filteredCategoryProducts.length >= 1 ? (
+        {filteredCategoryProducts !== null ? (
           <ul className="results-list">
             {filteredCategoryProducts.map((product) => (
               <ProductPreview
