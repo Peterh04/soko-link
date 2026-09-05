@@ -16,18 +16,22 @@ const CategoryResultsPage = ({ filteredCategoryProducts }) => {
       </header>
 
       <section aria-label="seatch results" className="results-section">
-        <ul className="results-list">
-          {filteredCategoryProducts.map((product) => (
-            <ProductPreview
-              key={product.id}
-              id={product.id}
-              name={product.title}
-              price={priceString(product.price)}
-              location={product.location}
-              image={product.images[0]}
-            />
-          ))}
-        </ul>
+        {filteredCategoryProducts.length > 1 ? (
+          <ul className="results-list">
+            {filteredCategoryProducts.map((product) => (
+              <ProductPreview
+                key={product.id}
+                id={product.id}
+                name={product.title}
+                price={priceString(product.price)}
+                location={product.location}
+                image={product.images[0]}
+              />
+            ))}
+          </ul>
+        ) : (
+          <p>No products found</p>
+        )}
       </section>
     </main>
   );
