@@ -39,9 +39,8 @@ export default function CategoryItem({
     <li
       className="category-item"
       onClick={() => {
-        console.log(name);
         setCategoryTerm(name);
-        handleCategoryFilter;
+        handleCategoryFilter();
       }}
     >
       <div className="category-item-icon-container">{children}</div>
