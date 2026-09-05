@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import BackIcon from "../assets/icons/back.svg?react";
 
 const CategoryResultsPage = ({ filteredCategoryProducts }) => {
   const navigate = useNavigate();
