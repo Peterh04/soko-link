@@ -29,6 +29,8 @@ function App() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchProducts, setSearchProducts] = useState(null);
+  const [filteredCategoryProducts, setFilteredCategoryProducts] =
+    useState(null);
   const [buyerId, setBuyerId] = useState();
   const [vendorId, setVendorId] = useState();
   const [sender, setSender] = useState();
@@ -73,6 +75,7 @@ function App() {
               setSearchTerm={setSearchTerm}
               setSearchProducts={setSearchProducts}
               searchProducts={searchProducts}
+              setFilteredCategoryProducts={setFilteredCategoryProducts}
             />
           }
         ></Route>

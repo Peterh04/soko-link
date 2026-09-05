@@ -16,6 +16,7 @@ import { useEffect, useMemo } from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "../modules/apiClient";
+import { useState } from "react";
 
 export default function HomePage({
   products,
@@ -23,6 +24,7 @@ export default function HomePage({
   searchTerm,
   setSearchTerm,
   setSearchProducts,
+  setFilteredCategoryProducts,
 }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -62,7 +64,9 @@ export default function HomePage({
 
   const handleSearch = async () => {
     try {
-      const { data } = await api.get(`/api/products/search/${searchTerm}`);
+      const { data } = await api.get(
+        `/api/products/search?search=${encodeURIComponent(searchTerm)}`,
+      );
       const filteredProducts = data.filteredProducts.map((product) => ({
         id: product.id,
         title: product.title,
@@ -132,18 +136,30 @@ export default function HomePage({
         </div>
 
         <ul className="category-list">
-          <CategoryItem name={"Fashion"}>
+          <CategoryItem
+            name={"Fashion"}
+            setFilteredCategoryProducts={setFilteredCategoryProducts}
+          >
             <img src={shirtImage} className="category-image"></img>
           </CategoryItem>
-          <CategoryItem name="Electronics">
+          <CategoryItem
+            name="Electronics"
+            setFilteredCategoryProducts={setFilteredCategoryProducts}
+          >
             <img src={electronicsImg} className="category-image"></img>
           </CategoryItem>
 
-          <CategoryItem name="Beauty ">
+          <CategoryItem
+            name="Beauty"
+            setFilteredCategoryProducts={setFilteredCategoryProducts}
+          >
             <img src={productsImg} className="category-image"></img>
           </CategoryItem>
 
-          <CategoryItem name="Furniture">
+          <CategoryItem
+            name="Furniture"
+            setFilteredCategoryProducts={setFilteredCategoryProducts}
+          >
             <img src={furnitureImg} className="category-image"></img>
           </CategoryItem>
         </ul>
