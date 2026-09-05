@@ -34,6 +34,7 @@ export default function CategoryItem({
         "Failed to get products based on this category",
         error.response?.data || error.message,
       );
+      navigate(`/products/category/${name}`);
     }
   };
   return (
