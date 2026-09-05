@@ -24,6 +24,7 @@ import LoginRequired from "./components/LoginRequired";
 import axios from "axios";
 import AlertBox from "./components/AlertBox";
 import { useAlert } from "./context/AlertContext";
+import CategoryResultsPage from "./pages/CategoryResultsPage";
 function App() {
   const [user, setUser] = useState();
   const [products, setProducts] = useState([]);
@@ -126,6 +127,11 @@ function App() {
               searchProducts={searchProducts}
             />
           }
+        ></Route>
+
+        <Route
+          path="/products/category/:term"
+          element={<CategoryResultsPage />}
         ></Route>
         <Route
           path="/connect/:buyerId/:vendorId"
