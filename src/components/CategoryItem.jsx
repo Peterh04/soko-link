@@ -14,7 +14,7 @@ export default function CategoryItem({
   const handleCategoryFilter = async () => {
     try {
       const { data } = await api.get(
-        `/api/products/search?category=${encodeURIComponent(categoryTerm)}`,
+        `/api/products/search?category=${categoryTerm}`,
       );
       const filteredCategoryProducts = data.filteredProducts.map((product) => ({
         id: product.id,
