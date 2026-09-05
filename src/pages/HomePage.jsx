@@ -25,7 +25,6 @@ export default function HomePage({
   setSearchTerm,
   setSearchProducts,
   setFilteredCategoryProducts,
-  categoryTerm,
 }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -160,7 +159,6 @@ export default function HomePage({
           <CategoryItem
             name="Furniture"
             setFilteredCategoryProducts={setFilteredCategoryProducts}
-            categoryTerm={categoryTerm}
           >
             <img src={furnitureImg} className="category-image"></img>
           </CategoryItem>

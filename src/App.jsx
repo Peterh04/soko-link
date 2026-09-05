@@ -30,7 +30,6 @@ function App() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchProducts, setSearchProducts] = useState(null);
-  const [categoryTerm, setCategoryTerm] = useState("");
   const [filteredCategoryProducts, setFilteredCategoryProducts] =
     useState(null);
   const [buyerId, setBuyerId] = useState();
@@ -78,8 +77,6 @@ function App() {
               setSearchProducts={setSearchProducts}
               searchProducts={searchProducts}
               setFilteredCategoryProducts={setFilteredCategoryProducts}
-              categoryTerm={categoryTerm}
-              setCategoryTerm={setCategoryTerm}
             />
           }
         ></Route>
@@ -137,7 +134,6 @@ function App() {
           element={
             <CategoryResultsPage
               filteredCategoryProducts={filteredCategoryProducts}
-              categoryTerm={categoryTerm}
             />
           }
         ></Route>
