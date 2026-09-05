@@ -30,6 +30,7 @@ export default function CategoryItem({
       setFilteredCategoryProducts(filteredCategoryProducts);
       navigate(`/products/category/${name}`);
     } catch (error) {
+      setFilteredCategoryProducts(null);
       console.error(
         "Failed to get products based on this category",
         error.response?.data || error.message,
