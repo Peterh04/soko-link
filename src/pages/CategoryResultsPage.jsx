@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import BackIcon from "../assets/icons/back.svg?react";
 import ProductPreview from "../components/ProductPreview";
 
-const CategoryResultsPage = ({ filteredCategoryProducts }) => {
+const CategoryResultsPage = ({ filteredCategoryProducts, categoryTerm }) => {
   const navigate = useNavigate();
 
   const priceString = (price) => Number(price).toLocaleString();
@@ -12,7 +12,6 @@ const CategoryResultsPage = ({ filteredCategoryProducts }) => {
         <button className="backBtn" onClick={() => navigate(-1)}>
           <BackIcon className="fa" />
         </button>
-        <h2>Electonics</h2>
       </header>
 
       <section aria-label="seatch results" className="results-section">
@@ -30,7 +29,7 @@ const CategoryResultsPage = ({ filteredCategoryProducts }) => {
             ))}
           </ul>
         ) : (
-          <p>No products found</p>
+          <p>No products found on "${categoryTerm}" category</p>
         )}
       </section>
     </main>

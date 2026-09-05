@@ -7,9 +7,9 @@ export default function CategoryItem({
   name,
   children,
   setFilteredCategoryProducts,
+  setCategoryTerm,
 }) {
   const navigate = useNavigate();
-  const [categoryTerm, setCategoryTerm] = useState("");
 
   const handleCategoryFilter = async () => {
     try {
