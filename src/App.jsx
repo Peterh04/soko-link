@@ -131,7 +131,11 @@ function App() {
 
         <Route
           path="/products/category/:term"
-          element={<CategoryResultsPage />}
+          element={
+            <CategoryResultsPage
+              filteredCategoryProducts={filteredCategoryProducts}
+            />
+          }
         ></Route>
         <Route
           path="/connect/:buyerId/:vendorId"
